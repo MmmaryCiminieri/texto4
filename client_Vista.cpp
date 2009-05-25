@@ -39,8 +39,7 @@ void Vista::agregarAmigo(const char* nombre) {
 	gtk_text_buffer_get_end_iter(this->ventana.getLista(), &it);
 	gtk_text_buffer_insert(this->ventana.getLista(), &it, nombre,
 			strlen(nombre));
-	//gtk_text_buffer_get_end_iter(this->ventana.getLista(), &it);
-	//gtk_text_buffer_insert(this->ventana.getLista(), &it, "\n", 1);
+
 }
 void Vista::quitarAmigo(const char* nombre) {
 	//TODO busqueda
@@ -53,7 +52,6 @@ void Vista::quitarAmigo(const char* nombre) {
 }
 void Vista::cargarDocumento(std::string contenido) {
 
-	GtkTextIter iter;
 	g_signal_handler_block(this->ventana.getTexto(),
 			this->ventana.getinsertSignal());
 	gtk_text_buffer_set_text(this->ventana.getTexto(), contenido.c_str(), -1);

@@ -349,6 +349,8 @@ void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len
 void hanBorrado(GtkTextBuffer *textbuffer,    GtkTextIter   *start,
         GtkTextIter   *end,
         gpointer       user_data) {
+std::cout << "en han borrado"<< std::endl;
+
 
 
 	int inicio = gtk_text_iter_get_offset(start);
@@ -374,8 +376,6 @@ void VentanaIngreso::crearTexto() {
 	this->view = NULL;
 	this->view = gtk_text_view_new_with_buffer(this->texto);
 
-	gtk_text_buffer_set_text(texto, "Aquí aparecerá el texto a editar.", -1);
-
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(this->view), true);
 	gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(this->view), true);
 
@@ -397,7 +397,7 @@ void VentanaIngreso::crearTexto() {
 	std::cout << "aantes" << std::endl;
 
 	insertSignal = g_signal_connect(G_OBJECT(texto), "insert_text",GTK_SIGNAL_FUNC(hanAgregado),(gpointer) this);
-	//deleteSignal = g_signal_connect(G_OBJECT(texto), "delete_range",GTK_SIGNAL_FUNC(hanBorrado),(gpointer) this);
+	deleteSignal = g_signal_connect(G_OBJECT(texto), "delete_range",GTK_SIGNAL_FUNC(hanBorrado),(gpointer) this);
 	std::cout << "luego" << std::endl;
 
 }
