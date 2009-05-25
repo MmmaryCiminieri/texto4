@@ -5,14 +5,20 @@
  *      Author: mmmary
  */
 
+
+
 #include <string.h>
+
 #include "server_Cliente.h"
 #include "common_Parser.h"
 #include  "common_Iterador.h"
+
 #define TAMANIIO 1024
+
 Cliente::Cliente(MSocket * socket, Servidor* servidor) {
 	this->socket = socket;
 	this->servidor = servidor;
+	//estaba en true...
 	this->conectado = true;
 
 }
@@ -30,90 +36,91 @@ MSocket* Cliente::getSocket() {
 }
 
 void Cliente::ejecutarAccion(Parser parser) {
-char ch = (parser.getTipo())[0];
+	char ch = (parser.getTipo())[0];
 
-switch (ch){
+	switch (ch) {
 
 	case 'N': {
+		/*el cliente envía sus datos para ingresar al sistema*/
 		this->setNombre(parser.getTexto());
 		this->servidor->VerificacionCliente(this);
 		break;
 	}
-	case 'D': ; case 'L':; case 'R':; case 'F':{
-		//no se puede dar
+	case 'A':
+		;
+	case 'B':
+		;
+	case 'O': {
+
+		/*recibo un cambio que afectará al documeto o a los usuarios conectados */
+		/*estos cambios de acolan, esperando a ser procesados*/
+		this->servidor->agregarCambio(parser.toCambio(), nombre);
+
 		break;
 	}
-
-	case 'A':; case 'B':;	case 'O': {
-		std::cout << "algun cliente le avisa a todos q quiere agregar/borrar data o salir" << std::endl;
-
-		/*recibo un cambio, y si tenemos la misma version lo recibo*/
-			this->servidor->agregarCambio(parser.toCambio(), nombre);
-
+	case 'D':
+		;
+	case 'L':
+		;
+	case 'R':
+		;
+	case 'F': {
+		/*no se pueden dar desde este lado (servidor)*/
 		break;
 	}
+	}
 }
-}
-
-
 
 void* Cliente::run() {
 
-std::cout << "dentro del run " << std::endl;
+	std::cout << "dentro del run " << std::endl;
 
-char buff1[TAMANIIO];
-bzero(buff1, TAMANIIO);
-std::string str;
+	char buff1[TAMANIIO];
+	bzero(buff1, TAMANIIO);
+	std::string str;
 
-while (this->conectado) {
+	while (this->conectado) {
 
-	int cantidad = 0;
-	Parser parser;
+		int cantidad = 0;
+		Parser parser;
 
-	cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
+		cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
 
+		if (cantidad <= 0) {
+			this->conectado = false;
+		}else{
+			buff1[cantidad] = '\0';
+			str += buff1;
+		}
 
-	if (cantidad <= 0) {
-				this->conectado = false;
-				//?break;
+		while ((conectado) && (parser.Procesar(str.c_str(), &cantidad))) {
+
+			std::cout << "termino de procesar " << cantidad
+					<< "bytes sdel buffer" << std::endl;
+
+			if (cantidad > 0) {
+				/*borro lo q ya lei del buffer*/
+				str.erase(0, cantidad);
+				cantidad = str.size();
 			}
 
-			if (conectado) {
-				buff1[cantidad] = '\0';
-				str += buff1;
-			}
+			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
+			this->ejecutarAccion(parser);
+			parser.reset();
 
-
-	while ((conectado) && (parser.Procesar(str.c_str(), &cantidad))) {
-
-		std::cout << "termino de procesar " << cantidad
-		<< "bytes sdel buffer" << std::endl;
-
-		/*borro lo q ya lei del buffer*/
-
-		if (cantidad > 0) {
-			/*borro lo q ya lei del buffer*/
+		}
+		if (conectado) {
+			/*saco ese mensaje del buffer(pueden venirme mas de uno)*/
 			str.erase(0, cantidad);
 			cantidad = str.size();
 		}
-		std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
-		this->ejecutarAccion(parser);
-		parser.reset();
 
 	}
-	if (conectado) {
-		str.erase(0, cantidad);
-		cantidad = str.size();
-	}
 
-	/*saco ese mensaje del buffer*/
-}
-
-std::cout << "deje de escuchar" << std::endl;
-
-return NULL;
+	std::cout << "deje de escuchar" << std::endl;
+	return NULL;
 }
 
 Cliente::~Cliente() {

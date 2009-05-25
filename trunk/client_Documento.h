@@ -28,10 +28,10 @@ public:
 	void setVersion(int nro);
 	std::string getContenido();
 
-	/*se agrega texto en la posicion posicion del contenido del documento*/
+	/*se agrega texto en la posición posicion del contenido del documento*/
 	void agregarTexto(std::string texto, unsigned int posicion);
 
-	/*se borra texto en la posicion posicion del contenido del documento*/
+	/*se borra texto en la posición posicion del contenido del documento*/
 	void borrarTexto(std::string texto, int posicion);
 
 	virtual ~Documento();

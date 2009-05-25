@@ -14,15 +14,14 @@ ServidorEx::ServidorEx(Servidor* servidor) {
 
 	int retorno = this->socket->listen(servidor->getPuerto(), servidor->getCantClientes());
 	if (retorno != 0) {
-		//	return 1;
+		isValido = false;
 	} else {
-		/*creo un  nuevo hilo para aceptar clientes*/
-		execute();
-		//return 0;
-
+		isValido = true;
 	}
+}
 
-
+bool ServidorEx::isValido(){
+	return isValido;
 }
 void* ServidorEx::run(){
 	std::cout << "run del server que escucha para aceptar " << std::endl;
@@ -37,15 +36,10 @@ void* ServidorEx::run(){
 				/*hay un cliente*/
 				Cliente* cliente = new Cliente(socketCliente, this->servidor);
 				cliente->execute();
-				//borrar cli
+				//borrar cliento en servidor, cuando sale, no????
 			}
-
 		}
 		return NULL;
-
-
-
 }
-ServidorEx::~ServidorEx() {
-	// TODO Auto-generated destructor stub
-}
+
+ServidorEx::~ServidorEx() {}

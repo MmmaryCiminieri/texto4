@@ -9,6 +9,8 @@
 #include "common_Cambio.h"
 #include <cstdlib>
 
+Cambio::Cambio(){}
+
 Cambio::Cambio(std::string tipo, int version,int alcance, int posicion, std::string texto) {
 	this->tipo = tipo;
 	this->version = version;
@@ -77,6 +79,12 @@ Cambio::Cambio(std::string tipo, int version,  std::string texto) {
 
 }
 
+bool Cambio::operator!=(const Cambio& otro)const{
+
+	return ((tipo !=otro.tipo)||(version !=otro.version)||(alcance !=otro.alcance) ||(posicion !=otro.posicion)||(longitud !=otro.longitud)||(texto !=otro.texto));
+
+
+}
 
 int Cambio::getVersion(){
 	return this->version;

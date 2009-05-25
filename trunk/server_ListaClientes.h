@@ -5,6 +5,9 @@
  *      Author: mmmary
  */
 
+/* Se agrupan todos los usuarios de la aplicación.
+ * */
+
 #ifndef LISTACLIENTES_H_
 #define LISTACLIENTES_H_
 
@@ -18,9 +21,11 @@ public:
 
 public:
 	ListaClientes();
-	//void agregarTexto(std::string texto, int posicion);
 	Lista<Cliente*>* getLista();
+
+	/*se remueve un cliente de la lista*/
 	bool remover(std::string nombre);
+
 	virtual ~ListaClientes();
 };
 
