@@ -21,15 +21,13 @@
 class DocumentoConcurrente {
 private:
 
-
 	Documento documento;
 	MMutex mutex;
 
 
 public:
 
-	DocumentoConcurrente();
-	void agregarTexto(std::string texto,int offset);
+		void agregarTexto(std::string texto,int offset);
 	void borrarTexto(std::string texto, int offset);
 
 	void aumentarVersion();
@@ -39,7 +37,7 @@ public:
 	int getVersion();
 	void  setVersion(int nro);
 
-	~DocumentoConcurrente();
+
 };
 
 #endif /* DOCUMENTOCONCURRENTE_H_ */

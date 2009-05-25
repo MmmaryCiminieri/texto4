@@ -10,9 +10,6 @@
 #include  <string.h>
 #include <iostream>
 
-DocumentoConcurrente::DocumentoConcurrente() {
-}
-
 void DocumentoConcurrente::aumentarVersion(){
 
 	this->documento.aumentarVersion();
@@ -52,4 +49,4 @@ int DocumentoConcurrente::getVersion() {
 	return this->documento.getVersion();
 }
 
-DocumentoConcurrente::~DocumentoConcurrente(){}
+

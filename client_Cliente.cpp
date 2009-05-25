@@ -20,8 +20,8 @@
 
 Cliente::Cliente() {
 	std::cout << "////CREO CLIENTE/////" << std::endl;
-	this->setConectado (false);
-	this->documentoConc = new DocumentoConcurrente;
+	this->setConectado(false);
+	this->documentoConc = new DocumentoConcurrente();
 }
 
 void Cliente::setNombre(std::string nombre) {
@@ -32,6 +32,7 @@ std::string Cliente::getNombre() {
 	return this->nombre;
 }
 void Cliente::Inicializar(const char* ip, const char* port, GtkWidget* boton) {
+
 	this->conectarSocket(ip, port);
 
 	if (!this->getConectado()) {
@@ -42,11 +43,8 @@ void Cliente::Inicializar(const char* ip, const char* port, GtkWidget* boton) {
 		/*valido existencia*/
 		this->EnviarDatosInicio();
 		/*escucho cambios del servidor*/
-		std::cout << "sali de enviar datos" << std::endl;
-
 		this->execute();
-		/*escucho cambios de la vista*/
-		//this->Escuchando();
+
 	}
 }
 MSocket* Cliente::getSocket() {
@@ -59,11 +57,10 @@ void Cliente::setVista(Vista* vista) {
 void Cliente::conectarSocket(const char* IP, const char* puerto) {
 
 	this->socket = new MSocket();
-
 	int retorno = this->socket->connect(IP, puerto);
 	if (retorno == 0) {
 		std::cout << "me pude conectar " << std::endl;
-this->puerto = puerto;
+		this->puerto = puerto;
 		this->setConectado(true);
 
 	}
@@ -80,80 +77,63 @@ void Cliente::EnviarDatosInicio() {
 				cambio.getStdCambio().size());
 	}
 }
-bool  Cliente::getConectado(){
-Lock lock(this->mutex);
-return conectado;
+
+bool Cliente::getConectado() {
+	Lock lock(this->mutex);
+	return conectado;
 }
 
-void Cliente::setConectado(bool newStatus){
+void Cliente::setConectado(bool newStatus) {
 	Lock lock(this->mutex);
 	conectado = newStatus;
 }
 
-void Cliente::Desloguearse(){
+void Cliente::Desloguearse() {
 	/*el cliente se deloguea*/
-	std::cout<<nombre << " se ha deslogueado" << std::endl;
+	std::cout << nombre << " se ha deslogueado" << std::endl;
 
-std::string ip="127.0.0.1";
-		/*debo desbloquear el recv, para q se pueda hacer el join*/
-		MSocket socket;
-		socket.connect(ip.c_str(),puerto);
-		Cambio cambio("E",nombre);
-		socket.send(cambio.getStdCambio(), cambio.getStdCambio().size());
-		std::cout<<" el cambio es: "<<cambio.getStdCambio() << std::endl;
-}
+	std::string ip = "127.0.0.1";
 
-void Cliente::Escuchando() {
-	/*escucho a la vista (cambios) y los envio al servidor*/
-	//while (conectado) {
-	//if (this->documentoConc->huboCambios()) {
-	/*hubo cambios, se los envio al servidor*/
-
-	//TODO crear el cambio
-	//
-	//			retorno = this->socket->send(cambio.getStdCambio(),
-	//					cambio.getStdCambio().size());
-	//			std::cout << "el send mando:" << retorno << std::endl;
-	//			std::cout << "el send debia mandar:"
-	//					<< cambio.getStdCambio().size() << std::endl;
-
-	//}
-
-	//	}
-
+	/*debo desbloquear el recv, para q se pueda hacer el join*/
+	MSocket socket;
+	socket.connect(ip.c_str(), puerto);
+	Cambio cambio("E", nombre);
+	socket.send(cambio.getStdCambio(), cambio.getStdCambio().size());
+	std::cout << " el cambio es: " << cambio.getStdCambio() << std::endl;
 }
 
 void Cliente::ejecutarAccion(Parser parser) {
-	std::cout << "Empiezo a ejecutar" << std::endl;
+	std::cout << "Empiezo a ejecutar una accion " << std::endl;
 	switch (parser.getTipo()[0]) {
 
 	case 'E': {
-		std::cout<<"recibi la E" << std::endl;
+		std::cout << "recibi la E" << std::endl;
 		Cambio cambio("O", this->getNombre());
-			this->EnviarCambio(cambio);
-
+		/*le avisa al socket q se va a desconectar*/
+		this->EnviarCambio(cambio);
+		/*envia el cambio de desconectarse*/
 		this->setConectado(false);
 
 		break;
 	}
 
 	case 'D': {
-
+/*se setea el documento*/
 		this->documentoConc->setDocumento(parser.getTexto());
 		std::cout << "el documento luego"
 				<< this->documentoConc->getDocumento()->getContenido()
 				<< std::endl;
+		/*se setea la version */
 		this->documentoConc->setVersion(parser.getVersion());
-
+		/*se modifica la vista*/
 		this->vista->cargarDocumento(parser.getTexto());
-		std::cout << "vista done..." << std::endl;
 
 		// TODO borrar
-				std::string m = "loco";
-				Cambio cambio("A", this->documentoConc->getVersion(),0, 11, m);
-				std::cout << "el cambio es" << cambio.getStdCambio() << std::endl;
-
-				this->EnviarCambio(cambio);
+//		std::string m = "loco";
+//		Cambio cambio("A", this->documentoConc->getVersion(), 0, 11, m);
+//		std::cout << "el cambio es" << cambio.getStdCambio() << std::endl;
+//
+//		this->EnviarCambio(cambio);
 		//		m = "torta";
 		//		Cambio cambio2("A", this->documentoConc->getVersion() + 1, 16,
 		//				 m);
@@ -200,17 +180,17 @@ void Cliente::ejecutarAccion(Parser parser) {
 		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
-		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(), true);
+		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
+				true);
+
 
 	}
 
 	case 'A': {
 
-		//if ((parser.getVersion() - 1) == this->documentoConc->getVersion()) {
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
 
-			std::cout << "agrego en el cliente el cambio" << std::endl;
-
+			/* el documento  se modifica*/
 			this->documentoConc->agregarTexto(parser.getTexto(),
 					parser.getPosicion());
 			std::cout << "el doc es "
@@ -218,59 +198,54 @@ void Cliente::ejecutarAccion(Parser parser) {
 					<< std::endl;
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
+			/*la vista se modifica*/
 			this->vista->agregar(parser.getTexto().c_str(),
 					parser.getPosicion());
 		}
-		//}
+
 		break;
 	}
 
 	case 'B': {
 
-		std::cout << "voy a borrar " << std::endl;
-		//if ((parser.getVersion() - 1) == this->documentoConc->getVersion()) {
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
+			/* el documento  se modifica*/
 
 			this->documentoConc->borrarTexto(parser.getTexto(),
 					parser.getPosicion());
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
+			/*la vista se modifica*/
+
 			this->vista->borrar(parser.getTexto().c_str(), parser.getPosicion());
 		}
 		break;
 
 	}
 	case 'F': {
-		std::string str=parser.getTexto();
+
+		std::string str = parser.getTexto();
 		if (this->listaDeAmigos.isEmpty()) {
-			/*no tengo amigos =(*/
+			/*no tengo amigos =( , ahora tengo uno*/
 
 			std::cout << "me llego el primer amigo " << std::endl;
-
-
-			str +="\n";
-			// GtkTextIter iter;
-			//g_signal_handler_block(this->ventana.getTexto(),this->ventana.getinsertSignal());
+			str += "\n";
 			gtk_text_buffer_set_text(this->vista->getVentana()->getLista(),
-					//parser.getTexto().c_str()
 					str.c_str(), -1);
-			//unblock
 
-		}else{
+		} else {
 			this->vista->agregarAmigo(str.c_str());
 
 		}
 		this->agregarAmigo(parser.getTexto());
 		break;
 	}
+
 	case 'O': {
-		/*debo quitar a alguien, si tiene mi nombre es porque yo  he requerido salir  */
-		if (nombre == parser.getTexto()) {
-			this->setConectado ( false);
-		} else {
+		/*debo quitar a un amigo de mi lista y de la vista*/
+
 			this->quitarAmigo(parser.getTexto());
-			this->vista->quitarAmigo(parser.getTexto().c_str());
-		}
+
 		break;
 	}
 	}
@@ -278,6 +253,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 }
 
 void* Cliente::run() {
+//TODO BORRAR Comentarios
 	std::cout << "Cliente::run()" << std::endl;
 
 	char buff1[TAMANIIO];
@@ -288,7 +264,6 @@ void* Cliente::run() {
 
 		int cantidad = 0;
 		Parser parser;
-
 
 		cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
 		std::cout << "recibi! " << std::endl;
@@ -303,7 +278,8 @@ void* Cliente::run() {
 			str += buff1;
 		}
 
-		while ((this->getConectado()) && (parser.Procesar(str.c_str(), &cantidad))) {
+		while ((this->getConectado()) && (parser.Procesar(str.c_str(),
+				&cantidad))) {
 			std::cout << "termino de procesar " << cantidad
 					<< " bytes del buffer" << std::endl;
 
@@ -352,12 +328,13 @@ Lista<std::string> Cliente::getAmigos() {
 }
 void Cliente::quitarAmigo(std::string nombre) {
 	this->listaDeAmigos.remove(nombre);
-	//this->vista->quitarAmigo(nombre.c_str());
+	this->vista->quitarAmigo(nombre.c_str());
+
+
 }
 
 void Cliente::agregarAmigo(std::string nombre) {
 	this->listaDeAmigos.add(nombre);
-	//this->vista->agregarAmigo(nombre.c_str());
 
 }
 

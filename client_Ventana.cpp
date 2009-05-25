@@ -24,7 +24,6 @@ void VentanaIngreso::setCliente(Cliente* cliente){
 	this->cliente = cliente;
 }
 
-
 void VentanaIngreso::setVista(Vista* vista){
 	this->vista = vista;
 }
@@ -32,38 +31,43 @@ void VentanaIngreso::setVista(Vista* vista){
 Vista* VentanaIngreso::getVista(){
 	return vista;
 }
+
 /* Función 'callback' para atender la señal "clicked" del botón */
 void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
-	std::cout << "[recibido el evento clicked]" << std::endl;
 
 	/* muestro el contenido de la entrada de texto */
 	std::cout << "Texto ingresado de Usuario:" << gtk_entry_get_text(GTK_ENTRY(
 			data->entrada)) << std::endl;
-//todo borrar
+
 	Cliente* cliente = new Cliente;
 	data->setCliente(cliente);
 	cliente->setVista(data->getVista());
 
 
+	/*trabo el boton DE CONECTARSE*/
+	gtk_widget_set_sensitive(widget, false);
+
+	/*habilito el boton de desloguearse*/
+	gtk_widget_set_sensitive(data->botonDeslog, true);
+
 	data->cliente->setNombre(gtk_entry_get_text(GTK_ENTRY(data->entrada)));
-	   //const char* ip = gtk_entry_get_text(GTK_ENTRY(data->entrada2));
+//TODO DESCOMENTAR, SACAR DEFAULT
+	//const char* ip = gtk_entry_get_text(GTK_ENTRY(data->entrada2));
 	   //const char* port =  gtk_entry_get_text(GTK_ENTRY(data->entrada3));
 const char* ip = "127.0.0.1";
 const char* port = "8080";
-/*trabo el boton*/
-gtk_widget_set_sensitive(widget, false);
-gtk_widget_set_sensitive(data->botonDeslog, true);
-
 data->cliente->Inicializar(ip, port, widget);
 
-	std::cout << "SALI DEL CLICK" << std::endl;
+std::cout << "SALI DEL CLICK" << std::endl;
 
 }
 
 void VentanaIngreso::on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* data){
 	/*el cliente ha decido desloguarse*/
-	std::cout << "el cli" <<
-data->cliente->getNombre()<< std::endl;
+	std::cout << "el cliente " <<
+data->cliente->getNombre()<< " se quiere ir" <<std::endl;
+
+	//TODO VER Q ONDA
 	//data->cliente->Desloguearse();
 	//data->cliente->join();
 	std::cout << "Termino de joinear" << std::endl;
@@ -71,10 +75,9 @@ data->cliente->getNombre()<< std::endl;
 
 	//data->cliente = NULL;
 
+	/*se puede volver a conectar*/
 	gtk_widget_set_sensitive(data->boton,true);
 	gtk_widget_set_sensitive(data->botonDeslog, false);
-	std::cout << "seteo botones" << std::endl;
-
 
 }
 
@@ -86,7 +89,6 @@ GtkWidget* VentanaIngreso::getBotonDeslog(){
 static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event,
 		VentanaIngreso* data) {
 	std::cout << "[recibido el evento delete_event]" << std::endl;
-	std::cout << "el cli" << data->getCliente()->getNombre()<< std::endl;
 	return FALSE;
 }
 
@@ -101,13 +103,11 @@ static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 }
 
 
-VentanaIngreso::VentanaIngreso(/*Cliente* cliente*/) {
+VentanaIngreso::VentanaIngreso() {
 	std::cout << "////Constructor VentanaIngreso/////" << std::endl;
 
-//	this->cliente = cliente;
 
 	this->crearVentana();
-
 	this->crearCamposVerticales();
 	this->crearTable();
 
@@ -116,12 +116,11 @@ VentanaIngreso::VentanaIngreso(/*Cliente* cliente*/) {
 	this->crearLabel2();
 	this->crearEntrada2();
 	this->crearBotonDeslog();
-
 	this->crearLabel3();
 	this->crearEntrada3();
 	this->crearBoton();
-	this->crearCamposTexto3();
 
+	this->crearCamposTexto3();
 	this->crearLabel4();
 	this->crearLabel5();
 	this->crearCamposTexto();
@@ -135,7 +134,6 @@ VentanaIngreso::VentanaIngreso(/*Cliente* cliente*/) {
 GtkTextBuffer* VentanaIngreso::getTexto() {
 
 	return this->texto;
-	//return gtk_text_view_get_buffer(GTK_TEXT_VIEW(this->view));
 }
 
 GtkTextBuffer* VentanaIngreso::getLista() {
@@ -156,6 +154,7 @@ void VentanaIngreso::crearVentana() {
 	ventana = NULL;
 	this->ventana = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
+	//TODO ?/
 	/* conecto la señal "delete_event" de la ventana a la callback
 	 * on_delete_event() */
 	//g_signal_connect(G_OBJECT(this->ventana), "delete_event", G_CALLBACK(
@@ -177,7 +176,6 @@ void VentanaIngreso::crearTable() {
 	/* create a table of 10 by 1 squares. */
 	this->table = gtk_table_new(6, 1, FALSE);
 
-//	gtk_box_pack_start(GTK_BOX(contenedorV), table, FALSE, FALSE, 10);
 
 }
 void VentanaIngreso::crearLabel() {
@@ -241,7 +239,7 @@ void VentanaIngreso::crearLabel3() {
 void VentanaIngreso::crearBoton() {
 	boton = NULL;
 	/* creo un botón predefinido con un ícono de "Aceptar" */
-	this->boton = gtk_button_new_from_stock("gtk-ok");
+	this->boton = gtk_button_new_from_stock("Conectar");
 
 	/* conecto la señal "clicked" del botón a la callback on_boton_clicked()
 	 * y le envío el widget entrada como dato adicional */
@@ -254,7 +252,7 @@ void VentanaIngreso::crearBoton() {
 }
 void VentanaIngreso::crearBotonDeslog() {
 	/* creo un botón predefinido con un ícono de "Aceptar" */
-	botonDeslog = gtk_button_new_from_stock("desloguearme");
+	botonDeslog = gtk_button_new_from_stock("Desloguear");
 gtk_widget_set_sensitive(botonDeslog, false);
 	/* conecto la señal "clicked" del botón a la callback on_boton_clicked()
 	 * y le envío el widget entrada como dato adicional */
@@ -312,6 +310,7 @@ void VentanaIngreso::crearCamposTexto3() {
 
 }
 
+/*transforma una cadena en Utf8 a ascii*/
 const char* utf8ToAscii(std::string str) {
 	gchar* copia = new gchar[str.size() + 1];
 
@@ -327,6 +326,7 @@ const char* utf8ToAscii(std::string str) {
 	return strAscii;
 }
 
+/*funcion q se llama ante la señal de agregado de texto, se crea el cambio correspondiente y se lo envía al servidor*/
 void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len,
 		gpointer user_data) {
 
@@ -345,6 +345,8 @@ void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len
 	((VentanaIngreso*) user_data)->getCliente()->EnviarCambio(cambio);
 }
 
+
+/*funcion q se llama ante la señal de borrado de texto, se crea el cambio correspondiente y se lo envía al servidor*/
 
 void hanBorrado(GtkTextBuffer *textbuffer,    GtkTextIter   *start,
         GtkTextIter   *end,
@@ -394,11 +396,8 @@ void VentanaIngreso::crearTexto() {
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(this->swindow),
 			GTK_SHADOW_IN);
 
-	std::cout << "aantes" << std::endl;
-
 	insertSignal = g_signal_connect(G_OBJECT(texto), "insert_text",GTK_SIGNAL_FUNC(hanAgregado),(gpointer) this);
 	deleteSignal = g_signal_connect(G_OBJECT(texto), "delete_range",GTK_SIGNAL_FUNC(hanBorrado),(gpointer) this);
-	std::cout << "luego" << std::endl;
 
 }
 
@@ -447,7 +446,6 @@ void VentanaIngreso::crearCamposTexto2() {
 
 	gtk_box_pack_start(GTK_BOX(contenedor2), swindow, true, true, 0);
 	gtk_box_pack_start(GTK_BOX(contenedor2), swindow2, true, true, 0);
-
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor2, TRUE, TRUE, 10);
 
 }
@@ -457,7 +455,7 @@ void VentanaIngreso::mostrar() {
 	gtk_main();
 }
 
-//TODO: Borrar una vez terminado el debugging
+//TODO ver q onda
 VentanaIngreso::~VentanaIngreso() {
 this->cliente->Desloguearse();
 this->cliente->join();
@@ -465,6 +463,7 @@ delete cliente;
 	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
 }
 
+//TODO BORRARLO!!!
 VentanaIngreso::VentanaIngreso(const VentanaIngreso& ventanaIngreso){
 	std::cout << "////CONST COPIA VentanaIngreso/////" << std::endl;
 }
