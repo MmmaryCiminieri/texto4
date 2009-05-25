@@ -11,7 +11,6 @@
 #include <iostream>
 
 void DocumentoConcurrente::aumentarVersion(){
-
 	this->documento.aumentarVersion();
 }
 
@@ -26,7 +25,6 @@ Lock lock(this->mutex);
 void DocumentoConcurrente::borrarTexto(std::string texto, int offset) {
 	Lock lock(this->mutex);
 	this->aumentarVersion();
-
 	this->documento.borrarTexto(texto, offset);
 }
 

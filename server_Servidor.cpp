@@ -220,8 +220,7 @@ void Servidor::avisarATodos(std::string nombre) {
 	while (it.hasNext()) {
 		clienteAux = it.next();
 
-		clienteAux->getSocket()->send(cambio.getStdCambio(),
-				cambio.getStdCambio().size());
+		clienteAux->getSocket()->send(cambio.getStdCambio());
 	}
 }
 
@@ -235,8 +234,7 @@ void Servidor::crearListaAmigos(Cliente* cliente) {
 		clienteAux = it.next();
 		Cambio cambio("F", clienteAux->getNombre());
 
-		cliente->getSocket()->send(cambio.getStdCambio(),
-				cambio.getStdCambio().size());
+		cliente->getSocket()->send(cambio.getStdCambio());
 	}
 }
 
@@ -281,8 +279,7 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 				<< std::endl;
 		cant++;
 		//std::cout<<"el cambio es:"<<cambio.getStdCambio()<< std::endl;
-		retorno = cliente->getSocket()->send(cambio.getStdCambio(),
-				cambio.getStdCambio().size());
+		retorno = cliente->getSocket()->send(cambio.getStdCambio());
 
 	}
 	/*le envio el documento*/
@@ -294,8 +291,7 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 		std::cout << "El documento a mandar es: \n" << documento.getStdCambio()
 				<< std::endl;
 		cant++;
-		retorno = cliente->getSocket()->send(documento.getStdCambio(),
-				documento.getStdCambio().size());
+		retorno = cliente->getSocket()->send(documento.getStdCambio());
 		std::cout << "el send debia mandar:" << documento.getStdCambio().size()
 				<< std::endl;
 	}
@@ -310,8 +306,7 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		while (it.hasNext()) {
 			clienteAux = it.next();
 			if (nombre != clienteAux->getNombre()) {
-				clienteAux->getSocket()->send(cambio.getStdCambio(),
-						cambio.getStdCambio().size());
+				clienteAux->getSocket()->send(cambio.getStdCambio());
 				std::cout << "envie el cambio a un cliente" << std::endl;
 			} else {
 
@@ -321,14 +316,12 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 					std::cout << "lo q envio " << cambio2.getStdCambio()
 							<< std::endl;
 
-					clienteAux->getSocket()->send(cambio2.getStdCambio(),
-							cambio2.getStdCambio().size());
+					clienteAux->getSocket()->send(cambio2.getStdCambio());
 				}
 				if (cambio.getTipo() == "B") {
 					Cambio cambio2("B", cambio.getVersion(),1,
 							cambio.getPosicion(), cambio.getTexto());
-					clienteAux->getSocket()->send(cambio2.getStdCambio(),
-							cambio2.getStdCambio().size());
+					clienteAux->getSocket()->send(cambio2.getStdCambio());
 				}
 				//otros?
 
@@ -343,8 +336,7 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		while (it.hasNext()) {
 			clienteAux = it.next();
 			if (nombre == clienteAux->getNombre()) {
-				clienteAux->getSocket()->send(cambio.getStdCambio(),
-						cambio.getStdCambio().size());
+				clienteAux->getSocket()->send(cambio.getStdCambio());
 				std::cout << "envie el cambio a un cliente" << std::endl;
 
 			}

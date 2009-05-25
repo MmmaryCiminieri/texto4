@@ -6,9 +6,9 @@
  */
 
 /*
- * Documento que para modificarse se bloquea,
- * así se le puede agregar texto o borrarle.
- * tiene un documento, que tiene un número de version
+ * Documento Concurrente es la clase  que para modificar su documento interno se bloquea,
+ * así se le puede agregar texto o borrarle manteniendo la validez del mismo.
+ * Tiene un Documento, que tiene un número de version
  * */
 #ifndef DOCUMENTOCONCURRENTE_H_
 #define DOCUMENTOCONCURRENTE_H_
@@ -24,19 +24,21 @@ private:
 	Documento documento;
 	MMutex mutex;
 
-
 public:
 
-		void agregarTexto(std::string texto,int offset);
+	/*se agrega texto en la posicion posicion del documento,
+	 * se incrementa el numero de version del mismo*/
+	void agregarTexto(std::string texto, int offset);
+
+	/*se borra texto en la posicion posicion del documento,
+	 * se incrementa el numero de version del mismo*/
 	void borrarTexto(std::string texto, int offset);
 
 	void aumentarVersion();
-
 	Documento* getDocumento();
 	void setDocumento(std::string contenido);
 	int getVersion();
-	void  setVersion(int nro);
-
+	void setVersion(int nro);
 
 };
 

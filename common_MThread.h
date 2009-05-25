@@ -5,14 +5,14 @@
  *      Author: mmmary
  */
 
-/* Encapsulamiento de  pthread
+/* Encapsulamiento de  pthread.
+ * Documentacion de pthread:  http://www.gnu.org/software/pth/
  */
 #ifndef MTHREAD_H_
 #define MTHREAD_H_
 #include <pthread.h>
 
 class MThread {
-
 
 private:
 	pthread_t thread;

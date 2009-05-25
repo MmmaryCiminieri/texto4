@@ -73,8 +73,7 @@ void Cliente::EnviarDatosInicio() {
 	int retorno = -1;
 	while ((retorno == -1) && (cant < MAXINTENTOS)) {
 		cant++;
-		retorno = this->socket->send(cambio.getStdCambio(),
-				cambio.getStdCambio().size());
+		retorno = this->socket->send(cambio.getStdCambio());
 	}
 }
 
@@ -98,7 +97,7 @@ void Cliente::Desloguearse() {
 	MSocket socket;
 	socket.connect(ip.c_str(), puerto);
 	Cambio cambio("E", nombre);
-	socket.send(cambio.getStdCambio(), cambio.getStdCambio().size());
+	socket.send(cambio.getStdCambio());
 	std::cout << " el cambio es: " << cambio.getStdCambio() << std::endl;
 }
 
@@ -317,8 +316,7 @@ void Cliente::EnviarCambio(Cambio cambio) {
 	int retorno = -1;
 	int cant = 0;
 	while ((retorno == -1) && (cant < MAXINTENTOS)) {
-		retorno = this->socket->send(cambio.getStdCambio(),
-				cambio.getStdCambio().size());
+		retorno = this->socket->send(cambio.getStdCambio());
 		cant++;
 	}
 }

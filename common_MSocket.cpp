@@ -82,7 +82,8 @@ int MSocket::connect(const char* ip, const char* port) {
 		}
 		//TODO borrar
 		std::cout << "el retorno de connect es " << retorno << std::endl;
-		std::cout << "el error del socket " <<strerror(errno)<< retorno << std::endl;
+		std::cout << "el error del socket " << strerror(errno) << retorno
+				<< std::endl;
 
 		return retorno;
 	}
@@ -94,28 +95,29 @@ int MSocket::listen(unsigned int port, unsigned int cantClientes) {
 	if (this->isValid()) {
 		int aux = bind(this->fd, (struct sockaddr*) (&(this->dest_addr)),
 				sizeof(this->dest_addr));
-		if (aux != -1) {
 
-			int aux2 = ::listen(this->fd, cantClientes);
-
-			if (aux2 != -1) {
-				return 0;
-			}
+		if (aux == -1) {
+			return -1;
 		}
-		return -1;
-	}
-	return -1;
+		int aux2 = ::listen(this->fd, cantClientes);
 
+		if (aux2 != -1) {
+			return 0;
+		}
+	}
+
+	return -1;
 }
 
-int MSocket::send(std::string stream, unsigned int size) {
+int MSocket::send(std::string stream) {
 	int retorno = 0;
+	int size= stream.size();
 	unsigned int cantEnv = 0;
 	if (isValid()) {
 
 		while (cantEnv < size) {
 			if ((retorno = ::send(this->fd, stream.c_str(), size, 0)) != -1) {
-				cantEnv = +retorno;
+				cantEnv += retorno;
 
 			} else {
 				return -1;
@@ -125,7 +127,8 @@ int MSocket::send(std::string stream, unsigned int size) {
 	}
 	return -1;
 }
-void MSocket::close(){
+
+void MSocket::close() {
 	::close(this->fd);
 }
 
@@ -134,9 +137,7 @@ int MSocket::recieve(char* buffer, unsigned int size) {
 	int retorno = ::recv(this->fd, buffer, size, 0);
 
 	//TODO borrar esto
-	if (retorno >= 0) {
-
-	} else {
+	if (retorno < 0) {
 		std::cout << "el recv no anda " << std::endl;
 	}
 
@@ -158,5 +159,5 @@ bool MSocket::isValid() {
 
 MSocket::~MSocket() {
 
-::close(this->fd);
+	::close(this->fd);
 }
