@@ -234,9 +234,9 @@ std::string Parser::getTipo() {
 	return this->tipo;
 }
 
-//TODO free de esto??
+
 Cambio* Parser::toCambio() {
-	Cambio* cambio = new Cambio(tipo, version, alcance, posicion, texto);
+	Cambio*  cambio = new Cambio(tipo, version, alcance, posicion, texto);
 	return cambio;
 }
 int Parser::getVersion() {

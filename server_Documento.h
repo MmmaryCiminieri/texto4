@@ -5,6 +5,10 @@
  *      Author: mmmary
  */
 
+
+/* Documento del servidor, es el válido para todos los clientes.Tiene un contenido y un número de versión.
+ * */
+
 #ifndef DOCUMENTO_H_
 #define DOCUMENTO_H_
 
@@ -14,21 +18,28 @@ class Documento {
 private:
 	std::string contenido;
 	int version;
-	bool cambios;
+
 
 public:
+
 	Documento();
 	Documento(std::string documento);
-	void agregarTexto(std::string texto, unsigned int posicion);
-	void borrarTexto(std::string texto, int posicion);
+
 	int getVersion();
-	bool hayCambios();
+		//bool hayCambios();
+		void setVersion(int nro);
+		void setContenido(std::string contenido);
+		void aumentarVersion();
+		std::string getContenido();
 
-	void setVersion(int nro);
-	void setContenido(std::string contenido);
+		/*se agrega texto en la posición posicion del contenido del documento*/
+	void agregarTexto(std::string texto, unsigned int posicion);
 
-	void aumentarVersion();
-	std::string getContenido();
+	/*se borra texto en la posición posicion del contenido del documento*/
+	void borrarTexto(std::string texto, int posicion);
+
+
+
 	virtual ~Documento();
 };
 

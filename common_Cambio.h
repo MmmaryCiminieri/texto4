@@ -47,11 +47,13 @@ private:
 
 public:
 /* diferentes constructores, dentro se crea el stdCambio*/
+	Cambio();
+
 	Cambio(std::string tipo,  std::string texto);
 	Cambio(std::string tipo, int version,  std::string texto);
 	Cambio(std::string tipo, int version,int alcance, int posicion, std::string texto);
 
-
+	bool operator!=(const Cambio& otro)const;
 	std::string getStdCambio();
 	std::string getTexto();
 	int getPosicion();

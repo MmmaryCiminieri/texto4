@@ -33,35 +33,7 @@ Lista<Cliente*>* ListaClientes::getLista(){
 	return this->listaClientes;
 	}
 
-//void ListaClientes::agregarTexto(std::string texto, int posicion) {
-//	//TODO decirle a todos los cllientes que ha habido un agregado
-//	Cliente* clienteAux;
-//	Cambio cambio("A", sizeof(texto), texto);
-//	Iterador<Cliente*> it = this->listaClientes->iterador();
-//	while (it.hasNext()) {
-//		clienteAux = it.next();
-//		MSocket* socketCliente = clienteAux->getSocket();
-//		socketCliente->send(cambio.getStdCambio(), sizeof(cambio.getStdCambio()));
-//
-//	}
-//
-//
-////}
-//
-//void ListaClientes::quitarTexto(std::string texto, int posicion) {
-//	//TODO igual AL ANTERIOR
-//	Cliente* clienteAux;
-//	Cambio cambio("B", sizeof(texto), texto);
-//	Iterador<Cliente*> it= this->listaClientes->iterador();
-//	while(it.hasNext()) {
-//		clienteAux = it.next();
-//		MSocket* socketCliente = clienteAux->getSocket();
-//		socketCliente->send(cambio.getStdCambio(), sizeof(cambio.getStdCambio()));
-//	}
-//}
-
 ListaClientes::~ListaClientes() {
-
 	std::cout<< "destructor de lista clientes "<<std::endl;
 
 	}

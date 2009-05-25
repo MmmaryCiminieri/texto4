@@ -61,7 +61,9 @@ public:
 			int* valorParcial, int tamanioBuffer);
 
 	/*Se transforman los campos de un parser en un Cambio que contiene todos los campos
-	 * posibles, donde si no sirven, valen cero*/
+	 * posibles, donde si no sirven, valen cero.
+	 * OJO, se crea un nuevo Cambio en el heap.
+	 * */
 	Cambio*  toCambio();
 
 	virtual ~Parser();
