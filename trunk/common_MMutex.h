@@ -5,7 +5,7 @@
  *      Author: mmmary
  */
 
-/*Clase que sirve para detener la ejacucion de un pthread
+/*Clase que sirve para bloquear la ejecución de un pthread
  * */
 
 #ifndef MMUTEX_H_
