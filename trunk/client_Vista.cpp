@@ -9,16 +9,15 @@
 #include <string.h>
 #include "client_Vista.h"
 
-Vista::Vista(/*Cliente* cliente*/) {
+Vista::Vista() {
 
-	//cliente->setVista(this);
 	this->ventana.setVista(this);
-
 	std::cout << "////CREO VISTA/////" << std::endl;
 	return;
 }
 
 void Vista::ErrorConectar() {
+	//TODO BORRAR AL CLIENTE POR Q ES COMO Q YA ESTA INGRESADO.... NO?
 	GtkWidget* ventanaerror = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
 			GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
 			"No se ha podido realizar la conexión con el servidor. \n Espere un momento y vuélvalo a intentar.");
@@ -43,9 +42,10 @@ void Vista::agregarAmigo(const char* nombre) {
 }
 void Vista::quitarAmigo(const char* nombre) {
 	//TODO busqueda
+
+
 	//GtkTextBuffer* texto = this->ventana->getTexto();
 	//const GtkTextIter itS;
-
 	// gtk_text_iter_get_slice(const GtkTextIter *start,
 	//                                                 const GtkTextIter *end);
 
@@ -55,13 +55,13 @@ void Vista::cargarDocumento(std::string contenido) {
 	g_signal_handler_block(this->ventana.getTexto(),
 			this->ventana.getinsertSignal());
 	gtk_text_buffer_set_text(this->ventana.getTexto(), contenido.c_str(), -1);
-
 	g_signal_handler_unblock(this->ventana.getTexto(),
 			this->ventana.getinsertSignal());
 
 }
+
 void Vista::agregar(const char* str, int posicion) {
-	//	GtkTextIter it;
+
 	g_signal_handler_block(this->ventana.getTexto(),
 			this->ventana.getinsertSignal());
 
@@ -71,35 +71,31 @@ void Vista::agregar(const char* str, int posicion) {
 	gchar* texto = gtk_text_iter_get_slice(&start, &end);
 
 	int longitud = strlen(texto);
-	std::cout << "la posicion es " << posicion << std::endl;
-	std::cout << "la longitud es " << longitud << std::endl;
 
 	if (posicion < longitud) {
-		std::cout << "entre a posicion<=longitud" << std::endl;
 		GtkTextIter it;
 		gtk_text_buffer_get_iter_at_offset(this->ventana.getTexto(), &it,
 				posicion);
-		gtk_text_buffer_insert(this->ventana.getTexto(), &it, str, -1/*strlen(str)*/);
+		gtk_text_buffer_insert(this->ventana.getTexto(), &it, str, -1);
 
 	} else if (posicion == longitud) {
 		gtk_text_buffer_get_end_iter(this->ventana.getTexto(), &end);
-		gtk_text_buffer_insert(this->ventana.getTexto(), &end, str, -1/*strlen(str)*/);
+		gtk_text_buffer_insert(this->ventana.getTexto(), &end, str, -1);
 
 	} else {
 
 		int pad = posicion - longitud;
 		for (int j = 0; j <= (pad - 1); j++) {
-			std::cout << " inserto un espacio " << std::endl;
+			/*  inserto un espacio  */
 			std::string espacio = " ";
 			gtk_text_buffer_get_end_iter(this->ventana.getTexto(), &end);
 			gtk_text_buffer_insert(this->ventana.getTexto(), &end,
 					espacio.c_str(), -1);
 		}
 		GtkTextIter it;
-
 		gtk_text_buffer_get_iter_at_offset(this->ventana.getTexto(), &it,
 				posicion);
-		gtk_text_buffer_insert(this->ventana.getTexto(), &it, str, -1/*strlen(str)*/);
+		gtk_text_buffer_insert(this->ventana.getTexto(), &it, str, -1);
 
 	}
 
@@ -110,9 +106,7 @@ void Vista::agregar(const char* str, int posicion) {
 
 void Vista::borrar(const char* str, int posicion) {
 	GtkTextIter it;
-
 	GtkTextIter it2;
-
 	gtk_text_buffer_get_iter_at_offset(this->ventana.getTexto(), &it, posicion);
 	gtk_text_buffer_get_iter_at_offset(this->ventana.getTexto(), &it2, (strlen(
 			str) + posicion));
@@ -126,5 +120,4 @@ void Vista::borrar(const char* str, int posicion) {
 
 Vista::~Vista() {
 	std::cout << "////BORRO VISTA/////" << std::endl;
-	// TODO Auto-generated destructor stub
 }
