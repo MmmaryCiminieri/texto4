@@ -1,0 +1,51 @@
+/*
+ * ServidorEx.cpp
+ *
+ *  Created on: May 17, 2009
+ *      Author: mmmary
+ */
+
+#include "server_ServidorEx.h"
+#include "server_Cliente.h"
+
+ServidorEx::ServidorEx(Servidor* servidor) {
+	this->servidor = servidor;
+	this->socket = new MSocket(servidor->getPuerto(), servidor->getCantClientes());
+
+	int retorno = this->socket->listen(servidor->getPuerto(), servidor->getCantClientes());
+	if (retorno != 0) {
+		//	return 1;
+	} else {
+		/*creo un  nuevo hilo para aceptar clientes*/
+		execute();
+		//return 0;
+
+	}
+
+
+}
+void* ServidorEx::run(){
+	std::cout << "run del server que escucha para aceptar " << std::endl;
+
+		this->servidor->setEstado(true);
+		while (this->servidor->getEstado()) {
+			MSocket* socketCliente = this->socket->accept();
+			std::cout << "Termina el  accept";
+			if (socketCliente != NULL) {
+				std::cout << "voy a crear un cliente " << std::endl;
+
+				/*hay un cliente*/
+				Cliente* cliente = new Cliente(socketCliente, this->servidor);
+				cliente->execute();
+				//borrar cli
+			}
+
+		}
+		return NULL;
+
+
+
+}
+ServidorEx::~ServidorEx() {
+	// TODO Auto-generated destructor stub
+}
