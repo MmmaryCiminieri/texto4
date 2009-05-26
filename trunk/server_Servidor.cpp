@@ -77,6 +77,9 @@ void Servidor::leerCambios() {
 		Lock lock(mutex);
 		NombreCambio nc = this->colaDeCambios->pop();
 		cambio = nc.cambio;
+		std::cout << " el cambio nc " << nc.cambio->getStdCambio() << std::endl;
+		std::cout << " el cambio " << cambio->getStdCambio() << std::endl;
+
 		nombre = nc.nombre;
 	}
 	/*proceso el cambio*/
@@ -84,22 +87,32 @@ void Servidor::leerCambios() {
 	if (cambio->getVersion() == this->getVersion()) {
 		this->procesarCambio(cambio, nombre);
 	} else {
+		switch(cambio->getTipo()[0]){
+		case 'A':{
+
+
 		/*aviso que rechazo el cambio, para que lo borre de su vista*/
-		if (cambio->getTipo() == "A") {
+
 			Cambio cambio2("B", (cambio->getVersion()) + 1,2,
 					cambio->getPosicion(), cambio->getTexto());
 			this->enviarCambio(cambio2, nombre, 1);
+		break;
 		}
-
+		case 'B':{
 		/*aviso que rechazo el cambio de borrado, para que lo agregue a la vista*/
-
-		if (cambio->getTipo() == "B") {
 
 			Cambio cambio2("A", (cambio->getVersion()) + 1,2,
 					cambio->getPosicion(), cambio->getTexto());
 			this->enviarCambio(cambio2, nombre, 1);
-
+break;
 		}
+
+		case 'E':{
+			this->procesarCambio(cambio, nombre);
+			break;
+		}
+		}
+
 
 	}
 delete cambio;
@@ -140,14 +153,24 @@ void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
 		break;
 	}
 
-	case 'O': {
-		Lock lock(this->mutex);
-		this->listaDeClientes.remover(cambio->getTexto());
-		Cambio cambio2(cambio->getTipo(),  cambio->getTexto());
-		this->enviarCambio(cambio2, cambio->getTexto(), 0);
+	case 'E': {
+		std::cout << "E del server" << std::endl;
 
+		Lock lock(this->mutex);
+
+		/*le envio al cliente su cambio para que se desloguee*/
+		this->enviarCambio(*cambio, cambio->getTexto(),1);
+
+		Cambio cambio2("O",  cambio->getTexto());
+		this->enviarCambio(cambio2, cambio->getTexto(), 0);
 		//todo cerrar ese socket
 		//cerrar ese run
+		//delete cliente
+
+		bool retorno = this->listaDeClientes.remover(cambio->getTexto());
+		//??retrno
+		//borrar al cliente??
+
 		break;
 	}
 	case 'D':
@@ -331,10 +354,18 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		Cliente* clienteAux;
 		Iterador<Cliente*> it =
 				this->getListaClientes()->getLista()->iterador();
+		std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
+													<< std::endl;
 		while (it.hasNext()) {
 			clienteAux = it.next();
+			std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
+														<< std::endl;
 			if (nombre == clienteAux->getNombre()) {
 				clienteAux->getSocket()->send(cambio.getStdCambio());
+						std::cout << "lo q envio " << cambio.getStdCambio()
+								<< "al cliente "<< cambio.getTexto()<<std::endl;
+				std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
+											<< std::endl;
 			}
 		}
 

@@ -23,8 +23,10 @@ ListaClientes::ListaClientes() {
 		cliente = it.next();
 		if(cliente->getNombre() == nombre){
 			retorno = listaClientes->remove(cliente);
+
 		}
 	}
+
 return retorno;
 }
 

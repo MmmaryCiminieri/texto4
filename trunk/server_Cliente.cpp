@@ -5,8 +5,6 @@
  *      Author: mmmary
  */
 
-
-
 #include <string.h>
 
 #include "server_Cliente.h"
@@ -50,7 +48,10 @@ void Cliente::ejecutarAccion(Parser parser) {
 		;
 	case 'B':
 		;
-	case 'O': {
+
+	case 'O':
+		;
+	case 'E': {
 
 		/*recibo un cambio que afectará al documeto o a los usuarios conectados */
 		/*estos cambios de acolan, esperando a ser procesados*/
@@ -86,9 +87,10 @@ void* Cliente::run() {
 
 		cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
 
+		std::cout << "en el reun del cliente me llega: " << buff1 << std::endl;
 		if (cantidad <= 0) {
 			this->conectado = false;
-		}else{
+		} else {
 			buff1[cantidad] = '\0';
 			str += buff1;
 		}
@@ -116,10 +118,9 @@ void* Cliente::run() {
 			cantidad = str.size();
 		}
 
-
 	}
 
-	std::cout << "deje de escuchar" << std::endl;
+	std::cout << " salgo del run del cliente(server)" << std::endl;
 	return NULL;
 }
 

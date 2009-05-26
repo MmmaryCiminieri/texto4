@@ -24,6 +24,7 @@ void Vista::ErrorConectar() {
 	gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 	gtk_dialog_run( GTK_DIALOG(ventanaerror));
 	gtk_widget_destroy(ventanaerror);
+	this->ventana.bloquearBotonDeslog();
 }
 
 void Vista::mostrar() {

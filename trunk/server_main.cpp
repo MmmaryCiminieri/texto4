@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
 
 	/*servidor que escucha a nuevos clientes*/
 	ServidorEx servidorExecutable(&servidor);
-	if(servidorExecutable.isValido()){
+	if(servidorExecutable.getIsValido()){
 	/*creo un  nuevo hilo para aceptar clientes*/
 			servidorExecutable.execute();
 	}else{

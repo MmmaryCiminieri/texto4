@@ -32,6 +32,10 @@ Vista* VentanaIngreso::getVista(){
 	return vista;
 }
 
+void VentanaIngreso::bloquearBotonDeslog(){
+	gtk_widget_set_sensitive(botonDeslog, false);
+}
+
 /* Función 'callback' para atender la señal "clicked" del botón */
 void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 
@@ -49,6 +53,8 @@ void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 
 	/*habilito el boton de desloguearse*/
 	gtk_widget_set_sensitive(data->botonDeslog, true);
+
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(data->view), true);
 
 	data->cliente->setNombre(gtk_entry_get_text(GTK_ENTRY(data->entrada)));
 //TODO DESCOMENTAR, SACAR DEFAULT
@@ -68,17 +74,19 @@ void VentanaIngreso::on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* 
 data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 
 	//TODO VER Q ONDA
-	//data->cliente->Desloguearse();
+	data->cliente->Desloguearse();
 	//data->cliente->join();
-	std::cout << "Termino de joinear" << std::endl;
-	//delete data->cliente;
+		//delete data->cliente;
 
 	//data->cliente = NULL;
 
+
+
+
+
 	/*se puede volver a conectar*/
 	gtk_widget_set_sensitive(data->boton,true);
-	gtk_widget_set_sensitive(data->botonDeslog, false);
-
+	data->bloquearBotonDeslog();
 }
 
 GtkWidget* VentanaIngreso::getBotonDeslog(){
@@ -153,6 +161,9 @@ void VentanaIngreso::crearVentana() {
 	/* creo ventana principal */
 	ventana = NULL;
 	this->ventana = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+	  gtk_window_set_title (GTK_WINDOW (ventana), "Editor de Texto Concurrente");
+
 
 	//TODO ?/
 	/* conecto la señal "delete_event" de la ventana a la callback
@@ -289,6 +300,9 @@ void VentanaIngreso::crearCamposTexto() {
 	gtk_box_pack_start(GTK_BOX(this->contenedor), label4, TRUE, TRUE, 10);
 
 	gtk_box_pack_start(GTK_BOX(this->contenedor), label5, TRUE, TRUE, 10);
+	//sabcar
+	//gtk_widget_set_size_request(contenedor, 20, 30);
+
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor, false, FALSE, 10);
 
 }
@@ -298,12 +312,12 @@ void VentanaIngreso::crearCamposTexto3() {
 	 * TRUE es para que todos los elementos sean de igual tamaño
 	 * 10 es para que deje 10 píxels entre los elementos */
 	contenedor3 = NULL;
-	contenedor3 = gtk_hbox_new(TRUE, 10);
+	//ERA TRUE
+	contenedor3 = gtk_hbox_new(FALSE, 10);
 
 
 	gtk_box_pack_start(GTK_BOX(contenedor3), table, FALSE, FALSE, 10);
 	gtk_box_pack_start(GTK_BOX(contenedor3), botonDeslog, FALSE, FALSE, 10);
-
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor3, FALSE, FALSE, 10);
 
 
@@ -378,7 +392,8 @@ void VentanaIngreso::crearTexto() {
 	this->view = NULL;
 	this->view = gtk_text_view_new_with_buffer(this->texto);
 
-	gtk_text_view_set_editable(GTK_TEXT_VIEW(this->view), true);
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(view), false);
+
 	gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(this->view), true);
 
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(this->view), GTK_WRAP_WORD_CHAR);
@@ -387,8 +402,9 @@ void VentanaIngreso::crearTexto() {
 
 	this->swindow = gtk_scrolled_window_new(NULL, NULL);
 
-	// gtk_widget_set_size_request(swindow, 400, 300);
+	//gtk_widget_set_usize(swindow,40, 10);
 
+	// gtk_widget_set_size_request(swindow, 125, 300);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(this->swindow),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(this->swindow), this->view);

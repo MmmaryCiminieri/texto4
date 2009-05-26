@@ -107,9 +107,9 @@ bool Parser::Procesar(const char* buffer, int* tamaniio) {
 	}
 
 	//TODO o agrego aca tmb N, L, R o saco a E
-	if (this->tipo == "E") {
-		return true;
-	}
+//	if (this->tipo == "E") {
+	//	return true;
+//	}
 	if ((this->tipo == "A") || (this->tipo == "B") || (this->tipo == "D")) {
 		/* debo analizar el numero de version*/
 		if (this->version == 0) {

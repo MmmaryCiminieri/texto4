@@ -20,7 +20,7 @@ ServidorEx::ServidorEx(Servidor* servidor) {
 	}
 }
 
-bool ServidorEx::isValido(){
+bool ServidorEx::getIsValido(){
 	return isValido;
 }
 void* ServidorEx::run(){
