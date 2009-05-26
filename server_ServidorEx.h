@@ -26,8 +26,11 @@ public:
 
 	ServidorEx(Servidor* servidor);
 
+	bool getIsValido();
+
 	/*se escucha, si un cliente se desea conectar lo creo en el heap y se lo envio al servidor*/
 	void* run();
+
 	virtual ~ServidorEx();
 };
 

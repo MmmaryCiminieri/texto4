@@ -101,6 +101,7 @@ public:
 		void crearCamposTexto();
 		void crearCamposTexto2();
 		void crearCamposTexto3();
+		void bloquearBotonDeslog();
 
 	/*Cuando uno presina el boton de conectarse, se crea un cliente y  se llama al inicializar del mismo*/
 	static void on_boton_clicked(GtkWidget *widget, VentanaIngreso* data);

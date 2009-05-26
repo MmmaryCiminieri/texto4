@@ -81,7 +81,7 @@ int MSocket::connect(const char* ip, const char* port) {
 
 		}
 		//TODO borrar
-		std::cout << "el retorno de connect es " << retorno << std::endl;
+		std::cout << "el retorno de connect es (0 es ok) " << retorno << std::endl;
 		std::cout << "el error del socket " << strerror(errno) << retorno
 				<< std::endl;
 

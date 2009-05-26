@@ -94,11 +94,14 @@ void Cliente::Desloguearse() {
 	std::string ip = "127.0.0.1";
 
 	/*debo desbloquear el recv, para q se pueda hacer el join*/
-	MSocket socket;
-	socket.connect(ip.c_str(), puerto);
+	//MSocket socket;
+	//socket.connect(ip.c_str(), puerto);
 	Cambio cambio("E", nombre);
-	socket.send(cambio.getStdCambio());
-	std::cout << " el cambio es: " << cambio.getStdCambio() << std::endl;
+	/*se lo envio al servidor*/
+	this->EnviarCambio(cambio);
+	/*me lo envio a mi mismo*/
+	//socket.send(cambio.getStdCambio());
+	std::cout << " el cambio enviado: " << cambio.getStdCambio() << std::endl;
 }
 
 void Cliente::ejecutarAccion(Parser parser) {
@@ -107,9 +110,9 @@ void Cliente::ejecutarAccion(Parser parser) {
 
 	case 'E': {
 		std::cout << "recibi la E" << std::endl;
-		Cambio cambio("O", this->getNombre());
+		//Cambio cambio("O", this->getNombre());
 		/*le avisa al socket q se va a desconectar*/
-		this->EnviarCambio(cambio);
+		//this->EnviarCambio(cambio);
 		/*envia el cambio de desconectarse*/
 		this->setConectado(false);
 
@@ -127,41 +130,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 		/*se modifica la vista*/
 		this->vista->cargarDocumento(parser.getTexto());
 
-		// TODO borrar
-//		std::string m = "loco";
-//		Cambio cambio("A", this->documentoConc->getVersion(), 0, 11, m);
-//		std::cout << "el cambio es" << cambio.getStdCambio() << std::endl;
-//
-//		this->EnviarCambio(cambio);
-		//		m = "torta";
-		//		Cambio cambio2("A", this->documentoConc->getVersion() + 1, 16,
-		//				 m);
-		//		std::cout << "el cambio es" << cambio2.getStdCambio() << std::endl;
-		//
-		//		this->EnviarCambio(cambio2);
-		//
-		//		m = "loco";
-		//		Cambio cambio3("B", this->documentoConc->getVersion() + 2, 11,
-		//				 m);
-		//		std::cout << "el cambio es" << cambio3.getStdCambio() << std::endl;
-		//
-		//		this->EnviarCambio(cambio3);
-		//		m = this->nombre;
-		//		Cambio cambio4("O", m.size(), m);
-		//		std::cout << "el cambio es" << cambio4.getStdCambio() << std::endl;
-		//
-		//		this->EnviarCambio(cambio4);
-		//		Cambio cambio4("O",  m);
-		//		std::cout << "el cambio es" << cambio4.getStdCambio() << std::endl;
-		//
-		//		this->EnviarCambio(cambio4);
-		//		m = this->nombre;
-		//		Cambio cambio4("O",  m);
-		//		std::cout << "el cambio es" << cambio4.getStdCambio() << std::endl;
-		//
-		//		this->EnviarCambio(cambio4);
 
-		//endborrar
 		break;
 	}
 	case 'L': {
@@ -202,7 +171,9 @@ void Cliente::ejecutarAccion(Parser parser) {
 					parser.getPosicion());
 		}
 
-		break;
+
+
+break;
 	}
 
 	case 'B': {
@@ -265,9 +236,11 @@ void* Cliente::run() {
 		Parser parser;
 
 		cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
-		std::cout << "recibi! " << std::endl;
+		std::cout << "recibi! "<<buff1 << std::endl;
 
 		if (cantidad <= 0) {
+			std::cout << "cantidad es "<<cantidad<<"por lo q cierro este cliente" << std::endl;
+
 			this->setConectado(false);
 			//?break;
 		}
@@ -308,7 +281,7 @@ void* Cliente::run() {
 
 		/*saco ese mensaje del buffer*/
 	}
-
+	std::cout << "sali del run de cliente!!!!!!!!!!" << std::endl;
 	return NULL;
 }
 
