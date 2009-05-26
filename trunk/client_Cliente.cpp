@@ -281,7 +281,7 @@ void* Cliente::run() {
 
 		/*saco ese mensaje del buffer*/
 	}
-	std::cout << "sali del run de cliente!!!!!!!!!!" << std::endl;
+	std::cout << "sali del run de cliente!!!!!!!" << std::endl;
 	return NULL;
 }
 
