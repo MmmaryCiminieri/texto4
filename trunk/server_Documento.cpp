@@ -8,21 +8,19 @@
 #include <iostream>
 #include "server_Documento.h"
 
-Documento::Documento(std::string doc) {
+Documento::Documento(const std::string& doc) {
 	this->version = 1;
  this->contenido = doc;
 }
 
 Documento::Documento(){
 	this->version = 1;
-	this->contenido = "hola mundo";
-
 }
 
-void Documento::agregarTexto(std::string texto, unsigned int posicion){
-
+void Documento::agregarTexto(const std::string& texto, unsigned int posicion){
+std::string str = texto;
 if(posicion <= contenido.size()){
-	this->contenido = this->contenido.insert(posicion, texto);
+ this->contenido.insert(posicion,str);
 
 }
 else{
@@ -31,7 +29,7 @@ else{
 				this->contenido = this->contenido.append(" ");
 
 			}
-	this->contenido = this->contenido.append( texto);
+	this->contenido = this->contenido.append(str);
 
 }
 std::cout << "el doc: "<<contenido << std::endl;
@@ -42,7 +40,7 @@ void Documento::aumentarVersion(){
 	this->version++;
 }
 
-void Documento::borrarTexto(std::string texto, int posicion){
+void Documento::borrarTexto(const std::string& texto, int posicion){
 
 int sizeToRemove = texto.size();
 this->contenido = this->contenido.erase(posicion, sizeToRemove);
@@ -55,7 +53,7 @@ void Documento::setVersion(int nro) {
 	this->version = nro;
 }
 
-void Documento::setContenido(std::string contenido){
+void Documento::setContenido(const std::string& contenido){
 
 	this->contenido = contenido;
 

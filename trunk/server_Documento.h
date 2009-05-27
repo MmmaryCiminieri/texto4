@@ -23,20 +23,20 @@ private:
 public:
 
 	Documento();
-	Documento(std::string documento);
+	Documento(const std::string& documento);
 
 	int getVersion();
 		//bool hayCambios();
 		void setVersion(int nro);
-		void setContenido(std::string contenido);
+		void setContenido(const std::string& contenido);
 		void aumentarVersion();
 		std::string getContenido();
 
 		/*se agrega texto en la posición posicion del contenido del documento*/
-	void agregarTexto(std::string texto, unsigned int posicion);
+	void agregarTexto(const std::string& texto, unsigned int posicion);
 
 	/*se borra texto en la posición posicion del contenido del documento*/
-	void borrarTexto(std::string texto, int posicion);
+	void borrarTexto(const std::string& texto, int posicion);
 
 
 

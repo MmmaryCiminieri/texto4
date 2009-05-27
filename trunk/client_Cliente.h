@@ -42,7 +42,7 @@ public:
 	/*constructor de la clase*/
 	Cliente();
 
-	void setNombre(std::string nombre);
+	void setNombre(const std::string& nombre);
 	std::string getNombre();
 	DocumentoConcurrente* getDocumentoConc();
 	MSocket* getSocket();
@@ -54,7 +54,7 @@ public:
 
 
 	/*Agrego un amigo a mi lista de amigos */
-	void agregarAmigo(std::string nombre);
+	void agregarAmigo(const std::string& nombre);
 
 	/*Intento conectar mi socket al servidor, se setea la variable conectado*/
 	void conectarSocket(const char* IP, const char* puerto);
@@ -72,7 +72,7 @@ public:
 	void enviarCambio(Cambio cambio);
 
 	/*remuevo un amigo de mi lista y de la vista*/
-	void quitarAmigo(std::string nombre);
+	void quitarAmigo(const std::string& nombre);
 
 	//TODO ver q andeee
 	/*se crea un socket que se conecta con mi cliente y le envia un mensaje de deslogueo*/

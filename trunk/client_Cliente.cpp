@@ -24,7 +24,7 @@ Cliente::Cliente() {
 	this->documentoConc = new DocumentoConcurrente();
 }
 
-void Cliente::setNombre(std::string nombre) {
+void Cliente::setNombre(const std::string& nombre) {
 	this->nombre = nombre;
 }
 
@@ -294,14 +294,14 @@ void Cliente::enviarCambio(Cambio cambio) {
 std::list<std::string> Cliente::getAmigos() {
 	return this->listaDeAmigos;
 }
-void Cliente::quitarAmigo(std::string nombre) {
+void Cliente::quitarAmigo(const std::string& nombre) {
 	this->listaDeAmigos.remove(nombre);
 	this->vista->quitarAmigo(nombre.c_str());
 
 
 }
 
-void Cliente::agregarAmigo(std::string nombre) {
+void Cliente::agregarAmigo(const std::string& nombre) {
 	this->listaDeAmigos.push_back(nombre);
 
 }

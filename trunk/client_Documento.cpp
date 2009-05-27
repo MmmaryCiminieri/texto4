@@ -7,7 +7,7 @@
 #include "iostream"
 #include "client_Documento.h"
 
-Documento::Documento(std::string contenido, int nro) {
+Documento::Documento(const std::string& contenido, int nro) {
 	this->contenido = contenido;
 	this->nroVersion = nro;
 }
@@ -24,7 +24,7 @@ void Documento::aumentarVersion(){
 std::string Documento::getContenido(){
 	return this->contenido;
 }
-void Documento::setContenido(std::string contenido){
+void Documento::setContenido(const std::string& contenido){
 	this->contenido = contenido;
 }
 
@@ -37,7 +37,7 @@ void Documento::setVersion(int nro) {
 }
 
 
-void Documento::agregarTexto(std::string texto,unsigned int posicion) {
+void Documento::agregarTexto(const std::string& texto,unsigned int posicion) {
 
 	if(posicion <= contenido.size()){
 		/*inserto en el texto*/
@@ -57,7 +57,7 @@ void Documento::agregarTexto(std::string texto,unsigned int posicion) {
 	std::cout << "el doc: "<<contenido << std::endl;
 
 }
-void Documento::borrarTexto(std::string texto, int posicion) {
+void Documento::borrarTexto(const std::string& texto, int posicion) {
 
 	int sizeToRemove = texto.size();
 	this->contenido = this->contenido.erase(posicion, sizeToRemove);

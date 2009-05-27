@@ -37,16 +37,16 @@ private:
 	GtkWidget* contenedor3;
 
 	/*labels*/
-	GtkWidget* label;
-	GtkWidget* label2;
-	GtkWidget* label3;
-	GtkWidget* label4;
-	GtkWidget* label5;
+	GtkWidget* labelNombre;
+	GtkWidget* labelIP;
+	GtkWidget* labelPort;
+	GtkWidget* labelTexto;
+	GtkWidget* labelLista;
 
 	/*entradas: text entrys*/
-	GtkWidget* entrada;
-	GtkWidget* entrada2;
-	GtkWidget* entrada3;
+	GtkWidget* entradaNombre;
+	GtkWidget* entradaIP;
+	GtkWidget* entradaPort;
 
 	/*boton de conectarse*/
 	GtkWidget* boton;
