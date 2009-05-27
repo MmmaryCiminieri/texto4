@@ -250,8 +250,8 @@ void Servidor::notificarAmigoConectado(const std::string& nombre) {
 	Cliente* clienteAux;
 		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 		       clienteAux = *it;
-		clienteAux->getSocket()->send(cambio.getStdCambio());
-	}
+		       this->enviarCambio(cambio, nombre, 1);
+		      	}
 }
 
 void Servidor::crearListaAmigos(Cliente* cliente) {
@@ -264,8 +264,8 @@ void Servidor::crearListaAmigos(Cliente* cliente) {
 
 
 		Cambio cambio("F", clienteAux->getNombre());
+			this->enviarCambio(cambio, cliente->getNombre(), 1);
 
-		cliente->getSocket()->send(cambio.getStdCambio());
 	}
 }
 
@@ -303,16 +303,10 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 	}
 
 	Cambio cambio(tipo, cliente->getNombre());
-	int cant = 0;
-	int retorno = -1;
-	while ((retorno == -1) && (cant < 20)) {
-		std::cout << "El cambio a mandar esS: \n" << cambio.getStdCambio()
-				<< std::endl;
-		cant++;
+	this->enviarCambio(cambio, cliente->getNombre(), 1);
 		//std::cout<<"el cambio es:"<<cambio.getStdCambio()<< std::endl;
-		retorno = cliente->getSocket()->send(cambio.getStdCambio());
 
-	}
+
 	if (tipo == "L") {
 		/*le envio el documento*/
 		std::string contenido =
@@ -320,15 +314,7 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 		Cambio
 				documento("D", this->getDocumentoConc()->getVersion(),
 						contenido);
-		cant = 0;
-		retorno = -1;
-		while ((retorno == -1) && (cant < 20)) {
-			std::cout << "El documento a mandar es: \n"
-					<< documento.getStdCambio() << std::endl;
-			cant++;
-			retorno = cliente->getSocket()->send(documento.getStdCambio());
-
-		}
+		this->enviarCambio(documento, cliente->getNombre(), 1);
 
 	}
 
