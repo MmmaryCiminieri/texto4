@@ -82,10 +82,13 @@ void Servidor::leerCambios() {
 		NombreCambio nc = this->colaDeCambios.front();
 		this->colaDeCambios.pop();
 		cambio = nc.cambio;
+		std::cout << " el cambio nc " << nc.cambio->getStdCambio() << std::endl;
+		std::cout << " el cambio " << cambio->getStdCambio() << std::endl;
+
 		nombre = nc.nombre;
 	}
 	/*proceso el cambio*/
-
+	std::cout << "procesare el cambio: " << cambio->getStdCambio() << std::endl;
 	if (cambio->getVersion() == this->getVersion()) {
 		this->procesarCambio(cambio, nombre);
 	} else {
@@ -246,9 +249,7 @@ void Servidor::notificarAmigoConectado(const std::string& nombre) {
 	Cliente* clienteAux;
 		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 		       clienteAux = *it;
-		       Parser parser;
-		       std::string str = parser.toString(cambio);
-		clienteAux->getSocket()->send(str);
+		clienteAux->getSocket()->send(cambio.getStdCambio());
 	}
 }
 
@@ -262,9 +263,8 @@ void Servidor::crearListaAmigos(Cliente* cliente) {
 
 
 		Cambio cambio("F", clienteAux->getNombre());
-		Parser parser;
-		std::string str = parser.toString(cambio);
-		cliente->getSocket()->send(str);
+
+		cliente->getSocket()->send(cambio.getStdCambio());
 	}
 }
 
@@ -302,16 +302,36 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 	}
 
 	Cambio cambio(tipo, cliente->getNombre());
-	enviarCambio(cambio, cliente->getNombre(),1);
+	int cant = 0;
+	int retorno = -1;
+	while ((retorno == -1) && (cant < 20)) {
+		std::cout << "El cambio a mandar esS: \n" << cambio.getStdCambio()
+				<< std::endl;
+		cant++;
+		//std::cout<<"el cambio es:"<<cambio.getStdCambio()<< std::endl;
+		retorno = cliente->getSocket()->send(cambio.getStdCambio());
 
+	}
 	if (tipo == "L") {
 		/*le envio el documento*/
-		std::string contenido = this->documentoConc.getDocumento()->getContenido();
-		Cambio	documento("D", this->getDocumentoConc()->getVersion(), contenido);
-		enviarCambio(documento, cliente->getNombre(), 1);
-	}
-}
+		std::string contenido =
+				this->documentoConc.getDocumento()->getContenido();
+		Cambio
+				documento("D", this->getDocumentoConc()->getVersion(),
+						contenido);
+		cant = 0;
+		retorno = -1;
+		while ((retorno == -1) && (cant < 20)) {
+			std::cout << "El documento a mandar es: \n"
+					<< documento.getStdCambio() << std::endl;
+			cant++;
+			retorno = cliente->getSocket()->send(documento.getStdCambio());
 
+		}
+
+	}
+
+}
 void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) {
 	if (flag == 0) {
 		/*le mando a todos el cambio creado*/
@@ -321,18 +341,18 @@ void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) 
 			       clienteAux = *it;
 
 			if (nombre != clienteAux->getNombre()) {
-				Parser parser;
-				std::string str = parser.toString(cambio);
-				std::cout << "Lo que parece haberse roto: " <<str << std::endl;
-				clienteAux->getSocket()->send(str);
+
+				clienteAux->getSocket()->send(cambio.getStdCambio());
+
 			} else {
 				if(cambio.getTipo() != "O"){
 				/*le envio al cliente el cambio pero con un alcance = 1*/
 				Cambio cambio2(cambio.getTipo(), cambio.getVersion(), 1,
 						cambio.getPosicion(), cambio.getTexto());
-				Parser parser;
-						std::string str = parser.toString(cambio2);
-				clienteAux->getSocket()->send(str);
+				std::cout << "lo q envio " << cambio2.getStdCambio()
+						<< std::endl;
+
+				clienteAux->getSocket()->send(cambio2.getStdCambio());
 				}
 			}
 		}
@@ -343,14 +363,14 @@ void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) 
 			 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 			       clienteAux = *it;
 
+				std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
+					<< std::endl;
 			if (nombre == clienteAux->getNombre()) {
-				Parser parser;
-				std::string str = parser.toString(cambio);
-					std::cout << "Lo que SI se rompe: " <<str << std::endl;
-					clienteAux->getSocket()->send(str);
-
-		//		clienteAux->getSocket()->send(cambio.getStdCambio());
-
+				clienteAux->getSocket()->send(cambio.getStdCambio());
+				std::cout << "lo q envio " << cambio.getStdCambio()
+						<< "al cliente " << cambio.getTexto() << std::endl;
+				std::cout << "al cliente se lo reeenvio"
+						<< cambio.getStdCambio() << std::endl;
 
 			}
 		}

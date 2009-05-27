@@ -36,10 +36,12 @@ void* ServidorEx::run(){
 				/*hay un cliente*/
 				Cliente* cliente = new Cliente(socketCliente, this->servidor);
 				cliente->execute();
-				//borrar cliento en servidor, cuando sale, no????
+				//borrar cliente en servidor, cuando sale, no????
 			}
 		}
 		return NULL;
 }
 
-ServidorEx::~ServidorEx() {}
+ServidorEx::~ServidorEx() {
+	delete this->socket;
+}

@@ -11,6 +11,11 @@
 /* Programa */
 int main(int argc, char* argv[]){
 
+	if (argc != 2){
+		std::cout<<"Ingrese por comando, al ejecutar el puerto."<<std::endl;
+
+
+	}
 	unsigned short puerto = PUERTO; //=servidor.setPuerto();
 
 	/*servidor que maneja la logica  de la modificacion del texto*/
