@@ -438,12 +438,6 @@ gtk_widget_set_usize(view2, 150, 10);
 
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(swindow2),
 			GTK_SHADOW_IN);
-
-	gtk_text_buffer_set_text(
-			lista,
-			"Aquí aparecerán tus amigos que editan el texto simultáneamente a tí.",
-			-1);
-
 }
 void VentanaIngreso::crearCamposTexto2() {
 	/* creo un contenedor que divide horizontalmente para poner mis widgets

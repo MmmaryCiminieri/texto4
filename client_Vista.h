@@ -23,7 +23,7 @@ public:
 	VentanaIngreso* getVentana();
 
 	/*agrego un amigo a la ventana donde se ancuentran los mismos*/
-	void agregarAmigo(const char* nombre);
+	void agregarAmigo(const std::string& nombre);
 
 	/*quito un amigo de la ventana de amigos*/
 	void quitarAmigo(const char* nombre);
