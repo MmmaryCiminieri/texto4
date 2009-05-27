@@ -109,10 +109,10 @@ int MSocket::listen(unsigned int port, unsigned int cantClientes) {
 	return -1;
 }
 
-int MSocket::send(std::string stream) {
+int MSocket::send(const std::string& stream) {
 	int retorno = 0;
 	int size= stream.size();
-	unsigned int cantEnv = 0;
+	int cantEnv = 0;
 	if (isValid()) {
 
 		while (cantEnv < size) {

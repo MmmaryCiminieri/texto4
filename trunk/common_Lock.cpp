@@ -7,11 +7,10 @@
 #include <iostream>
 #include "common_Lock.h"
 
-Lock::Lock(MMutex& m): mutex(m){
-
+Lock::Lock(MMutex& m) : mutex(m) {
 	mutex.lock();
 }
 
 Lock::~Lock() {
-mutex.unlock();
+	mutex.unlock();
 }

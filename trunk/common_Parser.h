@@ -48,7 +48,7 @@ public:
 	/*Procesa un buffer y retorna true si ha terminado de leer UN cambio,
 	 * false si sólo ha leido un mensaje incompleto. tamanioBuffer, al finalizar, tendrá la cantidad de bytes
 	 * de buffer procesados.*/
-	bool Procesar(const char* buff, int* tamanioBuffer);
+	bool procesar(const char* buff, int* tamanioBuffer);
 
 	/*Se resetean (en cero) los campos del parser para utilizarlo para leer otro cambio.*/
 	void reset();
@@ -57,7 +57,7 @@ public:
 	 * desde donde se debe leer dicho número.Retorna la posición dentro del buffer en donde terminó
 	 * de leer el número.
 	 *   */
-	int ProcesarNumero(const char* buffer, int posicion, int* valor,
+	int procesarNumero(const char* buffer, int posicion, int* valor,
 			int* valorParcial, int tamanioBuffer);
 
 	/*Se transforman los campos de un parser en un Cambio que contiene todos los campos
@@ -65,6 +65,8 @@ public:
 	 * OJO, se crea un nuevo Cambio en el heap.
 	 * */
 	Cambio*  toCambio();
+
+	std::string toString(const Cambio& cambio);
 
 	virtual ~Parser();
 

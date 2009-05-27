@@ -68,15 +68,9 @@ private:
 	/*Creadores de los GtkWidgets que los crea y los inserta dentro de la ventana*/
 	void crearBotonDeslog();
 	void crearVentana();
-	void crearLabel();
-	void crearLabel2();
-	void crearLabel3();
 	void crearLabel4();
 	void crearLabel5();
 	void crearBoton();
-	void crearEntrada();
-	void crearEntrada2();
-	void crearEntrada3();
 	void crearTable();
 	void crearCamposVerticales();
 		void crearCamposTexto();

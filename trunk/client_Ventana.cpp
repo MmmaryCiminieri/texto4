@@ -239,66 +239,7 @@ void VentanaIngreso::crearTable() {
 
 
 }
-//
-//
-//
-//void VentanaIngreso::crearLabel() {
-//	label = NULL;
-//	this->label = gtk_label_new("Ingrese  su nombre de Usuario");
-//
-//	gtk_table_attach((GtkTable*) this->table, this->label, 0, 1, 0, 1,
-//			GTK_SHRINK, GTK_SHRINK, 0, 0);
-//
-//}
-//
-//void VentanaIngreso::crearEntrada() {
-//
-//	entrada = NULL;
-//	/* creo una entrada de texto */
-//	this->entrada = gtk_entry_new();
-//
-//	gtk_table_attach((GtkTable*) this->table, this->entrada, 0, 1, 1, 2,
-//			GTK_SHRINK, GTK_SHRINK, 0, 0);
-//
-//}
-//void VentanaIngreso::crearEntrada3() {
-//	entrada3 = NULL;
-//	/* creo una entrada de texto */
-//	this->entrada3 = gtk_entry_new();
-//
-//	gtk_table_attach((GtkTable*) this->table, this->entrada3, 0, 1, 5, 6,
-//			GTK_SHRINK, GTK_SHRINK, 0, 0);
-//
-//}
-//void VentanaIngreso::crearEntrada2() {
-//
-//	entrada2 = NULL;
-//	/* creo una entrada de texto */
-//	this->entrada2 = gtk_entry_new();
-//
-//	gtk_table_attach((GtkTable*) this->table, this->entrada2, 0, 1, 3, 4,
-//			GTK_SHRINK, GTK_SHRINK, 0, 0);
-//
-//}
-//
-//void VentanaIngreso::crearLabel2() {
-//
-//	label2 = NULL;
-//	this->label2 = gtk_label_new("Ingrese el host o IP");
-//
-//	gtk_table_attach((GtkTable*) this->table, this->label2, 0, 1, 2, 3,
-//			GTK_SHRINK, GTK_SHRINK, 0, 0);
-//
-//}
-//
-//void VentanaIngreso::crearLabel3() {
-//	label3 = NULL;
-//	this->label3 = gtk_label_new("Ingrese el puerto");
-//
-//	gtk_table_attach((GtkTable*) this->table, this->label3, 0, 1, 4, 5,
-//			GTK_SHRINK, GTK_SHRINK, 0, 0);
-//
-//}
+
 
 void VentanaIngreso::crearBoton() {
 	boton = NULL;
