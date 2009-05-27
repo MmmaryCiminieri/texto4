@@ -60,10 +60,6 @@ public:
 	int getVersion() const;
 	int getAlcance() const;
 	int getLongitud() const;
-
-
-	/*Retorna una representacion del cambio en un string*/
-	std::string getStdCambio();
 };
 
 #endif /* CAMBIO_H_ */
