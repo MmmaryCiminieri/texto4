@@ -34,7 +34,7 @@ std::queue<NombreCambio> Servidor::getColaDeCambios() {
 	return this->colaDeCambios;
 }
 
-void Servidor::removerCliente(std::string nombre){
+void Servidor::removerCliente(const std::string& nombre){
 	 std::list<Cliente*>::iterator it;
 Cliente* clienteAux;
 	 for( it = getListaClientes()->begin(); it != getListaClientes()->end(); ++it ) {
@@ -67,7 +67,7 @@ void* Servidor::run() {
 	return NULL;
 }
 
-void Servidor::agregarCambio(Cambio* cambio, std::string nombre) {
+void Servidor::agregarCambio(Cambio* cambio, const std::string& nombre) {
 	Lock lock(mutex);
 	NombreCambio nc(nombre, cambio);
 	colaDeCambios.push(nc);
@@ -123,7 +123,7 @@ void Servidor::leerCambios() {
 
 
 
-void Servidor::desconectarCliente(std::string nombre) {
+void Servidor::desconectarCliente(const std::string& nombre) {
 	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
 		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
@@ -141,7 +141,7 @@ void Servidor::desconectarCliente(std::string nombre) {
 	}
 }
 
-void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
+void Servidor::procesarCambio(Cambio* cambio, const std::string& nombre) {
 
 	switch (cambio->getTipo()[0]) {
 	case 'N': {
@@ -241,7 +241,7 @@ DocumentoConcurrente* Servidor::getDocumentoConc() {
 	return &this->documentoConc;
 }
 
-void Servidor::notificarAmigoConectado(std::string nombre) {
+void Servidor::notificarAmigoConectado(const std::string& nombre) {
 	/*a todos les aviso que su amigo se conecto*/
 	Lock lock(this->mutex);
 	Cambio cambio("F", nombre);
@@ -332,7 +332,7 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 	}
 
 }
-void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
+void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) {
 	if (flag == 0) {
 		/*le mando a todos el cambio creado*/
 		 std::list<Cliente*>::iterator it;

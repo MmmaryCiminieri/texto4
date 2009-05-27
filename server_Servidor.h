@@ -54,7 +54,7 @@ private:
 	bool escucho;
 	MMutex mutex;
 
-	void removerCliente(std::string nombre);
+	void removerCliente(const std::string& nombre);
 
 public:
 	Servidor(unsigned short puerto, int cantClientes);
@@ -70,7 +70,7 @@ public:
 	MSocket* getSocket();
 
 	/*se setea por consola el puerto donde se oirán a los clientes*/
-	unsigned short setPuerto();
+	//unsigned short setPuerto();
 
 	/*el servidor cambia su estado a no escuchando y hace join de todos
 	 * sus clientes*/
@@ -90,21 +90,21 @@ public:
 	/*Se envia un Cambio. Nombre indica cual fue el cliente que lo envió al servidor.
 	 * Si el flag es cero es por que el cambio se envia a todos. Si es uno, sólo se envía al cliente que lo propuso
 	 * pues así le puedo avisar que el cambio propuesto ha sido rechazado.*/
-	void enviarCambio(Cambio cambio, std::string nombre, int flag);
+	void enviarCambio(Cambio cambio,const  std::string& nombre, int flag);
 
 	/*Se envía un mensaje a todos los usuarios avisándoles que un amigo se ha conectado*/
-	void notificarAmigoConectado(std::string nombre);
+	void notificarAmigoConectado(const std::string& nombre);
 
 	/*Cuando un usuario se conecta se le envían los nombres de todos sus amigos
 	 * que están conectados*/
 	void crearListaAmigos(Cliente* cliente);
 
 	/*se crea una estructura nombreCambio y se la acola a la cola de cambios, donde espera a ser procesada*/
-	void agregarCambio(Cambio* cambio, std::string nombre);
+	void agregarCambio(Cambio* cambio, const std::string & nombre);
 
 	/* Con el cambio recibido se ejecutan las acciones sobre el documento y/o sobre
 	 * los clientes*/
-	void procesarCambio(Cambio* cambio, std::string nombre);
+	void procesarCambio(Cambio* cambio, const std::string& nombre);
 
 	/*Se lee un cambio de la cola, si el cambio tiene el mismo número de version que el documento
 	 * actual, se lo procesa; si no se le avisa al cliente que su cambio ha sido rechazado
@@ -113,7 +113,7 @@ public:
 	void leerCambios();
 
 	/*Se  llama a desloguearCliente(), join, se lo remueve de la lista y se hace delete del mismo*/
-	void desconectarCliente(std::string nombre);
+	void desconectarCliente(const std::string& nombre);
 
 	virtual ~Servidor();
 };
