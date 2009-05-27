@@ -62,7 +62,7 @@ public:
 
 	/*Se transforman los campos de un parser en un Cambio que contiene todos los campos
 	 * posibles, donde si no sirven, valen cero.
-	 * OJO, se crea un nuevo Cambio en el heap.
+	 * OJO, se crea un nuevo Cambio en el heap. se borra al leerse el cambio de la lista.
 	 * */
 	Cambio*  toCambio();
 

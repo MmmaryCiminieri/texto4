@@ -50,14 +50,14 @@ bool  Cliente::getConectado() {
 
 
 }
-void Cliente::ejecutarAccion(Parser parser) {
-	char ch = (parser.getTipo())[0];
+void Cliente::ejecutarAccion(Cambio* cambio) {
 
-	switch (ch) {
+
+	switch (cambio->getTipo()[0]) {
 
 	case 'N': {
 		/*el cliente envÃ­a sus datos para ingresar al sistema*/
-		this->setNombre(parser.getTexto());
+		this->setNombre(cambio->getTexto());
 		this->servidor->verificacionCliente(this);
 		break;
 	}
@@ -72,20 +72,11 @@ void Cliente::ejecutarAccion(Parser parser) {
 
 		/*recibo un cambio que afectarÃ¡ al documeto o a los usuarios conectados */
 		/*estos cambios de acolan, esperando a ser procesados*/
-		this->servidor->agregarCambio(parser.toCambio(), nombre);
+		this->servidor->agregarCambio(cambio, nombre);
 
 		break;
 	}
-	case 'D':
-		;
-	case 'L':
-		;
-	case 'R':
-		;
-	case 'F': {
-		/*no se pueden dar desde este lado (servidor)*/
-		break;
-	}
+
 	}
 }
 
@@ -125,7 +116,10 @@ void* Cliente::run() {
 
 			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
-			this->ejecutarAccion(parser);
+			//delete
+			Cambio* cambio = new Cambio;
+			cambio = parser.toCambio();
+			this->ejecutarAccion(cambio);
 			parser.reset();
 
 		}

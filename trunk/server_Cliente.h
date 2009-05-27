@@ -43,7 +43,7 @@ public:
 
 	/*según el tipo de cambio recibido desde el cliente remoto,  se ejecutarán diferentes acciones sobre este Cliente,
 	 * el servidor y el documento */
-	void ejecutarAccion(Parser parser);
+	void ejecutarAccion(Cambio* cambio);
 
 	void desloguearCliente();
 	virtual ~Cliente();
