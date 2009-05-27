@@ -52,9 +52,11 @@ int Cambio::getVersion() const {
 std::string Cambio::getTexto() const {
 	return this->texto;
 }
+
 std::string Cambio::getTipo() const {
 	return this->tipo;
 }
+
 int Cambio::getPosicion() const {
 	return this->posicion;
 }
@@ -62,9 +64,10 @@ int Cambio::getPosicion() const {
 int Cambio::getAlcance() const {
 	return alcance;
 }
-	int Cambio::getLongitud() const {
+
+int Cambio::getLongitud() const {
 		return longitud;
-	}
+}
 
 std::string Cambio::getStdCambio() {
 
