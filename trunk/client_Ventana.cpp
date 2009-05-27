@@ -79,6 +79,7 @@ data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 	/*se puede volver a conectar*/
 	gtk_widget_set_sensitive(data->boton,true);
 	data->bloquearBotonDeslog();
+
 }
 
 GtkWidget* VentanaIngreso::getBotonDeslog(){
@@ -431,7 +432,7 @@ void VentanaIngreso::crearLista() {
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view2), GTK_WRAP_WORD_CHAR);
 	gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view2), 5);
 	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view2), 5);
-	//gtk_widget_set_size_request(swindow2, 50, 100);
+gtk_widget_set_usize(view2, 150, 10);
 
 	swindow2 = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(swindow2),
