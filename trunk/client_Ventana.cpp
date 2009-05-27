@@ -74,6 +74,15 @@ data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 	gtk_widget_set_sensitive(data->boton,true);
 	data->bloquearBotonDeslog();
 
+	g_signal_handler_block(data->texto, data->insertSignal);
+	g_signal_handler_block(data->texto, data->deleteSignal);
+
+	gtk_text_buffer_set_text( data->texto,"",-1);
+	gtk_text_buffer_set_text( data->lista,"",-1);
+	g_signal_handler_unblock(data->texto, data->insertSignal);
+
+	g_signal_handler_unblock(data->texto,data->deleteSignal);
+
 }
 
 GtkWidget* VentanaIngreso::getBotonDeslog(){

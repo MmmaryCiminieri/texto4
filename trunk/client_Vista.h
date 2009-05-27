@@ -34,6 +34,9 @@ public:
 	/*muetro la ventana*/
 	void mostrar();
 
+	/*cuando se retira un usuario, la lista (vista) se actualiza*/
+	void refrescarLista();
+
 	/*si no se puede conectar el socket al server, muestro una ventana de error */
 	void ErrorConectar();
 

@@ -375,8 +375,6 @@ void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) 
 			}
 		}
 	}
-
-
 }
 
 Servidor::~Servidor() {
