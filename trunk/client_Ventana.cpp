@@ -62,8 +62,7 @@ void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 	   //const char* port =  gtk_entry_get_text(GTK_ENTRY(data->entrada3));
 const char* ip = "127.0.0.1";
 const char* port = "8080";
-data->cliente->Inicializar(ip, port, widget);
-
+data->cliente->inicializar(ip, port, widget);
 std::cout << "SALI DEL CLICK" << std::endl;
 
 }
@@ -87,7 +86,7 @@ GtkWidget* VentanaIngreso::getBotonDeslog(){
 }
 
 void VentanaIngreso::desloguearCliente(){
-this->cliente->Desloguearse();
+this->cliente->desloguearse();
 			this->cliente->join();
 			delete this->cliente;
 			this->cliente = NULL;
@@ -95,18 +94,29 @@ this->cliente->Desloguearse();
 			std::cout << "CLIENTE CERRADO" << std::endl;
 
 }
+
+
+bool VentanaIngreso::hayClienteConectado(){
+
+	return cliente != NULL;
+
+}
+
 /* Función 'callback' para atender la señal del evento "delete_event" */
 static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event,
 		VentanaIngreso* data) {
 	std::cout << "[recibido el evento delete_event]" << std::endl;
 
+	if (data->hayClienteConectado()){
 	data->desloguearCliente();
+	}
 	return FALSE;
 }
 
 GtkWidget* VentanaIngreso::getVentana() {
 	return ventana;
 }
+
 /* Función 'callback' para atender la señal "destroy" de la ventana. */
 static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 	std::cout << "[recibido el evento destroy]" << std::endl;
@@ -117,7 +127,7 @@ static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 
 VentanaIngreso::VentanaIngreso() {
 	std::cout << "////Constructor VentanaIngreso/////" << std::endl;
-
+this->cliente = NULL;
 
 	this->crearVentana();
 	this->crearCamposVerticales();
@@ -352,7 +362,7 @@ void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len
 	std::cout << "el cambio enviado"<<cambio.getStdCambio()<< std::endl;
 
 
-	((VentanaIngreso*) user_data)->getCliente()->EnviarCambio(cambio);
+	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
 }
 
 
@@ -374,7 +384,7 @@ std::cout << "en han borrado"<< std::endl;
 					"B",
 					((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0,
 					inicio, asciiText);
-	((VentanaIngreso*) user_data)->getCliente()->EnviarCambio(cambio);
+	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
 	std::cout << "el cambio enviado"<<cambio.getStdCambio()<< std::endl;
 
 }
@@ -467,12 +477,12 @@ void VentanaIngreso::mostrar() {
 	gtk_main();
 }
 
-//TODO ver q onda
-VentanaIngreso::~VentanaIngreso() {
-this->cliente->Desloguearse();
 
-delete cliente;
-	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
+VentanaIngreso::~VentanaIngreso() {
+	if(this->hayClienteConectado()){
+this->desloguearCliente();
+
+	}	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
 }
 
 

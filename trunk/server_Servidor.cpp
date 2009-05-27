@@ -22,7 +22,8 @@ Servidor::Servidor(unsigned short puerto, int cantClientes) {
 	this->escucho = true;
 	this->puerto = puerto;
 	this->cantClientes = cantClientes;
-	this->colaDeCambios = new Cola<NombreCambio> ;
+	//this->listaDeClientes = new ListaClientes();
+
 	execute();
 }
 
@@ -32,7 +33,7 @@ int Servidor::getPuerto() {
 int Servidor::getCantClientes() {
 	return this->cantClientes;
 }
-Cola<NombreCambio>* Servidor::getColaDeCambios() {
+std::queue<NombreCambio> Servidor::getColaDeCambios() {
 	return this->colaDeCambios;
 }
 
@@ -50,7 +51,7 @@ void* Servidor::run() {
 	while (escucho) {
 		usleep(500);
 
-		if (!colaDeCambios->isEmpty()) {
+		if (!colaDeCambios.empty()) {
 			std::cout << "ACABO DE LEER UN CAMBIO" << std::endl;
 			this->leerCambios();
 		}
@@ -64,7 +65,7 @@ void* Servidor::run() {
 void Servidor::agregarCambio(Cambio* cambio, std::string nombre) {
 	Lock lock(mutex);
 	NombreCambio nc(nombre, cambio);
-	colaDeCambios->push(nc);
+	colaDeCambios.push(nc);
 }
 
 void Servidor::leerCambios() {
@@ -73,7 +74,8 @@ void Servidor::leerCambios() {
 	std::string nombre;
 	{
 		Lock lock(mutex);
-		NombreCambio nc = this->colaDeCambios->pop();
+		NombreCambio nc = this->colaDeCambios.front();
+		this->colaDeCambios.pop();
 		cambio = nc.cambio;
 		std::cout << " el cambio nc " << nc.cambio->getStdCambio() << std::endl;
 		std::cout << " el cambio " << cambio->getStdCambio() << std::endl;
@@ -115,16 +117,18 @@ void Servidor::leerCambios() {
 }
 
 void Servidor::desconectarCliente(std::string nombre) {
+	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
-	Iterador<Cliente*> it = this->getListaClientes()->getLista()->iterador();
-	while (it.hasNext()) {
-		clienteAux = it.next();
+		 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+		       clienteAux = *it;
+
 		if (nombre == clienteAux->getNombre()) {
 
 			clienteAux->desloguearCliente();
 			clienteAux->join();
 			this->listaDeClientes.remover(clienteAux->getNombre());
 			delete clienteAux;
+			return;
 		}
 
 	}
@@ -205,12 +209,11 @@ void Servidor::cerrarServidor() {
 
 		/*borro a todos los clientes*/
 
-		Iterador<Cliente*> it =
-				this->getListaClientes()->getLista()->iterador();
+		 std::list<Cliente*>::iterator it;
+		Cliente* clienteAux;
+			 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+			       clienteAux = *it;
 
-		while (it.hasNext()) {
-
-			Cliente* clienteAux = it.next();
 			clienteAux->join();
 
 			std::cout << "join de un cliente... " << std::endl;
@@ -224,7 +227,7 @@ void Servidor::cerrarServidor() {
 }
 
 ListaClientes* Servidor::getListaClientes() {
-	return &this->listaDeClientes;
+	return &listaDeClientes;
 }
 
 DocumentoConcurrente* Servidor::getDocumentoConc() {
@@ -234,13 +237,11 @@ DocumentoConcurrente* Servidor::getDocumentoConc() {
 void Servidor::notificarAmigoConectado(std::string nombre) {
 	/*a todos les aviso que su amigo se conecto*/
 	Lock lock(this->mutex);
-	Cliente* clienteAux;
 	Cambio cambio("F", nombre);
-
-	Iterador<Cliente*> it = this->getListaClientes()->getLista()->iterador();
-	while (it.hasNext()) {
-		clienteAux = it.next();
-
+	 std::list<Cliente*>::iterator it;
+	Cliente* clienteAux;
+		 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+		       clienteAux = *it;
 		clienteAux->getSocket()->send(cambio.getStdCambio());
 	}
 }
@@ -248,11 +249,12 @@ void Servidor::notificarAmigoConectado(std::string nombre) {
 void Servidor::crearListaAmigos(Cliente* cliente) {
 	/*al nuevo cliente le mando una lista de todos sus amigos conectados*/
 	Lock lock(this->mutex);
+	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
+		 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+		       clienteAux = *it;
 
-	Iterador<Cliente*> it = this->getListaClientes()->getLista()->iterador();
-	while (it.hasNext()) {
-		clienteAux = it.next();
+
 		Cambio cambio("F", clienteAux->getNombre());
 
 		cliente->getSocket()->send(cambio.getStdCambio());
@@ -264,12 +266,13 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 
 	{
 		Lock lock(this->mutex);
+		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
+			 for( it = this->getListaClientes()->getLista().begin(); ((it != this->getListaClientes()->getLista().end())&&(!encontrado)); ++it ) {
+			       clienteAux = *it;
 
-		Iterador<Cliente*> it =
-				this->getListaClientes()->getLista()->iterador();
-		while (it.hasNext() && (!encontrado)) {
-			clienteAux = it.next();
+
+
 			if (clienteAux->getNombre() == cliente->getNombre()) {
 				encontrado = true;
 				/*el cliente ya esta en la lista*/
@@ -287,7 +290,7 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 		tipo = "L";
 		this->notificarAmigoConectado(cliente->getNombre());
 		this->crearListaAmigos(cliente);
-		this->getListaClientes()->getLista()->add(cliente);
+		this->getListaClientes()->getLista().push_back(cliente);
 
 	}
 
@@ -325,11 +328,11 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 	if (flag == 0) {
 		/*le mando a todos el cambio creado*/
+		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-		Iterador<Cliente*> it =
-				this->getListaClientes()->getLista()->iterador();
-		while (it.hasNext()) {
-			clienteAux = it.next();
+			 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+			       clienteAux = *it;
+
 			if (nombre != clienteAux->getNombre()) {
 
 				clienteAux->getSocket()->send(cambio.getStdCambio());
@@ -348,14 +351,12 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		}
 	} else {
 		/*solo se lo envio al que creo el mensaje*/
+		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-		Iterador<Cliente*> it =
-				this->getListaClientes()->getLista()->iterador();
-		std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
-				<< std::endl;
-		while (it.hasNext()) {
-			clienteAux = it.next();
-			std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
+			 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+			       clienteAux = *it;
+
+				std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
 					<< std::endl;
 			if (nombre == clienteAux->getNombre()) {
 				clienteAux->getSocket()->send(cambio.getStdCambio());
@@ -374,5 +375,4 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 Servidor::~Servidor() {
 std::cout << "destructor del server " << std::endl;
 
-delete this->colaDeCambios;
 }
