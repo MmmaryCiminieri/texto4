@@ -112,7 +112,7 @@ void* Cliente::run() {
 			str += buff1;
 		}
 
-		while ((conectado) && (parser.Procesar(str.c_str(), &cantidad))) {
+		while ((conectado) && (parser.procesar(str.c_str(), &cantidad))) {
 
 			std::cout << "termino de procesar " << cantidad
 					<< "bytes sdel buffer" << std::endl;

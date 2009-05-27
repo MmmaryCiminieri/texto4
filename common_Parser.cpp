@@ -11,6 +11,7 @@
 #include <string.h>
 #include "common_Parser.h"
 
+#define MAXLONG 20
 #define TAMANIIO  1024
 
 Parser::Parser() {
@@ -31,7 +32,7 @@ Parser::Parser() {
 int Parser::getAlcance() {
 	return this->alcance;
 }
-int Parser::ProcesarNumero(const char* buffer, int actual, int* valor,
+int Parser::procesarNumero(const char* buffer, int actual, int* valor,
 		int* valorParcial, int tamanioBuffer) {
 
 	char cAux = '.';
@@ -85,7 +86,7 @@ void Parser::reset() {
 	this->texto.erase(0, texto.size());
 }
 
-bool Parser::Procesar(const char* buffer, int* tamaniio) {
+bool Parser::procesar(const char* buffer, int* tamaniio) {
 
 	if (*tamaniio == 0) {
 		return false;
@@ -114,7 +115,7 @@ bool Parser::Procesar(const char* buffer, int* tamaniio) {
 		/* debo analizar el numero de version*/
 		if (this->version == 0) {
 			/*No he leido el numero de version en su totalidad, o ni siquiera he comenzado*/
-			actual = this->ProcesarNumero(buffer, actual, &version,
+			actual = this->procesarNumero(buffer, actual, &version,
 					&versionParcial, tamanioBuffer);
 
 			actual++;
@@ -131,7 +132,7 @@ bool Parser::Procesar(const char* buffer, int* tamaniio) {
 		/* debo analizar el alcance*/
 		if (this->alcance == 0) {
 			/*No he leido el numero de version en su totalidad, o ni siquiera he comenzado*/
-			actual = this->ProcesarNumero(buffer, actual, &alcance,
+			actual = this->procesarNumero(buffer, actual, &alcance,
 					&alcanceParcial, tamanioBuffer);
 
 			actual++;
@@ -149,7 +150,7 @@ bool Parser::Procesar(const char* buffer, int* tamaniio) {
 		/*debo analizar la posicion en donde hacer el cambio*/
 		if (this->posicion == 0) {
 			/*No he leido la longitud en su totalidad, o ni siquiera he comenzado*/
-			actual = this->ProcesarNumero(buffer, actual, &posicion,
+			actual = this->procesarNumero(buffer, actual, &posicion,
 					&posicionParcial, tamanioBuffer);
 
 			if (actual >= tamanioBuffer) {
@@ -163,7 +164,7 @@ bool Parser::Procesar(const char* buffer, int* tamaniio) {
 
 	if (this->longitud == 0) {
 		/*No he leido la longitud en su totalidad, o ni siquiera he comenzado*/
-		actual = this->ProcesarNumero(buffer, actual, &longitud,
+		actual = this->procesarNumero(buffer, actual, &longitud,
 				&longitudParcial, tamanioBuffer);
 
 		if (actual >= tamanioBuffer) {
@@ -233,6 +234,41 @@ std::string Parser::getTexto() {
 std::string Parser::getTipo() {
 	return this->tipo;
 }
+
+std::string Parser::toString(const Cambio& cambio){
+
+	std::string str;
+		/*me crea un string de un cambio, separado por comas*/
+			str = tipo;
+			str.append(",");
+			char slong1[MAXLONG];
+			if(version != Cambio::INVALIDO){
+			sprintf(slong1, "%d", version);
+			str.append(slong1);
+			str.append(",");
+			}
+			if(alcance != Cambio::INVALIDO){
+			sprintf(slong1, "%d", alcance);
+			str.append(slong1);
+			str.append(",");
+			}
+			if(posicion != Cambio::INVALIDO){
+
+			sprintf(slong1, "%d", posicion);
+			str.append(slong1);
+			str.append(",");
+			}
+			char slong[MAXLONG];
+			sprintf(slong, "%d", longitud);
+			str.append(slong);
+			str.append(",");
+			str.append(texto);
+
+
+		return str;
+
+}
+
 
 
 Cambio* Parser::toCambio() {

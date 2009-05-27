@@ -42,24 +42,26 @@ private:
 	int longitud;
 	std::string texto;
 
-	/*representacion del cambio en un string*/
-	std::string stdCambio;
+
 
 public:
+	static int INVALIDO;
 /* diferentes constructores, dentro se crea el stdCambio*/
 	Cambio();
 
-	Cambio(std::string tipo,  std::string texto);
-	Cambio(std::string tipo, int version,  std::string texto);
-	Cambio(std::string tipo, int version,int alcance, int posicion, std::string texto);
+	Cambio(const std::string& tipo, const std::string& texto);
+	Cambio(const std::string& tipo, int version,  const std::string& texto);
+	Cambio(const std::string& tipo, int version,int alcance, int posicion,const std::string& texto);
 
 	bool operator!=(const Cambio& otro)const;
-	std::string getStdCambio();
-	std::string getTexto();
+		std::string getTexto();
 	int getPosicion();
 	std::string getTipo();
 	int getVersion();
 
+
+	/*Retorna una representacion del cambio en un string*/
+	std::string getStdCambio();
 };
 
 #endif /* CAMBIO_H_ */

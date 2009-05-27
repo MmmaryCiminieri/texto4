@@ -19,7 +19,6 @@ private:
 	static void* startRoutine(void* arg);
 
 public:
-	MThread(){};
 	int execute();
 	void* join();
 	virtual void* run() = 0;

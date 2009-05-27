@@ -37,7 +37,7 @@ public:
 	int listen(unsigned int port, unsigned int nro_cliente_espera);
 
 	/*Si el socket esta conectado intenta eviar el stream retorna: 0 si puede, -1 si no*/
-	int send(std::string stream);
+	int send(const std::string& stream);
 
 	/*BLOQUEANTE, recibe algo que guarda en buffer de tamanio size.
 	 * retorna -1 si la conxion ha sido cerrada desde el otro lado
