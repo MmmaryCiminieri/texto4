@@ -87,7 +87,7 @@ void Parser::reset() {
 
 bool Parser::Procesar(const char* buffer, int* tamaniio) {
 
-	if (tamaniio == 0) {
+	if (*tamaniio == 0) {
 		return false;
 	}
 	int actual = 0;
@@ -237,6 +237,8 @@ std::string Parser::getTipo() {
 
 Cambio* Parser::toCambio() {
 	Cambio*  cambio = new Cambio(tipo, version, alcance, posicion, texto);
+	std::cout << "parser to cambio" << cambio->getStdCambio();
+
 	return cambio;
 }
 int Parser::getVersion() {

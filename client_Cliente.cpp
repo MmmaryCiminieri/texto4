@@ -110,12 +110,8 @@ void Cliente::ejecutarAccion(Parser parser) {
 
 	case 'E': {
 		std::cout << "recibi la E" << std::endl;
-		//Cambio cambio("O", this->getNombre());
-		/*le avisa al socket q se va a desconectar*/
-		//this->EnviarCambio(cambio);
-		/*envia el cambio de desconectarse*/
+		this->socket->close();
 		this->setConectado(false);
-
 		break;
 	}
 

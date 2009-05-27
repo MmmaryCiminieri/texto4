@@ -110,6 +110,9 @@ public:
 	 * */
 	void leerCambios();
 
+	/*Se  llama a desloguearCliente(), join, se lo remueve de la lista y se hace delete del mismo*/
+	void desconectarCliente(std::string nombre);
+
 	virtual ~Servidor();
 };
 

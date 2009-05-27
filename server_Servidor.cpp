@@ -16,7 +16,6 @@
 #include "server_Servidor.h"
 #include "common_Iterador.h"
 
-
 #define MAXCANTUS 27
 
 Servidor::Servidor(unsigned short puerto, int cantClientes) {
@@ -37,8 +36,7 @@ Cola<NombreCambio>* Servidor::getColaDeCambios() {
 	return this->colaDeCambios;
 }
 
-
-unsigned short setPuerto(){
+unsigned short setPuerto() {
 	//TODO
 }
 
@@ -87,37 +85,50 @@ void Servidor::leerCambios() {
 	if (cambio->getVersion() == this->getVersion()) {
 		this->procesarCambio(cambio, nombre);
 	} else {
-		switch(cambio->getTipo()[0]){
-		case 'A':{
+		switch (cambio->getTipo()[0]) {
+		case 'A': {
 
+			/*aviso que rechazo el cambio, para que lo borre de su vista*/
 
-		/*aviso que rechazo el cambio, para que lo borre de su vista*/
-
-			Cambio cambio2("B", (cambio->getVersion()) + 1,2,
+			Cambio cambio2("B", (cambio->getVersion()) + 1, 2,
 					cambio->getPosicion(), cambio->getTexto());
 			this->enviarCambio(cambio2, nombre, 1);
-		break;
+			break;
 		}
-		case 'B':{
-		/*aviso que rechazo el cambio de borrado, para que lo agregue a la vista*/
+		case 'B': {
+			/*aviso que rechazo el cambio de borrado, para que lo agregue a la vista*/
 
-			Cambio cambio2("A", (cambio->getVersion()) + 1,2,
+			Cambio cambio2("A", (cambio->getVersion()) + 1, 2,
 					cambio->getPosicion(), cambio->getTexto());
 			this->enviarCambio(cambio2, nombre, 1);
-break;
+			break;
 		}
 
-		case 'E':{
+		case 'E': {
 			this->procesarCambio(cambio, nombre);
 			break;
 		}
 		}
 
-
 	}
-delete cambio;
+	delete cambio;
 }
 
+void Servidor::desconectarCliente(std::string nombre) {
+	Cliente* clienteAux;
+	Iterador<Cliente*> it = this->getListaClientes()->getLista()->iterador();
+	while (it.hasNext()) {
+		clienteAux = it.next();
+		if (nombre == clienteAux->getNombre()) {
+
+			clienteAux->desloguearCliente();
+			clienteAux->join();
+			this->listaDeClientes.remover(clienteAux->getNombre());
+			delete clienteAux;
+		}
+
+	}
+}
 
 void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
 
@@ -126,7 +137,6 @@ void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
 		/*se maneja desde el server_cliente */
 		break;
 	}
-
 
 	case 'A': {
 		std::cout << "agregar del server" << std::endl;
@@ -137,7 +147,7 @@ void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
 				<< std::endl;
 
 		/*les envio a todos el cambio, con el numero de version aumentado*/
-		Cambio cambio2(cambio->getTipo(), (cambio->getVersion()) + 1,0,
+		Cambio cambio2(cambio->getTipo(), (cambio->getVersion()) + 1, 0,
 				cambio->getPosicion(), cambio->getTexto());
 		this->enviarCambio(cambio2, nombre, 0);
 
@@ -147,7 +157,7 @@ void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
 		this->getDocumentoConc()->borrarTexto(cambio->getTexto(),
 				cambio->getPosicion());
 		/*les envio a todos el cambio con el numero de version aumentado*/
-		Cambio cambio2(cambio->getTipo(), (cambio->getVersion()) + 1,0,
+		Cambio cambio2(cambio->getTipo(), (cambio->getVersion()) + 1, 0,
 				cambio->getPosicion(), cambio->getTexto());
 		this->enviarCambio(cambio2, nombre, 0);
 		break;
@@ -158,31 +168,15 @@ void Servidor::procesarCambio(Cambio* cambio, std::string nombre) {
 
 		Lock lock(this->mutex);
 
-		/*le envio al cliente su cambio para que se desloguee*/
-		this->enviarCambio(*cambio, cambio->getTexto(),1);
+		/*le envio al cliente su cambio para que se desloguee y dentro llamo a desloguearCliente()*/
+		this->enviarCambio(*cambio, cambio->getTexto(), 1);
 
-		Cambio cambio2("O",  cambio->getTexto());
+		Cambio cambio2("O", cambio->getTexto());
 		this->enviarCambio(cambio2, cambio->getTexto(), 0);
-		//todo cerrar ese socket
-		//cerrar ese run
-		//delete cliente
-
-		bool retorno = this->listaDeClientes.remover(cambio->getTexto());
-		//??retrno
-		//borrar al cliente??
+		desconectarCliente(cambio->getTexto());
 
 		break;
 	}
-	case 'D':
-			;
-		case 'L':
-			;
-		case 'R':
-			;
-		case 'F': {
-			/*no se pueden  dar de este lado*/
-			break;
-		}
 	}
 }
 
@@ -308,19 +302,22 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 		retorno = cliente->getSocket()->send(cambio.getStdCambio());
 
 	}
-	if(tipo =="L"){
-	/*le envio el documento*/
-	std::string contenido = this->documentoConc.getDocumento()->getContenido();
-	Cambio documento("D", this->getDocumentoConc()->getVersion(), contenido);
-	cant = 0;
-	retorno = -1;
-	while ((retorno == -1) && (cant < 20)) {
-		std::cout << "El documento a mandar es: \n" << documento.getStdCambio()
-				<< std::endl;
-		cant++;
-		retorno = cliente->getSocket()->send(documento.getStdCambio());
+	if (tipo == "L") {
+		/*le envio el documento*/
+		std::string contenido =
+				this->documentoConc.getDocumento()->getContenido();
+		Cambio
+				documento("D", this->getDocumentoConc()->getVersion(),
+						contenido);
+		cant = 0;
+		retorno = -1;
+		while ((retorno == -1) && (cant < 20)) {
+			std::cout << "El documento a mandar es: \n"
+					<< documento.getStdCambio() << std::endl;
+			cant++;
+			retorno = cliente->getSocket()->send(documento.getStdCambio());
 
-	}
+		}
 
 	}
 
@@ -338,15 +335,15 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 				clienteAux->getSocket()->send(cambio.getStdCambio());
 
 			} else {
-
+				if(cambio.getTipo() != "O"){
 				/*le envio al cliente el cambio pero con un alcance = 1*/
-					Cambio cambio2(cambio.getTipo(), cambio.getVersion(),1,
-							cambio.getPosicion(), cambio.getTexto());
-					std::cout << "lo q envio " << cambio2.getStdCambio()
-							<< std::endl;
+				Cambio cambio2(cambio.getTipo(), cambio.getVersion(), 1,
+						cambio.getPosicion(), cambio.getTexto());
+				std::cout << "lo q envio " << cambio2.getStdCambio()
+						<< std::endl;
 
-					clienteAux->getSocket()->send(cambio2.getStdCambio());
-
+				clienteAux->getSocket()->send(cambio2.getStdCambio());
+				}
 			}
 		}
 	} else {
@@ -355,25 +352,27 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		Iterador<Cliente*> it =
 				this->getListaClientes()->getLista()->iterador();
 		std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
-													<< std::endl;
+				<< std::endl;
 		while (it.hasNext()) {
 			clienteAux = it.next();
 			std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
-														<< std::endl;
+					<< std::endl;
 			if (nombre == clienteAux->getNombre()) {
 				clienteAux->getSocket()->send(cambio.getStdCambio());
-						std::cout << "lo q envio " << cambio.getStdCambio()
-								<< "al cliente "<< cambio.getTexto()<<std::endl;
-				std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()
-											<< std::endl;
+				std::cout << "lo q envio " << cambio.getStdCambio()
+						<< "al cliente " << cambio.getTexto() << std::endl;
+				std::cout << "al cliente se lo reeenvio"
+						<< cambio.getStdCambio() << std::endl;
+
 			}
 		}
-
 	}
+
+
 }
 
 Servidor::~Servidor() {
-	std::cout << "destructor del server " << std::endl;
+std::cout << "destructor del server " << std::endl;
 
-	delete this->colaDeCambios;
+delete this->colaDeCambios;
 }
