@@ -112,6 +112,7 @@ void Servidor::leerCambios() {
 		}
 
 		case 'E': {
+			/*este cambio se procesa aunque tenga cualquier numero de version*/
 			this->procesarCambio(cambio, nombre);
 			break;
 		}
@@ -379,5 +380,10 @@ void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) 
 
 Servidor::~Servidor() {
 std::cout << "destructor del server " << std::endl;
+while(!colaDeCambios.empty()){
+	NombreCambio nc = this->colaDeCambios.front();
+			this->colaDeCambios.pop();
 
+			delete nc.cambio;
+}
 }
