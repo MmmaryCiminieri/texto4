@@ -90,52 +90,59 @@ bool Cambio::operator!=(const Cambio& otro)const{
 	return ((tipo !=otro.tipo)||(version !=otro.version)||(alcance !=otro.alcance) ||(posicion !=otro.posicion)||(longitud !=otro.longitud)||(texto !=otro.texto));
 }
 
-int Cambio::getVersion(){
+int Cambio::getVersion() const {
 	return this->version;
 }
 
-std::string Cambio::getTexto(){
+std::string Cambio::getTexto() const {
 	return this->texto;
 }
-std::string Cambio::getTipo(){
+std::string Cambio::getTipo() const {
 	return this->tipo;
 }
-int Cambio::getPosicion(){
+int Cambio::getPosicion() const {
 	return this->posicion;
 }
 
+int Cambio::getAlcance() const {
+	return alcance;
+}
+	int Cambio::getLongitud() const {
+		return longitud;
+	}
+
 std::string Cambio::getStdCambio() {
 
-	//Parser parser;
-	//return parser.toString(*this);
+	Parser parser;
+	return parser.toString(*this);
 
-	std::string str;
-	/*me crea un string de todo lo anterior, separado por comas*/
-		str = tipo;
-		str.append(",");
-		char slong1[20];
-		if(version != INVALIDO){
-		sprintf(slong1, "%d", version);
-		str.append(slong1);
-		str.append(",");
-		}
-		if(alcance != INVALIDO){
-		sprintf(slong1, "%d", alcance);
-		str.append(slong1);
-		str.append(",");
-		}
-		if(posicion != INVALIDO){
-
-		sprintf(slong1, "%d", posicion);
-		str.append(slong1);
-		str.append(",");
-		}
-		char slong[20];
-		sprintf(slong, "%d", longitud);
-		str.append(slong);
-		str.append(",");
-		str.append(texto);
-
-	return str;
+//	std::string str;
+//	/*me crea un string de todo lo anterior, separado por comas*/
+//		str = tipo;
+//		str.append(",");
+//		char slong1[20];
+//		if(version != INVALIDO){
+//		sprintf(slong1, "%d", version);
+//		str.append(slong1);
+//		str.append(",");
+//		}
+//		if(alcance != INVALIDO){
+//		sprintf(slong1, "%d", alcance);
+//		str.append(slong1);
+//		str.append(",");
+//		}
+//		if(posicion != INVALIDO){
+//
+//		sprintf(slong1, "%d", posicion);
+//		str.append(slong1);
+//		str.append(",");
+//		}
+//		char slong[20];
+//		sprintf(slong, "%d", longitud);
+//		str.append(slong);
+//		str.append(",");
+//		str.append(texto);
+//
+//	return str;
 }
 

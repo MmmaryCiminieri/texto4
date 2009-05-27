@@ -54,10 +54,12 @@ public:
 	Cambio(const std::string& tipo, int version,int alcance, int posicion,const std::string& texto);
 
 	bool operator!=(const Cambio& otro)const;
-		std::string getTexto();
-	int getPosicion();
-	std::string getTipo();
-	int getVersion();
+		std::string getTexto() const;
+	int getPosicion() const;
+	std::string getTipo() const;
+	int getVersion() const;
+	int getAlcance() const;
+	int getLongitud() const;
 
 
 	/*Retorna una representacion del cambio en un string*/

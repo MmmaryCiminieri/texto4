@@ -239,30 +239,30 @@ std::string Parser::toString(const Cambio& cambio){
 
 	std::string str;
 		/*me crea un string de un cambio, separado por comas*/
-			str = tipo;
+			str = cambio.getTipo();
 			str.append(",");
 			char slong1[MAXLONG];
-			if(version != Cambio::INVALIDO){
-			sprintf(slong1, "%d", version);
+			if(cambio.getVersion() != Cambio::INVALIDO){
+			sprintf(slong1, "%d", cambio.getVersion());
 			str.append(slong1);
 			str.append(",");
 			}
-			if(alcance != Cambio::INVALIDO){
-			sprintf(slong1, "%d", alcance);
+			if(cambio.getAlcance() != Cambio::INVALIDO){
+			sprintf(slong1, "%d", cambio.getAlcance());
 			str.append(slong1);
 			str.append(",");
 			}
-			if(posicion != Cambio::INVALIDO){
+			if(cambio.getPosicion() != Cambio::INVALIDO){
 
-			sprintf(slong1, "%d", posicion);
+			sprintf(slong1, "%d", cambio.getPosicion());
 			str.append(slong1);
 			str.append(",");
 			}
 			char slong[MAXLONG];
-			sprintf(slong, "%d", longitud);
+			sprintf(slong, "%d", cambio.getLongitud());
 			str.append(slong);
 			str.append(",");
-			str.append(texto);
+			str.append(cambio.getTexto());
 
 
 		return str;

@@ -34,10 +34,6 @@ std::queue<NombreCambio> Servidor::getColaDeCambios() {
 	return this->colaDeCambios;
 }
 
-unsigned short setPuerto() {
-	//TODO
-}
-
 int Servidor::getVersion() {
 	return this->documentoConc.getVersion();
 }
