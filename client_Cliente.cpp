@@ -12,6 +12,7 @@
 #include "common_Lock.h"
 #include "client_Vista.h"
 #include <iostream>
+#include <netdb.h>
 #include <string.h>
 
 #define TAMANIIO  1024
@@ -57,6 +58,7 @@ void Cliente::setVista(Vista* vista) {
 void Cliente::conectarSocket(const char* IP, const char* puerto) {
 
 	this->socket = new MSocket();
+
 	int retorno = this->socket->connect(IP, puerto);
 	if (retorno == 0) {
 		std::cout << "me pude conectar " << std::endl;
@@ -137,9 +139,8 @@ void Cliente::ejecutarAccion(Parser parser) {
 		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
-	//	g_signal_connect(G_OBJECT(this->boton), "clicked", G_CALLBACK(
-		//			on_boton_clicked), this);
-
+		//g_signal_connect_swapped (ventanaerror, "response",
+		  //    	G_CALLBACK(on_boton_clicked_logout), this->vista->getVentana());
 
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
 				true);
