@@ -49,9 +49,7 @@ public:
 	std::list<std::string> getAmigos();
 	void setVista(Vista* vista);
 	void setConectado(bool newStatus);
-		bool getConectado();
-
-
+	bool getConectado();
 
 	/*Agrego un amigo a mi lista de amigos */
 	void agregarAmigo(const std::string& nombre);
