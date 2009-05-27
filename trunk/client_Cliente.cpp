@@ -56,10 +56,14 @@ void Cliente::setVista(Vista* vista) {
 	this->vista = vista;
 }
 void Cliente::conectarSocket(const char* IP, const char* puerto) {
-
+int retorno;
+int cont =0;
 	this->socket = new MSocket();
+	while ((retorno != 0) && (cont < MAXINTENTOS)) {
+				retorno = this->socket->connect(IP, puerto);
+				cont++;
+			}
 
-	int retorno = this->socket->connect(IP, puerto);
 	if (retorno == 0) {
 		std::cout << "me pude conectar " << std::endl;
 		this->puerto = puerto;

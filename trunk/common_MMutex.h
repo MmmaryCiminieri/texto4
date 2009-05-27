@@ -19,8 +19,8 @@ private:
 
 public:
 	MMutex();
-	int lock();
-	int unlock();
+	void lock();
+	void unlock();
 	virtual ~MMutex();
 };
 

@@ -71,12 +71,9 @@ int MSocket::connect(const char* ip, const char* port) {
 		int cont = 0;
 		int retorno = -1;
 
-		while ((retorno != 0) && (cont < 15)) {
-			retorno = ::connect(this->fd, (struct sockaddr *) &destino,
+	retorno = ::connect(this->fd, (struct sockaddr *) &destino,
 					sizeof(struct sockaddr));
-			cont++;
 
-		}
 		//TODO borrar
 		std::cout << "el retorno de connect es (0 es ok) " << retorno << std::endl;
 		std::cout << "el error del socket " << strerror(errno) << retorno

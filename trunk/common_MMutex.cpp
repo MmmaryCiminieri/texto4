@@ -12,13 +12,14 @@ MMutex::MMutex() {
 	pthread_mutex_init(&mutex, NULL);
 }
 
-int MMutex::lock(){
+void MMutex::lock(){
 	pthread_mutex_lock(&mutex);
-		return 0;
-}
-	int MMutex::unlock(){
 
-		return  pthread_mutex_unlock(&mutex);
+}
+
+void MMutex::unlock(){
+
+  pthread_mutex_unlock(&mutex);
 	}
 
 
