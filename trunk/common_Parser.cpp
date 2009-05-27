@@ -273,8 +273,6 @@ std::string Parser::toString(const Cambio& cambio){
 
 Cambio* Parser::toCambio() {
 	Cambio*  cambio = new Cambio(tipo, version, alcance, posicion, texto);
-	std::cout << "parser to cambio" << cambio->getStdCambio();
-
 	return cambio;
 }
 int Parser::getVersion() {
