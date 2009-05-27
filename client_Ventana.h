@@ -82,14 +82,14 @@ private:
 		void crearCamposTexto();
 		void crearCamposTexto2();
 		void crearCamposTexto3();
+		/*constructor copia*/
+			VentanaIngreso(const VentanaIngreso& ventanaIngreso);
 
 
 
 public:
-/*constructor copia*/
-	VentanaIngreso(const VentanaIngreso& ventanaIngreso);
 
-	/*creo todos los widgets y los meto dentro de la ventana*/
+/*creo todos los widgets y los meto dentro de la ventana*/
 	VentanaIngreso();
 
 
@@ -104,6 +104,8 @@ public:
 	GtkWidget* getBotonDeslog();
 	void setCliente(Cliente* cliente);
 	Vista* getVista();
+	bool hayClienteConectado();
+
 
 	/*el cliente envia un msj de que se va, lo vuelve a recibir para debloquear el recv
 		 * se cierra el socket y se hace join. Se usa cuando el cliente se desloguea o se cierra la

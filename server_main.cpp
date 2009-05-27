@@ -1,7 +1,5 @@
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <gtk/gtk.h>
 
+#include <iostream>
 #include "common_MSocket.h"
 #include  "server_Cliente.h"
 #include  "server_ServidorEx.h"

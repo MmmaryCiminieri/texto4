@@ -31,7 +31,7 @@ void Cliente::setNombre(std::string nombre) {
 std::string Cliente::getNombre() {
 	return this->nombre;
 }
-void Cliente::Inicializar(const char* ip, const char* port, GtkWidget* boton) {
+void Cliente::inicializar(const char* ip, const char* port, GtkWidget* boton) {
 
 	this->conectarSocket(ip, port);
 
@@ -41,7 +41,7 @@ void Cliente::Inicializar(const char* ip, const char* port, GtkWidget* boton) {
 
 	} else {
 		/*valido existencia*/
-		this->EnviarDatosInicio();
+		this->enviarDatosInicio();
 		/*escucho cambios del servidor*/
 		this->execute();
 
@@ -66,7 +66,7 @@ void Cliente::conectarSocket(const char* IP, const char* puerto) {
 	}
 }
 
-void Cliente::EnviarDatosInicio() {
+void Cliente::enviarDatosInicio() {
 
 	Cambio cambio("N", this->nombre);
 	int cant = 0;
@@ -87,7 +87,7 @@ void Cliente::setConectado(bool newStatus) {
 	conectado = newStatus;
 }
 
-void Cliente::Desloguearse() {
+void Cliente::desloguearse() {
 	/*el cliente se deloguea*/
 	std::cout << nombre << " se ha deslogueado" << std::endl;
 
@@ -98,7 +98,7 @@ void Cliente::Desloguearse() {
 	//socket.connect(ip.c_str(), puerto);
 	Cambio cambio("E", nombre);
 	/*se lo envio al servidor*/
-	this->EnviarCambio(cambio);
+	this->enviarCambio(cambio);
 	/*me lo envio a mi mismo*/
 	//socket.send(cambio.getStdCambio());
 	std::cout << " el cambio enviado: " << cambio.getStdCambio() << std::endl;
@@ -282,7 +282,7 @@ void* Cliente::run() {
 	return NULL;
 }
 
-void Cliente::EnviarCambio(Cambio cambio) {
+void Cliente::enviarCambio(Cambio cambio) {
 	int retorno = -1;
 	int cant = 0;
 	while ((retorno == -1) && (cant < MAXINTENTOS)) {

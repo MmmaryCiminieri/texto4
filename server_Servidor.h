@@ -14,11 +14,11 @@
 #ifndef SERVIDOR_H_
 #define SERVIDOR_H_
 
+#include <queue>
 #include "server_ListaClientes.h"
 #include "common_DocumentoConcurrente.h"
 #include "common_MSocket.h"
 #include "common_Cambio.h"
-#include "common_Cola.h"
 #include "common_MThread.h"
 
 /*Estructura utilitaria que agrupa un cambio y un nombre, para poder así
@@ -45,7 +45,7 @@ class Servidor: public MThread {
 
 private:
 
-	Cola<NombreCambio>* colaDeCambios;
+	std::queue<NombreCambio> colaDeCambios;
 	int puerto;
 	int cantClientes;
 	ListaClientes listaDeClientes;
@@ -63,7 +63,7 @@ public:
 	bool getEstado();
 	void setEstado(bool estado);
 	int getVersion();
-	Cola<NombreCambio>* getColaDeCambios();
+	std::queue<NombreCambio> getColaDeCambios();
 	DocumentoConcurrente* getDocumentoConc();
 	MSocket* getSocket();
 

@@ -10,23 +10,23 @@
 
 #ifndef LISTACLIENTES_H_
 #define LISTACLIENTES_H_
+#include <list>
+#include <string>
 
-#include "common_Lista.h"
 class Cliente;
 
 class ListaClientes {
 public:
-	Lista<Cliente*>* listaClientes;
+	std::list<Cliente*> listaClientes;
 
 
 public:
-	ListaClientes();
-	Lista<Cliente*>* getLista();
+
+	std::list<Cliente*>& getLista();
 
 	/*se remueve un cliente de la lista*/
-	bool remover(std::string nombre);
+	void remover(std::string nombre);
 
-	virtual ~ListaClientes();
 };
 
 #endif /* LISTACLIENTES_H_ */

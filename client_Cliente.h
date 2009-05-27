@@ -63,20 +63,20 @@ public:
 	 * Envío al servidor mi nombre.
 	 * Llamo al execute de Cliente.
 	 * */
-	void Inicializar(const char* ip, const char* port, GtkWidget* boton);
+	void inicializar(const char* ip, const char* port, GtkWidget* boton);
 
 	/*Envío a través de mi socket, al servidor, mi nombre*/
-	void EnviarDatosInicio();
+	void enviarDatosInicio();
 
 	/*Envio un cambio a través del socket, al servidor*/
-	void EnviarCambio(Cambio cambio);
+	void enviarCambio(Cambio cambio);
 
 	/*remuevo un amigo de mi lista y de la vista*/
 	void quitarAmigo(std::string nombre);
 
 	//TODO ver q andeee
 	/*se crea un socket que se conecta con mi cliente y le envia un mensaje de deslogueo*/
-	void Desloguearse();
+	void desloguearse();
 
 	/*según el tipo de cambio recibido desde el servidor,  se ejecutarán diferentes acciones sobre este Cliente,
 	 * sus amigos y su documento */

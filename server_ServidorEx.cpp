@@ -4,7 +4,7 @@
  *  Created on: May 17, 2009
  *      Author: mmmary
  */
-
+#include <iostream>
 #include "server_ServidorEx.h"
 #include "server_Cliente.h"
 
