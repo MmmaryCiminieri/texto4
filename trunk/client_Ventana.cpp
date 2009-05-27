@@ -269,7 +269,7 @@ void VentanaIngreso::crearLabel4() {
 
 void VentanaIngreso::crearLabel5() {
 	labelLista = NULL;
-	this->labelLista = gtk_label_new("Mis amigos conectados:");
+	this->labelLista = gtk_label_new("Gente editando este documento:");
 
 }
 void VentanaIngreso::crearCamposTexto() {
@@ -280,9 +280,7 @@ void VentanaIngreso::crearCamposTexto() {
 	contenedor = gtk_hbox_new(TRUE, 10);
 
 	gtk_box_pack_start(GTK_BOX(this->contenedor), labelTexto, TRUE, TRUE, 10);
-
 	gtk_box_pack_start(GTK_BOX(this->contenedor), labelLista, TRUE, TRUE, 10);
-
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor, false, FALSE, 10);
 
 }
@@ -292,49 +290,25 @@ void VentanaIngreso::crearCamposTexto3() {
 	 * TRUE es para que todos los elementos sean de igual tamaÃ±o
 	 * 10 es para que deje 10 pÃ­xels entre los elementos */
 	contenedor3 = NULL;
-	//ERA TRUE
 	contenedor3 = gtk_hbox_new(true, 10);
 	gtk_box_pack_start(GTK_BOX(contenedor3), table, TRUE, TRUE, 10);
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor3, FALSE, FALSE, 10);
 
 }
 
-/*transforma una cadena en Utf8 a ascii*/
-const char* utf8ToAscii(std::string str) {
-	gchar* copia = new gchar[str.size() + 1];
-
-	str.copy(copia, str.size(), 0);
-	const gchar* asc = "ASCII";
-	const gchar* utf = "UTF8";
-	gchar fallBack[] = { '#' };
-
-	gchar* strAscii = g_convert_with_fallback(copia, str.size(), utf, asc,
-			fallBack, NULL, NULL, NULL);
-
-	delete[] copia;
-	return strAscii;
-}
-
-/*funcion q se llama ante la seÃ±al de agregado de texto, se crea el cambio correspondiente y se lo envÃ­a al servidor*/
-void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len,
-		gpointer user_data) {
+/*funcion q se llama ante la senial de agregado de texto, se crea el cambio correspondiente y se lo envÃ­a al servidor*/
+void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len, gpointer user_data) {
 
 	int posicion = gtk_text_iter_get_offset(location);
-	std::string asciiText = utf8ToAscii(text);
+	std::string asciiText = text;
 	std::cout << "el texto a agregar"<<asciiText<<"END" << std::endl;
 
-	Cambio
-			cambio(
-					"A",
-					((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0,
-					posicion,  asciiText);
-
-
+	Cambio cambio("A", ((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0, posicion,  asciiText);
 	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
 }
 
 
-/*funcion q se llama ante la seÃ±al de borrado de texto, se crea el cambio correspondiente y se lo envÃ­a al servidor*/
+/*funcion q se llama ante la senial de borrado de texto, se crea el cambio correspondiente y se lo envÃ­a al servidor*/
 
 void hanBorrado(GtkTextBuffer *textbuffer,    GtkTextIter   *start,
         GtkTextIter   *end,
@@ -346,7 +320,7 @@ std::cout << "en han borrado"<< std::endl;
 	int inicio = gtk_text_iter_get_offset(start);
 	gchar* texto = gtk_text_buffer_get_slice    (textbuffer, start, end, true);
 
-	std::string asciiText = utf8ToAscii(texto);
+	std::string asciiText = texto;
 	Cambio
 			cambio(
 					"B",
