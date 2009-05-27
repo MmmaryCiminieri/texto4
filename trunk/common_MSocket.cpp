@@ -13,7 +13,6 @@
 #include <iostream>
 #include <stdlib.h>
 
-#define CANTMAXINTENTOS 20
 MSocket::MSocket(int fd) {
 	this->fd = fd;
 	if (fd == -1) {
@@ -21,19 +20,14 @@ MSocket::MSocket(int fd) {
 		return;
 	}
 	this->dest_addr.sin_family = AF_INET;
-	this->dest_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	memset(this->dest_addr.sin_zero, '\0', sizeof(this->dest_addr.sin_zero));
+memset(this->dest_addr.sin_zero, '\0', sizeof(this->dest_addr.sin_zero));
 	this->valid = true;
 }
 
 MSocket::MSocket() {
-	int cant = 0;
 	this->fd = -1;
-	while ((fd == -1) && cant < CANTMAXINTENTOS) {
 		this->fd = socket(PF_INET, SOCK_STREAM, 0);
 
-		cant++;
-	}
 	if (fd == -1) {
 		this->valid = false;
 	} else {
@@ -48,11 +42,7 @@ MSocket::MSocket(int puerto, int cantClientes) {
 		this->fd = socket(PF_INET, SOCK_STREAM, 0);
 		cantidadIntentos++;
 	}
-	if (fd == -1) {
-		this->valid = false;
-		return;
-	}
-	this->dest_addr.sin_family = AF_INET;
+		this->dest_addr.sin_family = AF_INET;
 	this->dest_addr.sin_port = htons(puerto);
 	this->dest_addr.sin_addr.s_addr = INADDR_ANY;//htonl(INADDR_ANY);
 	memset(this->dest_addr.sin_zero, '\0', sizeof(this->dest_addr.sin_zero));
@@ -65,11 +55,18 @@ int MSocket::connect(const char* ip, const char* port) {
 	if (this->valid) {
 		struct sockaddr_in destino;
 		memset(&destino, 0, sizeof(destino));
+		//unsigned long direccion = inet_addr(host);
+		//hostent* h = gethostbyname(host);
+		//direccion = *((unsigned long*)h->h_addr);
+
+
+
+
+		//this->dest_addr.sin_addr.s_addr = *((struct in_addr *)he->h_addr);//htonl(INADDR_ANY);
+
 
 		destino.sin_family = AF_INET;
 		destino.sin_port = htons(atoi(port));
-		//TODO PODER RECIBIR LOCAL HOST
-		//ip = gethostbyname (lo que lei)
 		destino.sin_addr.s_addr = inet_addr(ip);
 		int cont = 0;
 		int retorno = -1;

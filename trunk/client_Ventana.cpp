@@ -42,6 +42,10 @@ void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 	data->setCliente(cliente);
 	cliente->setVista(data->getVista());
 
+	if(gtk_entry_get_text(GTK_ENTRY(data->entradaNombre)) == ""){
+		std::cout << "INGRESE NOMBRE" <<std::endl;
+
+	}
 
 	/*trabo el boton DE CONECTARSE*/
 	gtk_widget_set_sensitive(widget, false);
