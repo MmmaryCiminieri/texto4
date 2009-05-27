@@ -56,13 +56,9 @@ void Cliente::ejecutarAccion(Parser parser) {
 	switch (ch) {
 
 	case 'N': {
-		/*el cliente envía sus datos para ingresar al sistema*/
+		/*el cliente envÃ­a sus datos para ingresar al sistema*/
 		this->setNombre(parser.getTexto());
-		if(this->servidor->verificacionCliente(this)){
-			this->servidor->ingresoCliente(this);
-		}else{
-			this->servidor->rechazoCliente(this);
-		}
+		this->servidor->verificacionCliente(this);
 		break;
 	}
 	case 'A':
@@ -74,7 +70,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 		;
 	case 'E': {
 
-		/*recibo un cambio que afectará al documeto o a los usuarios conectados */
+		/*recibo un cambio que afectarÃ¡ al documeto o a los usuarios conectados */
 		/*estos cambios de acolan, esperando a ser procesados*/
 		this->servidor->agregarCambio(parser.toCambio(), nombre);
 

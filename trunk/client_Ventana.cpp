@@ -36,7 +36,7 @@ void VentanaIngreso::bloquearBotonDeslog(){
 	gtk_widget_set_sensitive(botonDeslog, false);
 }
 
-/* Función 'callback' para atender la señal "clicked" del botón */
+/* FunciÃ³n 'callback' para atender la seÃ±al "clicked" del botÃ³n */
 void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 	Cliente* cliente = new Cliente;
 	data->setCliente(cliente);
@@ -106,7 +106,7 @@ bool VentanaIngreso::hayClienteConectado(){
 
 }
 
-/* Función 'callback' para atender la señal del evento "delete_event" */
+/* FunciÃ³n 'callback' para atender la seÃ±al del evento "delete_event" */
 static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event,
 		VentanaIngreso* data) {
 	std::cout << "[recibido el evento delete_event]" << std::endl;
@@ -121,7 +121,7 @@ GtkWidget* VentanaIngreso::getVentana() {
 	return ventana;
 }
 
-/* Función 'callback' para atender la señal "destroy" de la ventana. */
+/* FunciÃ³n 'callback' para atender la seÃ±al "destroy" de la ventana. */
 static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 	std::cout << "[recibido el evento destroy]" << std::endl;
 	/* finaliza el loop de gtk_main() y libera memoria */
@@ -170,13 +170,13 @@ void VentanaIngreso::crearVentana() {
 
 
 	//TODO ?/
-	/* conecto la señal "delete_event" de la ventana a la callback
+	/* conecto la seÃ±al "delete_event" de la ventana a la callback
 	 * on_delete_event() */
 	//g_signal_connect(G_OBJECT(this->ventana), "delete_event", G_CALLBACK(
 		//	on_delete_event), NULL);
 
-	/* conecto la señal "destroy" de la ventana a la callback destruir()
-	 * esta señal se emite cuando se llama a gtk_widget_destroy() */
+	/* conecto la seÃ±al "destroy" de la ventana a la callback destruir()
+	 * esta seÃ±al se emite cuando se llama a gtk_widget_destroy() */
 	g_signal_connect(G_OBJECT(this->ventana), "destroy", G_CALLBACK(destruir),
 			NULL);
 
@@ -187,8 +187,8 @@ void VentanaIngreso::crearVentana() {
 
 void VentanaIngreso::crearCamposVerticales() {
 	/* creo un contenedor que divide horizontalmente para poner mis widgets
-	 * TRUE es para que todos los elementos sean de igual tamaño
-	 * 10 es para que deje 10 píxels entre los elementos */
+	 * TRUE es para que todos los elementos sean de igual tamaÃ±o
+	 * 10 es para que deje 10 pÃ­xels entre los elementos */
 	contenedorV = NULL;
 
 	contenedorV = gtk_vbox_new(false, 10);
@@ -247,11 +247,11 @@ void VentanaIngreso::crearTable() {
 
 void VentanaIngreso::crearBoton() {
 	boton = NULL;
-	/* creo un botón predefinido con un ícono de "Aceptar" */
+	/* creo un botÃ³n predefinido con un Ã­cono de "Aceptar" */
 	this->boton = gtk_button_new_from_stock("Conectar");
 
-	/* conecto la señal "clicked" del botón a la callback on_boton_clicked()
-	 * y le envío el widget entrada como dato adicional */
+	/* conecto la seÃ±al "clicked" del botÃ³n a la callback on_boton_clicked()
+	 * y le envÃ­o el widget entrada como dato adicional */
 	g_signal_connect(G_OBJECT(this->boton), "clicked", G_CALLBACK(
 			on_boton_clicked), this);
 
@@ -260,11 +260,11 @@ void VentanaIngreso::crearBoton() {
 
 }
 void VentanaIngreso::crearBotonDeslog() {
-	/* creo un botón predefinido con un ícono de "Aceptar" */
+	/* creo un botÃ³n predefinido con un Ã­cono de "Aceptar" */
 	botonDeslog = gtk_button_new_from_stock("Desloguear");
 gtk_widget_set_sensitive(botonDeslog, false);
-	/* conecto la señal "clicked" del botón a la callback on_boton_clicked()
-	 * y le envío el widget entrada como dato adicional */
+	/* conecto la seÃ±al "clicked" del botÃ³n a la callback on_boton_clicked()
+	 * y le envÃ­o el widget entrada como dato adicional */
 	g_signal_connect(
 			G_OBJECT(this->botonDeslog),
 			"clicked",
@@ -290,8 +290,8 @@ void VentanaIngreso::crearLabel5() {
 }
 void VentanaIngreso::crearCamposTexto() {
 	/* creo un contenedor que divide horizontalmente para poner mis widgets
-	 * TRUE es para que todos los elementos sean de igual tamaño
-	 * 10 es para que deje 10 píxels entre los elementos */
+	 * TRUE es para que todos los elementos sean de igual tamaÃ±o
+	 * 10 es para que deje 10 pÃ­xels entre los elementos */
 	contenedor = NULL;
 	contenedor = gtk_hbox_new(TRUE, 10);
 
@@ -305,8 +305,8 @@ void VentanaIngreso::crearCamposTexto() {
 
 void VentanaIngreso::crearCamposTexto3() {
 	/* creo un contenedor que divide horizontalmente para poner mis widgets
-	 * TRUE es para que todos los elementos sean de igual tamaño
-	 * 10 es para que deje 10 píxels entre los elementos */
+	 * TRUE es para que todos los elementos sean de igual tamaÃ±o
+	 * 10 es para que deje 10 pÃ­xels entre los elementos */
 	contenedor3 = NULL;
 	//ERA TRUE
 	contenedor3 = gtk_hbox_new(true, 10);
@@ -331,7 +331,7 @@ const char* utf8ToAscii(std::string str) {
 	return strAscii;
 }
 
-/*funcion q se llama ante la señal de agregado de texto, se crea el cambio correspondiente y se lo envía al servidor*/
+/*funcion q se llama ante la seÃ±al de agregado de texto, se crea el cambio correspondiente y se lo envÃ­a al servidor*/
 void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len,
 		gpointer user_data) {
 
@@ -345,11 +345,12 @@ void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len
 					((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0,
 					posicion,  asciiText);
 
+
 	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
 }
 
 
-/*funcion q se llama ante la señal de borrado de texto, se crea el cambio correspondiente y se lo envía al servidor*/
+/*funcion q se llama ante la seÃ±al de borrado de texto, se crea el cambio correspondiente y se lo envÃ­a al servidor*/
 
 void hanBorrado(GtkTextBuffer *textbuffer,    GtkTextIter   *start,
         GtkTextIter   *end,
@@ -368,7 +369,6 @@ std::cout << "en han borrado"<< std::endl;
 					((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0,
 					inicio, asciiText);
 	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
-
 }
 
 void VentanaIngreso::crearTexto() {
@@ -438,8 +438,8 @@ gtk_widget_set_usize(view2, 150, 10);
 }
 void VentanaIngreso::crearCamposTexto2() {
 	/* creo un contenedor que divide horizontalmente para poner mis widgets
-	 * TRUE es para que todos los elementos sean de igual tamaño
-	 * 10 es para que deje 10 píxels entre los elementos */
+	 * TRUE es para que todos los elementos sean de igual tamaÃ±o
+	 * 10 es para que deje 10 pÃ­xels entre los elementos */
 	contenedor2 = gtk_hbox_new(FALSE, 10);
 
 	gtk_box_pack_start(GTK_BOX(contenedor2), swindow, true, true, 0);

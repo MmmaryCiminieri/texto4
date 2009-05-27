@@ -69,7 +69,7 @@ public:
 	void enviarDatosInicio();
 
 	/*Envio un cambio a través del socket, al servidor*/
-	void enviarCambio(Cambio cambio);
+	void enviarCambio(const Cambio& cambio);
 
 	/*remuevo un amigo de mi lista y de la vista*/
 	void quitarAmigo(const std::string& nombre);

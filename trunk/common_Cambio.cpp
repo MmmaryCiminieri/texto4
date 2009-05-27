@@ -21,7 +21,6 @@ Cambio::Cambio(const std::string& tipo, int version,int alcance, int posicion, c
 	this->texto = texto;
 	this->posicion = posicion;
 	this->alcance= alcance;
-
 }
 Cambio::Cambio(const std::string& tipo,  const std::string& texto) {
 	this->tipo = tipo;
@@ -30,7 +29,6 @@ Cambio::Cambio(const std::string& tipo,  const std::string& texto) {
 	this->longitud = texto.size();
 	this->texto = texto;
 	this->posicion = INVALIDO;
-
 }
 
 Cambio::Cambio(const std::string& tipo, int version,  const std::string& texto) {
@@ -40,7 +38,6 @@ Cambio::Cambio(const std::string& tipo, int version,  const std::string& texto) 
 	this->texto = texto;
 	this->alcance = INVALIDO;
 	this->posicion = INVALIDO;
-
 }
 
 bool Cambio::operator!=(const Cambio& otro)const{
@@ -69,38 +66,9 @@ int Cambio::getAlcance() const {
 		return longitud;
 	}
 
-//std::string Cambio::getStdCambio() {
+std::string Cambio::getStdCambio() {
 
-	//Parser parser;
-	//return parser.toString(*this);
-
-//	std::string str;
-//	/*me crea un string de todo lo anterior, separado por comas*/
-//		str = tipo;
-//		str.append(",");
-//		char slong1[20];
-//		if(version != INVALIDO){
-//		sprintf(slong1, "%d", version);
-//		str.append(slong1);
-//		str.append(",");
-//		}
-//		if(alcance != INVALIDO){
-//		sprintf(slong1, "%d", alcance);
-//		str.append(slong1);
-//		str.append(",");
-//		}
-//		if(posicion != INVALIDO){
-//
-//		sprintf(slong1, "%d", posicion);
-//		str.append(slong1);
-//		str.append(",");
-//		}
-//		char slong[20];
-//		sprintf(slong, "%d", longitud);
-//		str.append(slong);
-//		str.append(",");
-//		str.append(texto);
-//
-//	return str;
-//}
+	Parser parser;
+	return parser.toString(*this);
+}
 
