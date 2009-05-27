@@ -80,12 +80,17 @@ public:
 	 * en la cola de cambios (si los hay)*/
 	void* run();
 
-	/*Se analiza si el cliente que ha requerido conexión tiene el mismo nombre que otro ya conectado:
-	 * si es así, se le envia un mensaje : "R,long,nombre" para indicarle que ha sido rechazado.
-	 * Si no, se le enviá un mensaje de que se lo ha aceptado "L,long,nombre" ;el documento actual en otro cambio
+	/*Se analiza si el cliente que ha requerido conexión tiene el mismo nombre que otro ya conectado*/
+	bool verificacionCliente(Cliente* cliente);
+
+	 /*El cliente fue aceptado : se le enviá un mensaje de que se lo ha aceptado "L,long,nombre" ;el documento actual en otro cambio
 	 * y se les avisa a todos los usuarios que un cliente se conectó.
 	 * */
-	void verificacionCliente(Cliente* cliente);
+	void ingresoCliente(Cliente* cliente);
+
+	/*se le envia un mensaje : "R,long,nombre" para indicarle que ha sido rechazado.
+	 * por tener el mismo nombre que otro usuario*/
+		void rechazoCliente(Cliente* cliente);
 
 	/*Se envia un Cambio. Nombre indica cual fue el cliente que lo envió al servidor.
 	 * Si el flag es cero es por que el cambio se envia a todos. Si es uno, sólo se envía al cliente que lo propuso

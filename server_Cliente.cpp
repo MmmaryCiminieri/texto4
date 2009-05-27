@@ -58,7 +58,11 @@ void Cliente::ejecutarAccion(Parser parser) {
 	case 'N': {
 		/*el cliente envía sus datos para ingresar al sistema*/
 		this->setNombre(parser.getTexto());
-		this->servidor->verificacionCliente(this);
+		if(this->servidor->verificacionCliente(this)){
+			this->servidor->ingresoCliente(this);
+		}else{
+			this->servidor->rechazoCliente(this);
+		}
 		break;
 	}
 	case 'A':

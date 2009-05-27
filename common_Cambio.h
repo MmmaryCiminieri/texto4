@@ -63,7 +63,7 @@ public:
 
 
 	/*Retorna una representacion del cambio en un string*/
-	std::string getStdCambio();
+	//std::string getStdCambio();
 };
 
 #endif /* CAMBIO_H_ */

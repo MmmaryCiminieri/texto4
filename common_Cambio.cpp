@@ -21,26 +21,6 @@ Cambio::Cambio(const std::string& tipo, int version,int alcance, int posicion, c
 	this->texto = texto;
 	this->posicion = posicion;
 	this->alcance= alcance;
-//
-//	/*me crea un string de todo lo anterior, separado por comas*/
-//	this->stdCambio = tipo;
-//	this->stdCambio.append(",");
-//	char slong1[MAXLONG];
-//	sprintf(slong1, "%d", version);
-//	this->stdCambio.append(slong1);
-//	this->stdCambio.append(",");
-//
-//	sprintf(slong1, "%d", alcance);
-//	this->stdCambio.append(slong1);
-//	this->stdCambio.append(",");
-//	sprintf(slong1, "%d", posicion);
-//	this->stdCambio.append(slong1);
-//	this->stdCambio.append(",");
-//	char slong[MAXLONG];
-//	sprintf(slong, "%d", longitud);
-//	this->stdCambio.append(slong);
-//	this->stdCambio.append(",");
-//	this->stdCambio.append(texto);
 
 }
 Cambio::Cambio(const std::string& tipo,  const std::string& texto) {
@@ -51,15 +31,6 @@ Cambio::Cambio(const std::string& tipo,  const std::string& texto) {
 	this->texto = texto;
 	this->posicion = INVALIDO;
 
-//	/*me crea un string de todo lo anterior, separado por comas*/
-//	this->stdCambio = tipo;
-//	this->stdCambio.append(",");
-//	char slong[MAXLONG];
-//	sprintf(slong, "%d", longitud);
-//	this->stdCambio.append(slong);
-//	this->stdCambio.append(",");
-//	this->stdCambio.append(texto);
-
 }
 
 Cambio::Cambio(const std::string& tipo, int version,  const std::string& texto) {
@@ -69,19 +40,6 @@ Cambio::Cambio(const std::string& tipo, int version,  const std::string& texto) 
 	this->texto = texto;
 	this->alcance = INVALIDO;
 	this->posicion = INVALIDO;
-
-//	/*me crea un string de todo lo anterior, separado por comas*/
-//	this->stdCambio = tipo;
-//	this->stdCambio.append(",");
-//	char slong1[MAXLONG];
-//	sprintf(slong1, "%d", version);
-//	this->stdCambio.append(slong1);
-//	this->stdCambio.append(",");
-//	char slong[MAXLONG];
-//	sprintf(slong, "%d", longitud);
-//	this->stdCambio.append(slong);
-//	this->stdCambio.append(",");
-//	this->stdCambio.append(texto);
 
 }
 
@@ -111,10 +69,10 @@ int Cambio::getAlcance() const {
 		return longitud;
 	}
 
-std::string Cambio::getStdCambio() {
+//std::string Cambio::getStdCambio() {
 
-	Parser parser;
-	return parser.toString(*this);
+	//Parser parser;
+	//return parser.toString(*this);
 
 //	std::string str;
 //	/*me crea un string de todo lo anterior, separado por comas*/
@@ -144,5 +102,5 @@ std::string Cambio::getStdCambio() {
 //		str.append(texto);
 //
 //	return str;
-}
+//}
 

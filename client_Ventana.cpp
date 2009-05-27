@@ -344,8 +344,6 @@ void hanAgregado(GtkWidget* texto, GtkTextIter* location, gchar * text, gint len
 					"A",
 					((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0,
 					posicion,  asciiText);
-	std::cout << "el cambio enviado"<<cambio.getStdCambio()<< std::endl;
-
 
 	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
 }
@@ -370,7 +368,6 @@ std::cout << "en han borrado"<< std::endl;
 					((VentanaIngreso*) user_data)->getCliente()->getDocumentoConc()->getVersion(),0,
 					inicio, asciiText);
 	((VentanaIngreso*) user_data)->getCliente()->enviarCambio(cambio);
-	std::cout << "el cambio enviado"<<cambio.getStdCambio()<< std::endl;
 
 }
 
