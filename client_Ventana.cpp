@@ -38,11 +38,6 @@ void VentanaIngreso::bloquearBotonDeslog(){
 
 /* Función 'callback' para atender la señal "clicked" del botón */
 void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
-
-	/* muestro el contenido de la entrada de texto */
-	std::cout << "Texto ingresado de Usuario:" << gtk_entry_get_text(GTK_ENTRY(
-			data->entradaNombre)) << std::endl;
-
 	Cliente* cliente = new Cliente;
 	data->setCliente(cliente);
 	cliente->setVista(data->getVista());
