@@ -91,16 +91,10 @@ void Cliente::desloguearse() {
 	/*el cliente se deloguea*/
 	std::cout << nombre << " se ha deslogueado" << std::endl;
 
-	std::string ip = "127.0.0.1";
-
 	/*debo desbloquear el recv, para q se pueda hacer el join*/
-	//MSocket socket;
-	//socket.connect(ip.c_str(), puerto);
 	Cambio cambio("E", nombre);
 	/*se lo envio al servidor*/
 	this->enviarCambio(cambio);
-	/*me lo envio a mi mismo*/
-	//socket.send(cambio.getStdCambio());
 	std::cout << " el cambio enviado: " << cambio.getStdCambio() << std::endl;
 }
 
@@ -296,7 +290,7 @@ std::list<std::string> Cliente::getAmigos() {
 }
 void Cliente::quitarAmigo(const std::string& nombre) {
 	this->listaDeAmigos.remove(nombre);
-	this->vista->quitarAmigo(nombre.c_str());
+	this->vista->refrescarLista();
 
 
 }
