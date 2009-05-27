@@ -112,6 +112,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 		std::cout << "recibi la E" << std::endl;
 		this->socket->close();
 		this->setConectado(false);
+
 		break;
 	}
 
@@ -191,7 +192,7 @@ break;
 	case 'F': {
 
 		std::string str = parser.getTexto();
-		if (this->listaDeAmigos.isEmpty()) {
+		if (this->listaDeAmigos.empty()) {
 			/*no tengo amigos =( , ahora tengo uno*/
 
 			std::cout << "me llego el primer amigo " << std::endl;
@@ -290,7 +291,7 @@ void Cliente::EnviarCambio(Cambio cambio) {
 	}
 }
 
-Lista<std::string> Cliente::getAmigos() {
+std::list<std::string> Cliente::getAmigos() {
 	return this->listaDeAmigos;
 }
 void Cliente::quitarAmigo(std::string nombre) {
@@ -301,7 +302,7 @@ void Cliente::quitarAmigo(std::string nombre) {
 }
 
 void Cliente::agregarAmigo(std::string nombre) {
-	this->listaDeAmigos.add(nombre);
+	this->listaDeAmigos.push_back(nombre);
 
 }
 
