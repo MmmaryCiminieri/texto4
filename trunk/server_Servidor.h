@@ -13,10 +13,10 @@
 
 #ifndef SERVIDOR_H_
 #define SERVIDOR_H_
-
+#include <list>
 #include <queue>
-#include "server_ListaClientes.h"
 #include "common_DocumentoConcurrente.h"
+#include "server_Cliente.h"
 #include "common_MSocket.h"
 #include "common_Cambio.h"
 #include "common_MThread.h"
@@ -48,16 +48,18 @@ private:
 	std::queue<NombreCambio> colaDeCambios;
 	int puerto;
 	int cantClientes;
-	ListaClientes listaDeClientes;
+	std::list<Cliente*> listaDeClientes;
 	DocumentoConcurrente documentoConc;
 	MSocket* socket;
 	bool escucho;
 	MMutex mutex;
 
+	void removerCliente(std::string nombre);
+
 public:
 	Servidor(unsigned short puerto, int cantClientes);
 
-	ListaClientes* getListaClientes();
+	std::list<Cliente*>* getListaClientes();
 	int getPuerto();
 	int getCantClientes();
 	bool getEstado();
@@ -83,7 +85,7 @@ public:
 	 * Si no, se le enviá un mensaje de que se lo ha aceptado "L,long,nombre" ;el documento actual en otro cambio
 	 * y se les avisa a todos los usuarios que un cliente se conectó.
 	 * */
-	void VerificacionCliente(Cliente* cliente);
+	void verificacionCliente(Cliente* cliente);
 
 	/*Se envia un Cambio. Nombre indica cual fue el cliente que lo envió al servidor.
 	 * Si el flag es cero es por que el cambio se envia a todos. Si es uno, sólo se envía al cliente que lo propuso

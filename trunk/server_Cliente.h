@@ -12,12 +12,13 @@
 #define CLIENTE_H_
 
 #include <string>
-#include <gtk/gtk.h>
 
 #include "common_MSocket.h"
-#include "server_Servidor.h"
 #include "common_MThread.h"
 #include "common_Parser.h"
+#include "common_MMutex.h"
+
+class Servidor;
 class Cliente: public MThread {
 
 private:
@@ -31,8 +32,8 @@ public:
 
 	Cliente(MSocket* socket, Servidor* servidor);
 
-	std::string getNombre();
-	void setNombre(std::string nombre);
+	std::string getNombre() const;
+	void setNombre(const std::string& nombre);
 	MSocket* getSocket();
 	bool getConectado();
 	void setConectado(bool newStatus);

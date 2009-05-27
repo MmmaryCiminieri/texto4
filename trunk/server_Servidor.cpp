@@ -34,6 +34,18 @@ std::queue<NombreCambio> Servidor::getColaDeCambios() {
 	return this->colaDeCambios;
 }
 
+void Servidor::removerCliente(std::string nombre){
+	 std::list<Cliente*>::iterator it;
+Cliente* clienteAux;
+	 for( it = getListaClientes()->begin(); it != getListaClientes()->end(); ++it ) {
+	       clienteAux = *it;
+	       if(clienteAux->getNombre() == nombre){
+				   getListaClientes()->remove(clienteAux);
+	       			return;
+	       		}
+	     }
+}
+
 int Servidor::getVersion() {
 	return this->documentoConc.getVersion();
 }
@@ -114,14 +126,14 @@ void Servidor::leerCambios() {
 void Servidor::desconectarCliente(std::string nombre) {
 	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
-		 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 		       clienteAux = *it;
 
 		if (nombre == clienteAux->getNombre()) {
 
 			clienteAux->desloguearCliente();
 			clienteAux->join();
-			this->listaDeClientes.remover(clienteAux->getNombre());
+			removerCliente(clienteAux->getNombre());
 			delete clienteAux;
 			return;
 		}
@@ -206,7 +218,7 @@ void Servidor::cerrarServidor() {
 
 		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-			 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+			 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 			       clienteAux = *it;
 
 			clienteAux->join();
@@ -221,7 +233,7 @@ void Servidor::cerrarServidor() {
 	}
 }
 
-ListaClientes* Servidor::getListaClientes() {
+std::list<Cliente*>* Servidor::getListaClientes() {
 	return &listaDeClientes;
 }
 
@@ -235,7 +247,7 @@ void Servidor::notificarAmigoConectado(std::string nombre) {
 	Cambio cambio("F", nombre);
 	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
-		 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 		       clienteAux = *it;
 		clienteAux->getSocket()->send(cambio.getStdCambio());
 	}
@@ -246,7 +258,7 @@ void Servidor::crearListaAmigos(Cliente* cliente) {
 	Lock lock(this->mutex);
 	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
-		 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 		       clienteAux = *it;
 
 
@@ -256,14 +268,14 @@ void Servidor::crearListaAmigos(Cliente* cliente) {
 	}
 }
 
-void Servidor::VerificacionCliente(Cliente* cliente) {
+void Servidor::verificacionCliente(Cliente* cliente) {
 	bool encontrado = false;
 
 	{
 		Lock lock(this->mutex);
 		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-			 for( it = this->getListaClientes()->getLista().begin(); ((it != this->getListaClientes()->getLista().end())&&(!encontrado)); ++it ) {
+			 for( it = this->getListaClientes()->begin(); ((it != this->getListaClientes()->end())&&(!encontrado)); ++it ) {
 			       clienteAux = *it;
 
 
@@ -285,7 +297,7 @@ void Servidor::VerificacionCliente(Cliente* cliente) {
 		tipo = "L";
 		this->notificarAmigoConectado(cliente->getNombre());
 		this->crearListaAmigos(cliente);
-		this->getListaClientes()->getLista().push_back(cliente);
+		this->getListaClientes()->push_back(cliente);
 
 	}
 
@@ -325,7 +337,7 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		/*le mando a todos el cambio creado*/
 		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-			 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+			 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 			       clienteAux = *it;
 
 			if (nombre != clienteAux->getNombre()) {
@@ -348,7 +360,7 @@ void Servidor::enviarCambio(Cambio cambio, std::string nombre, int flag) {
 		/*solo se lo envio al que creo el mensaje*/
 		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-			 for( it = this->getListaClientes()->getLista().begin(); it != this->getListaClientes()->getLista().end(); ++it ) {
+			 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 			       clienteAux = *it;
 
 				std::cout << "al cliente se lo reeenvio" << cambio.getStdCambio()

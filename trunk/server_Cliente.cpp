@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "server_Cliente.h"
+#include "server_Servidor.h"
 #include "common_Parser.h"
 #include "common_Lock.h"
 #define TAMANIIO 1024
@@ -15,16 +16,15 @@
 Cliente::Cliente(MSocket * socket, Servidor* servidor) {
 	this->socket = socket;
 	this->servidor = servidor;
-	//estaba en true...
+	// TODO: Pasar a false?
 	this->conectado = true;
-
 }
 
-void Cliente::setNombre(std::string nombre) {
+void Cliente::setNombre(const std::string& nombre) {
 	this->nombre = nombre;
 }
 
-std::string Cliente::getNombre() {
+std::string Cliente::getNombre() const {
 	return this->nombre;
 }
 
@@ -32,7 +32,7 @@ MSocket* Cliente::getSocket() {
 	return this->socket;
 }
 
-bool  Cliente::getConectado(){
+bool  Cliente::getConectado() {
 	Lock lock(mutex);
 	return conectado;
 }
@@ -58,7 +58,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 	case 'N': {
 		/*el cliente envía sus datos para ingresar al sistema*/
 		this->setNombre(parser.getTexto());
-		this->servidor->VerificacionCliente(this);
+		this->servidor->verificacionCliente(this);
 		break;
 	}
 	case 'A':
