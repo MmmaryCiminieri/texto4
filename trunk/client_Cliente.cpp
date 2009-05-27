@@ -137,6 +137,10 @@ void Cliente::ejecutarAccion(Parser parser) {
 		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
+	//	g_signal_connect(G_OBJECT(this->boton), "clicked", G_CALLBACK(
+		//			on_boton_clicked), this);
+
+
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
 				true);
 
@@ -292,6 +296,7 @@ DocumentoConcurrente* Cliente::getDocumentoConc() {
 }
 Cliente::~Cliente() {
 	delete this->documentoConc;
+	delete this->socket;
 	std::cout << "////BORRO CLIENTE/////" << std::endl;
 	// TODO Auto-generated destructor stub
 	//se llama a destr de socket

@@ -79,6 +79,8 @@ data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 
 	gtk_text_buffer_set_text( data->texto,"",-1);
 	gtk_text_buffer_set_text( data->lista,"",-1);
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(data->view), false);
+
 	g_signal_handler_unblock(data->texto, data->insertSignal);
 
 	g_signal_handler_unblock(data->texto,data->deleteSignal);

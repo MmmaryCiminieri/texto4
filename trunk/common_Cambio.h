@@ -60,6 +60,11 @@ public:
 	int getVersion() const;
 	int getAlcance() const;
 	int getLongitud() const;
+
+
+
+	std::string getStdCambio();
 };
+
 
 #endif /* CAMBIO_H_ */

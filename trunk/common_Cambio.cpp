@@ -68,3 +68,8 @@ int Cambio::getAlcance() const {
 int Cambio::getLongitud() const {
 		return longitud;
 }
+
+std::string Cambio::getStdCambio(){
+	Parser parser;
+	return parser.toString(*this);
+}
