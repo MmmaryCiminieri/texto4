@@ -24,6 +24,7 @@ private:
 	std::string nombre;
 	MSocket* socket;
 	Servidor* servidor;
+	MMutex mutex;
 	bool conectado;
 
 public:
@@ -33,7 +34,8 @@ public:
 	std::string getNombre();
 	void setNombre(std::string nombre);
 	MSocket* getSocket();
-
+	bool getConectado();
+	void setConectado(bool newStatus);
 
 	/*Mientras este conectado el cliente: escucha y procesa cambios*/
 	void* run();
@@ -42,6 +44,7 @@ public:
 	 * el servidor y el documento */
 	void ejecutarAccion(Parser parser);
 
+	void desloguearCliente();
 	virtual ~Cliente();
 };
 

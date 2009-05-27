@@ -65,25 +65,6 @@ private:
 	GtkWidget* view2;
 	GtkWidget* swindow2;
 
-public:
-/*constructor copia*/
-	VentanaIngreso(const VentanaIngreso& ventanaIngreso);
-
-	/*creo todos los widgets y los meto dentro de la ventana*/
-	VentanaIngreso();
-
-	gulong getinsertSignal();
-	gulong getdeleteSignal();
-	GtkWidget* getVentana();
-	void setVista(Vista* vista);
-	Cliente* getCliente();
-	GtkTextBuffer* getTexto();
-	GtkWidget* getView();
-	GtkTextBuffer* getLista();
-	GtkWidget* getBotonDeslog();
-	void setCliente(Cliente* cliente);
-	Vista* getVista();
-
 	/*Creadores de los GtkWidgets que los crea y los inserta dentro de la ventana*/
 	void crearBotonDeslog();
 	void crearVentana();
@@ -101,6 +82,35 @@ public:
 		void crearCamposTexto();
 		void crearCamposTexto2();
 		void crearCamposTexto3();
+
+
+
+public:
+/*constructor copia*/
+	VentanaIngreso(const VentanaIngreso& ventanaIngreso);
+
+	/*creo todos los widgets y los meto dentro de la ventana*/
+	VentanaIngreso();
+
+
+	gulong getinsertSignal();
+	gulong getdeleteSignal();
+	GtkWidget* getVentana();
+	void setVista(Vista* vista);
+	Cliente* getCliente();
+	GtkTextBuffer* getTexto();
+	GtkWidget* getView();
+	GtkTextBuffer* getLista();
+	GtkWidget* getBotonDeslog();
+	void setCliente(Cliente* cliente);
+	Vista* getVista();
+
+	/*el cliente envia un msj de que se va, lo vuelve a recibir para debloquear el recv
+		 * se cierra el socket y se hace join. Se usa cuando el cliente se desloguea o se cierra la
+		 * ventana*/
+		void desloguearCliente();
+
+
 		void bloquearBotonDeslog();
 
 	/*Cuando uno presina el boton de conectarse, se crea un cliente y  se llama al inicializar del mismo*/

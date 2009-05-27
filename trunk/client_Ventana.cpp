@@ -74,15 +74,7 @@ void VentanaIngreso::on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* 
 data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 
 	//TODO VER Q ONDA
-	data->cliente->Desloguearse();
-	//data->cliente->join();
-		//delete data->cliente;
-
-	//data->cliente = NULL;
-
-
-
-
+	data->desloguearCliente();
 
 	/*se puede volver a conectar*/
 	gtk_widget_set_sensitive(data->boton,true);
@@ -93,10 +85,21 @@ GtkWidget* VentanaIngreso::getBotonDeslog(){
 	return botonDeslog;
 }
 
+void VentanaIngreso::desloguearCliente(){
+this->cliente->Desloguearse();
+			this->cliente->join();
+			delete this->cliente;
+			this->cliente = NULL;
+
+			std::cout << "CLIENTE CERRADO" << std::endl;
+
+}
 /* Función 'callback' para atender la señal del evento "delete_event" */
 static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event,
 		VentanaIngreso* data) {
 	std::cout << "[recibido el evento delete_event]" << std::endl;
+
+	data->desloguearCliente();
 	return FALSE;
 }
 
@@ -153,7 +156,8 @@ void VentanaIngreso::crearCamposVerticales() {
 	 * TRUE es para que todos los elementos sean de igual tamaño
 	 * 10 es para que deje 10 píxels entre los elementos */
 	contenedorV = NULL;
-	contenedorV = gtk_vbox_new(TRUE, 10);
+
+	contenedorV = gtk_vbox_new(false, 10);
 	gtk_container_add(GTK_CONTAINER(ventana), contenedorV);
 
 }
@@ -185,9 +189,7 @@ void VentanaIngreso::crearTable() {
 
 	table = NULL;
 	/* create a table of 10 by 1 squares. */
-	this->table = gtk_table_new(6, 1, FALSE);
-
-
+	this->table = gtk_table_new(6, 2, FALSE);
 }
 void VentanaIngreso::crearLabel() {
 	label = NULL;
@@ -272,9 +274,9 @@ gtk_widget_set_sensitive(botonDeslog, false);
 			"clicked",
 			G_CALLBACK(on_boton_clicked_logout), this);
 
-
-	//gtk_box_pack_start(GTK_BOX(contenedorV), botonDeslog, false, FALSE, 10);
-	std::cout<<"boton de deslog"<<std::endl;
+	gtk_table_attach((GtkTable*) this->table, this->botonDeslog, 1, 2, 6, 7,
+				GTK_SHRINK, GTK_SHRINK, 0, 0);
+std::cout<<"boton de deslog"<<std::endl;
 }
 
 
@@ -300,8 +302,6 @@ void VentanaIngreso::crearCamposTexto() {
 	gtk_box_pack_start(GTK_BOX(this->contenedor), label4, TRUE, TRUE, 10);
 
 	gtk_box_pack_start(GTK_BOX(this->contenedor), label5, TRUE, TRUE, 10);
-	//sabcar
-	//gtk_widget_set_size_request(contenedor, 20, 30);
 
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor, false, FALSE, 10);
 
@@ -313,14 +313,9 @@ void VentanaIngreso::crearCamposTexto3() {
 	 * 10 es para que deje 10 píxels entre los elementos */
 	contenedor3 = NULL;
 	//ERA TRUE
-	contenedor3 = gtk_hbox_new(FALSE, 10);
-
-
-	gtk_box_pack_start(GTK_BOX(contenedor3), table, FALSE, FALSE, 10);
-	gtk_box_pack_start(GTK_BOX(contenedor3), botonDeslog, FALSE, FALSE, 10);
+	contenedor3 = gtk_hbox_new(true, 10);
+	gtk_box_pack_start(GTK_BOX(contenedor3), table, TRUE, TRUE, 10);
 	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor3, FALSE, FALSE, 10);
-
-
 
 }
 
@@ -404,7 +399,7 @@ void VentanaIngreso::crearTexto() {
 
 	//gtk_widget_set_usize(swindow,40, 10);
 
-	// gtk_widget_set_size_request(swindow, 125, 300);
+	gtk_widget_set_size_request(view, 125, 300);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(this->swindow),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(this->swindow), this->view);
@@ -436,9 +431,9 @@ void VentanaIngreso::crearLista() {
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view2), GTK_WRAP_WORD_CHAR);
 	gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view2), 5);
 	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view2), 5);
+	//gtk_widget_set_size_request(swindow2, 50, 100);
 
 	swindow2 = gtk_scrolled_window_new(NULL, NULL);
-
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(swindow2),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_container_add(GTK_CONTAINER(swindow2), view2);
@@ -458,11 +453,11 @@ void VentanaIngreso::crearCamposTexto2() {
 	/* creo un contenedor que divide horizontalmente para poner mis widgets
 	 * TRUE es para que todos los elementos sean de igual tamaño
 	 * 10 es para que deje 10 píxels entre los elementos */
-	contenedor2 = gtk_hbox_new(TRUE, 10);
+	contenedor2 = gtk_hbox_new(FALSE, 10);
 
 	gtk_box_pack_start(GTK_BOX(contenedor2), swindow, true, true, 0);
-	gtk_box_pack_start(GTK_BOX(contenedor2), swindow2, true, true, 0);
-	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor2, TRUE, TRUE, 10);
+	gtk_box_pack_start(GTK_BOX(contenedor2), swindow2, false, false, 0);
+	gtk_box_pack_start(GTK_BOX(contenedorV), contenedor2, FALSE, TRUE, 10);
 
 }
 
@@ -474,10 +469,12 @@ void VentanaIngreso::mostrar() {
 //TODO ver q onda
 VentanaIngreso::~VentanaIngreso() {
 this->cliente->Desloguearse();
-this->cliente->join();
+
 delete cliente;
 	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
 }
+
+
 
 //TODO BORRARLO!!!
 VentanaIngreso::VentanaIngreso(const VentanaIngreso& ventanaIngreso){

@@ -10,7 +10,7 @@
 #include "server_Cliente.h"
 #include "common_Parser.h"
 #include  "common_Iterador.h"
-
+#include "common_Lock.h"
 #define TAMANIIO 1024
 
 Cliente::Cliente(MSocket * socket, Servidor* servidor) {
@@ -33,6 +33,24 @@ MSocket* Cliente::getSocket() {
 	return this->socket;
 }
 
+bool  Cliente::getConectado(){
+	Lock lock(mutex);
+	return conectado;
+}
+
+	void  Cliente::setConectado(bool newStatus){
+		Lock lock(mutex);
+		this->conectado = newStatus;
+	}
+
+	void Cliente::desloguearCliente(){
+
+	this->socket->close();
+		this->setConectado(false);
+
+
+
+}
 void Cliente::ejecutarAccion(Parser parser) {
 	char ch = (parser.getTipo())[0];
 
