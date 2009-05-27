@@ -5,16 +5,13 @@
  *      Author: mmmary
  */
 
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <gtk/gtk.h>
 
 #include "common_Lock.h"
 #include  "common_Cambio.h"
 #include  "server_Cliente.h"
-//borrar include iter
 #include "server_Servidor.h"
-#include "common_Iterador.h"
+#include <iostream>
+
 
 #define MAXCANTUS 27
 
@@ -115,6 +112,8 @@ void Servidor::leerCambios() {
 	}
 	delete cambio;
 }
+
+
 
 void Servidor::desconectarCliente(std::string nombre) {
 	 std::list<Cliente*>::iterator it;
