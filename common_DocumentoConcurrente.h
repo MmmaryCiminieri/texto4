@@ -28,15 +28,15 @@ public:
 
 	/*se agrega texto en la posicion posicion del documento,
 	 * se incrementa el numero de version del mismo*/
-	void agregarTexto(std::string texto, int offset);
+	void agregarTexto(const std::string& texto, int offset);
 
 	/*se borra texto en la posicion posicion del documento,
 	 * se incrementa el numero de version del mismo*/
-	void borrarTexto(std::string texto, int offset);
+	void borrarTexto(const std::string& texto, int offset);
 
 	void aumentarVersion();
 	Documento* getDocumento();
-	void setDocumento(std::string contenido);
+	void setDocumento(const std::string& contenido);
 	int getVersion();
 	void setVersion(int nro);
 

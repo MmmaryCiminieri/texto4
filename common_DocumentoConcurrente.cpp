@@ -15,14 +15,14 @@ void DocumentoConcurrente::aumentarVersion(){
 }
 
 
-void DocumentoConcurrente::agregarTexto(std::string texto, int posicion) {
+void DocumentoConcurrente::agregarTexto(const std::string& texto, int posicion) {
 Lock lock(this->mutex);
 	this->aumentarVersion();
 	this->documento.agregarTexto(texto, posicion);
 
 }
 
-void DocumentoConcurrente::borrarTexto(std::string texto, int offset) {
+void DocumentoConcurrente::borrarTexto(const std::string& texto, int offset) {
 	Lock lock(this->mutex);
 	this->aumentarVersion();
 	this->documento.borrarTexto(texto, offset);
@@ -38,7 +38,7 @@ Documento* DocumentoConcurrente::getDocumento() {
 	return &documento;
 }
 
-void DocumentoConcurrente::setDocumento(std::string contenido) {
+void DocumentoConcurrente::setDocumento(const std::string& contenido) {
 Lock lock(this->mutex);
  this->documento.setContenido(contenido);
 }

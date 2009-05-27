@@ -1,6 +1,5 @@
 #include <gtk/gtk.h>
 #include "client_Vista.h"
-#include "client_Cliente.h"
 #include <iostream>
 
 

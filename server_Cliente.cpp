@@ -4,12 +4,11 @@
  *  Created on: Apr 25, 2009
  *      Author: mmmary
  */
-
+#include <iostream>
 #include <string.h>
 
 #include "server_Cliente.h"
 #include "common_Parser.h"
-#include  "common_Iterador.h"
 #include "common_Lock.h"
 #define TAMANIIO 1024
 
