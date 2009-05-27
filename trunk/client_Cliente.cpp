@@ -124,10 +124,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 
 		break;
 	}
-	case 'L': {
-		/*me aceptaron*/
-		break;
-	}
+
 	case 'R': {
 
 		/*lanzo ventana de error, pues  el nombre de usuario esta ya ocupado*/
@@ -185,19 +182,6 @@ break;
 	}
 	case 'F': {
 
-		std::string str = parser.getTexto();
-		if (this->listaDeAmigos.empty()) {
-			/*no tengo amigos =( , ahora tengo uno*/
-
-			std::cout << "me llego el primer amigo " << std::endl;
-			str += "\n";
-			gtk_text_buffer_set_text(this->vista->getVentana()->getLista(),
-					str.c_str(), -1);
-
-		} else {
-			this->vista->agregarAmigo(str.c_str());
-
-		}
 		this->agregarAmigo(parser.getTexto());
 		break;
 	}
@@ -297,6 +281,8 @@ void Cliente::quitarAmigo(const std::string& nombre) {
 
 void Cliente::agregarAmigo(const std::string& nombre) {
 	this->listaDeAmigos.push_back(nombre);
+	this->vista->agregarAmigo(nombre+'\n');
+
 
 }
 

@@ -33,12 +33,13 @@ void Vista::mostrar() {
 VentanaIngreso* Vista::getVentana() {
 	return &ventana;
 }
-void Vista::agregarAmigo(const char* nombre) {
+void Vista::agregarAmigo(const std::string & nombre) {
+
 
 	GtkTextIter it;
 	gtk_text_buffer_get_end_iter(this->ventana.getLista(), &it);
-	gtk_text_buffer_insert(this->ventana.getLista(), &it, nombre,
-			strlen(nombre));
+	gtk_text_buffer_insert(this->ventana.getLista(), &it, nombre.c_str(),
+			-1);
 
 }
 void Vista::refrescarLista() {
