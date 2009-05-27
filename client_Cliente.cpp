@@ -75,10 +75,8 @@ void Cliente::enviarDatosInicio() {
 	int retorno = -1;
 	Parser parser;
 	std::string str = parser.toString(cambio);
-	while ((retorno == -1) && (cant < MAXINTENTOS)) {
-		cant++;
-		retorno = this->socket->send(str);
-	}
+	 this->enviarCambio(cambio);
+
 }
 
 bool Cliente::getConectado() {
