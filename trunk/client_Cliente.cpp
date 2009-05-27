@@ -75,8 +75,7 @@ void Cliente::enviarDatosInicio() {
 	int retorno = -1;
 	Parser parser;
 	std::string str = parser.toString(cambio);
-	 this->enviarCambio(cambio);
-
+	this->enviarCambio(cambio);
 }
 
 bool Cliente::getConectado() {
@@ -91,8 +90,7 @@ void Cliente::setConectado(bool newStatus) {
 
 void Cliente::desloguearse() {
 	/*el cliente se deloguea*/
-	std::cout << nombre << " se ha deslogueado" << std::endl;
-
+	std::cout << nombre << " Se intenta desloguear" << std::endl;
 	/*debo desbloquear el recv, para q se pueda hacer el join*/
 	Cambio cambio("E", nombre);
 	/*se lo envio al servidor*/
@@ -107,94 +105,66 @@ void Cliente::ejecutarAccion(Parser parser) {
 		std::cout << "recibi la E" << std::endl;
 		this->socket->close();
 		this->setConectado(false);
-
 		break;
 	}
-
 	case 'D': {
-/*se setea el documento*/
+		/*se setea el documento*/
 		this->documentoConc->setDocumento(parser.getTexto());
-		std::cout << "el documento luego"
-				<< this->documentoConc->getDocumento()->getContenido()
-				<< std::endl;
+		std::cout << "el documento luego" << this->documentoConc->getDocumento()->getContenido() << std::endl;
 		/*se setea la version */
 		this->documentoConc->setVersion(parser.getVersion());
 		/*se modifica la vista*/
 		this->vista->cargarDocumento(parser.getTexto());
-
-
 		break;
 	}
-
 	case 'R': {
-
 		/*lanzo ventana de error, pues  el nombre de usuario esta ya ocupado*/
-		GtkWidget
-				* ventanaerror =
-						gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
-								GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
-								"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
-		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
+		GtkWidget * ventanaerror =
+					gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+											GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
+											"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
+											gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
 		//g_signal_connect_swapped (ventanaerror, "response",
 		  //    	G_CALLBACK(on_boton_clicked_logout), this->vista->getVentana());
 
-		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
-				true);
-
-
+		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(), true);
 	}
 
 	case 'A': {
-
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
-
 			/* el documento  se modifica*/
-			this->documentoConc->agregarTexto(parser.getTexto(),
-					parser.getPosicion());
-			std::cout << "el doc es "
-					<< documentoConc->getDocumento()->getContenido()
+			this->documentoConc->agregarTexto(parser.getTexto(), parser.getPosicion());
+			std::cout << "El documento es: " << documentoConc->getDocumento()->getContenido()
 					<< std::endl;
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
 			/*la vista se modifica*/
-			this->vista->agregar(parser.getTexto().c_str(),
-					parser.getPosicion());
+			this->vista->agregar(parser.getTexto().c_str(), parser.getPosicion());
 		}
-
-
-
-break;
+		break;
 	}
-
 	case 'B': {
-
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
 			/* el documento  se modifica*/
-
-			this->documentoConc->borrarTexto(parser.getTexto(),
-					parser.getPosicion());
+			this->documentoConc->borrarTexto(parser.getTexto(), parser.getPosicion());
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
 			/*la vista se modifica*/
-
 			this->vista->borrar(parser.getTexto().c_str(), parser.getPosicion());
 		}
 		break;
 
 	}
 	case 'F': {
-
 		this->agregarAmigo(parser.getTexto());
 		break;
 	}
 
 	case 'O': {
 		/*debo quitar a un amigo de mi lista y de la vista*/
-
-			this->quitarAmigo(parser.getTexto());
-
+		this->quitarAmigo(parser.getTexto());
 		break;
 	}
 	}
@@ -279,15 +249,11 @@ std::list<std::string> Cliente::getAmigos() {
 void Cliente::quitarAmigo(const std::string& nombre) {
 	this->listaDeAmigos.remove(nombre);
 	this->vista->refrescarLista();
-
-
 }
 
 void Cliente::agregarAmigo(const std::string& nombre) {
 	this->listaDeAmigos.push_back(nombre);
-	this->vista->agregarAmigo(nombre+'\n');
-
-
+	this->vista->agregarAmigo(nombre);
 }
 
 DocumentoConcurrente* Cliente::getDocumentoConc() {

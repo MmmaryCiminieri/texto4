@@ -36,7 +36,7 @@ void VentanaIngreso::bloquearBotonDeslog(){
 	gtk_widget_set_sensitive(botonDeslog, false);
 }
 
-/* FunciÃ³n 'callback' para atender la seÃ±al "clicked" del botÃ³n */
+/* Funcion 'callback' para atender la senial "clicked" del boton */
 void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 	Cliente* cliente = new Cliente;
 	data->setCliente(cliente);
@@ -68,10 +68,8 @@ std::cout << "SALI DEL CLICK" << std::endl;
 
 void VentanaIngreso::on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* data){
 	/*el cliente ha decido desloguarse*/
-	std::cout << "el cliente " <<
-data->cliente->getNombre()<< " se quiere ir" <<std::endl;
+	std::cout << "El cliente " << data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 
-	//TODO VER Q ONDA
 	data->desloguearCliente();
 
 	/*se puede volver a conectar*/
@@ -86,7 +84,6 @@ data->cliente->getNombre()<< " se quiere ir" <<std::endl;
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(data->view), false);
 
 	g_signal_handler_unblock(data->texto, data->insertSignal);
-
 	g_signal_handler_unblock(data->texto,data->deleteSignal);
 
 }
@@ -96,55 +93,46 @@ GtkWidget* VentanaIngreso::getBotonDeslog(){
 }
 
 void VentanaIngreso::desloguearCliente(){
-this->cliente->desloguearse();
-			this->cliente->join();
-			delete this->cliente;
-			this->cliente = NULL;
-
-			std::cout << "CLIENTE CERRADO" << std::endl;
-
+	this->cliente->desloguearse();
+	this->cliente->join();
+	delete this->cliente;
+	this->cliente = NULL;
+	std::cout << "CLIENTE CERRADO" << std::endl;
 }
-
 
 bool VentanaIngreso::hayClienteConectado(){
-
 	return cliente != NULL;
-
 }
 
-/* FunciÃ³n 'callback' para atender la seÃ±al del evento "delete_event" */
-static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event,
-		VentanaIngreso* data) {
+/* Funcion 'callback' para atender la senial del evento "delete_event" */
+static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event, VentanaIngreso* data) {
 	std::cout << "[recibido el evento delete_event]" << std::endl;
-
 	if (data->hayClienteConectado()){
-	data->desloguearCliente();
+		data->desloguearCliente();
 	}
-	return FALSE;
+	return false;
 }
 
 GtkWidget* VentanaIngreso::getVentana() {
 	return ventana;
 }
 
-/* FunciÃ³n 'callback' para atender la seÃ±al "destroy" de la ventana. */
+/* Funcion 'callback' para atender la senial "destroy" de la ventana. */
 static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 	std::cout << "[recibido el evento destroy]" << std::endl;
 	/* finaliza el loop de gtk_main() y libera memoria */
-			gtk_main_quit();
+	gtk_main_quit();
 }
-
 
 VentanaIngreso::VentanaIngreso() {
 	std::cout << "////Constructor VentanaIngreso/////" << std::endl;
-this->cliente = NULL;
-
+	this->cliente = NULL;
 	this->crearVentana();
 	this->crearCamposVerticales();
 	this->crearTable();
 
 	this->crearBotonDeslog();
-this->crearBoton();
+	this->crearBoton();
 
 	this->crearCamposTexto3();
 	this->crearLabel4();
@@ -154,11 +142,9 @@ this->crearBoton();
 	this->crearTexto();
 	this->crearLista();
 	this->crearCamposTexto2();
-
 }
 
 GtkTextBuffer* VentanaIngreso::getTexto() {
-
 	return this->texto;
 }
 
@@ -166,14 +152,12 @@ GtkTextBuffer* VentanaIngreso::getLista() {
 	return lista;
 }
 
-
 void VentanaIngreso::crearVentana() {
 	/* creo ventana principal */
 	ventana = NULL;
 	this->ventana = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-	  gtk_window_set_title (GTK_WINDOW (ventana), "Editor de Texto Concurrente");
-
+	gtk_window_set_title (GTK_WINDOW (ventana), "Editor de Texto Concurrente");
 
 	//TODO ?/
 	/* conecto la seÃ±al "delete_event" de la ventana a la callback
@@ -183,12 +167,10 @@ void VentanaIngreso::crearVentana() {
 
 	/* conecto la seÃ±al "destroy" de la ventana a la callback destruir()
 	 * esta seÃ±al se emite cuando se llama a gtk_widget_destroy() */
-	g_signal_connect(G_OBJECT(this->ventana), "destroy", G_CALLBACK(destruir),
-			NULL);
+	g_signal_connect(G_OBJECT(this->ventana), "destroy", G_CALLBACK(destruir), NULL);
 
 	/* pongo un borde a la ventana (espacio libre al rededor del borde) */
 	gtk_container_set_border_width(GTK_CONTAINER(this->ventana), 100);
-
 }
 
 void VentanaIngreso::crearCamposVerticales() {
@@ -196,22 +178,18 @@ void VentanaIngreso::crearCamposVerticales() {
 	 * TRUE es para que todos los elementos sean de igual tamaÃ±o
 	 * 10 es para que deje 10 pÃ­xels entre los elementos */
 	contenedorV = NULL;
-
 	contenedorV = gtk_vbox_new(false, 10);
 	gtk_container_add(GTK_CONTAINER(ventana), contenedorV);
-
 }
 
 void VentanaIngreso::crearTable() {
-
 	table = NULL;
 	/* create a table of 10 by 1 squares. */
 	this->table = gtk_table_new(6, 2, FALSE);
 	labelNombre = NULL;
-		this->labelNombre = gtk_label_new("Ingrese  su nombre de Usuario");
+	this->labelNombre = gtk_label_new("Ingrese  su nombre de Usuario");
 
-		gtk_table_attach((GtkTable*) this->table, this->labelNombre, 0, 1, 0, 1,
-				GTK_SHRINK, GTK_SHRINK, 0, 0);
+	gtk_table_attach((GtkTable*) this->table, this->labelNombre, 0, 1, 0, 1, GTK_SHRINK, GTK_SHRINK, 0, 0);
 
 	entradaNombre = NULL;
 		/* creo una entrada de texto */
