@@ -69,10 +69,10 @@ void Cliente::conectarSocket(const char* IP, const char* puerto) {
 void Cliente::enviarDatosInicio() {
 
 	Cambio cambio("N", this->nombre);
-	Parser parser;
-	std::string str = parser.toString(cambio);
 	int cant = 0;
 	int retorno = -1;
+	Parser parser;
+	std::string str = parser.toString(cambio);
 	while ((retorno == -1) && (cant < MAXINTENTOS)) {
 		cant++;
 		retorno = this->socket->send(str);
@@ -97,7 +97,6 @@ void Cliente::desloguearse() {
 	Cambio cambio("E", nombre);
 	/*se lo envio al servidor*/
 	this->enviarCambio(cambio);
-
 }
 
 void Cliente::ejecutarAccion(Parser parser) {
@@ -260,12 +259,11 @@ void* Cliente::run() {
 	return NULL;
 }
 
-void Cliente::enviarCambio(Cambio cambio) {
-	Parser parser;
-		std::string str = parser.toString(cambio);
-
+void Cliente::enviarCambio(const Cambio& cambio) {
 	int retorno = -1;
 	int cant = 0;
+	Parser parser;
+	std::string str = parser.toString(cambio);
 	while ((retorno == -1) && (cant < MAXINTENTOS)) {
 		retorno = this->socket->send(str);
 		cant++;

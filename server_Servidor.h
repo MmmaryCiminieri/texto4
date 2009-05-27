@@ -5,7 +5,7 @@
  *      Author: mmmary
  */
 
-/* Clase que maneja la edición del texto, atendiendo a los usuarios que lo modifican.
+/* Clase que maneja la ediciÃ³n del texto, atendiendo a los usuarios que lo modifican.
  * Esta va recibiendo cambios que acola para luego procesar y avisarle a todos los usuarios conectados
  * de dicho cambio.
  *
@@ -21,8 +21,8 @@
 #include "common_Cambio.h"
 #include "common_MThread.h"
 
-/*Estructura utilitaria que agrupa un cambio y un nombre, para poder así
- * determinar quién realizó dicho cambio.*/
+/*Estructura utilitaria que agrupa un cambio y un nombre, para poder asÃ­
+ * determinar quiÃ©n realizÃ³ dicho cambio.*/
 struct NombreCambio {
 	std::string nombre;
 	Cambio* cambio;
@@ -69,39 +69,34 @@ public:
 	DocumentoConcurrente* getDocumentoConc();
 	MSocket* getSocket();
 
-	/*se setea por consola el puerto donde se oirán a los clientes*/
+	/*se setea por consola el puerto donde se oirÃ¡n a los clientes*/
 	//unsigned short setPuerto();
 
 	/*el servidor cambia su estado a no escuchando y hace join de todos
 	 * sus clientes*/
 	void cerrarServidor();
 
-	/*mientras esté conectado se procesan los cambios acolados por los clientes
+	/*mientras estÃ© conectado se procesan los cambios acolados por los clientes
 	 * en la cola de cambios (si los hay)*/
 	void* run();
 
-	/*Se analiza si el cliente que ha requerido conexión tiene el mismo nombre que otro ya conectado*/
-	bool verificacionCliente(Cliente* cliente);
-
-	 /*El cliente fue aceptado : se le enviá un mensaje de que se lo ha aceptado "L,long,nombre" ;el documento actual en otro cambio
-	 * y se les avisa a todos los usuarios que un cliente se conectó.
+	/*Se analiza si el cliente que ha requerido conexiÃ³n tiene el mismo nombre que otro ya conectado:
+	 * si es asÃ­, se le envia un mensaje : "R,long,nombre" para indicarle que ha sido rechazado.
+	 * Si no, se le enviÃ¡ un mensaje de que se lo ha aceptado "L,long,nombre" ;el documento actual en otro cambio
+	 * y se les avisa a todos los usuarios que un cliente se conectÃ³.
 	 * */
-	void ingresoCliente(Cliente* cliente);
+	void verificacionCliente(Cliente* cliente);
 
-	/*se le envia un mensaje : "R,long,nombre" para indicarle que ha sido rechazado.
-	 * por tener el mismo nombre que otro usuario*/
-		void rechazoCliente(Cliente* cliente);
-
-	/*Se envia un Cambio. Nombre indica cual fue el cliente que lo envió al servidor.
-	 * Si el flag es cero es por que el cambio se envia a todos. Si es uno, sólo se envía al cliente que lo propuso
-	 * pues así le puedo avisar que el cambio propuesto ha sido rechazado.*/
+	/*Se envia un Cambio. Nombre indica cual fue el cliente que lo enviÃ³ al servidor.
+	 * Si el flag es cero es por que el cambio se envia a todos. Si es uno, sÃ³lo se envÃ­a al cliente que lo propuso
+	 * pues asÃ­ le puedo avisar que el cambio propuesto ha sido rechazado.*/
 	void enviarCambio(Cambio cambio,const  std::string& nombre, int flag);
 
-	/*Se envía un mensaje a todos los usuarios avisándoles que un amigo se ha conectado*/
+	/*Se envÃ­a un mensaje a todos los usuarios avisÃ¡ndoles que un amigo se ha conectado*/
 	void notificarAmigoConectado(const std::string& nombre);
 
-	/*Cuando un usuario se conecta se le envían los nombres de todos sus amigos
-	 * que están conectados*/
+	/*Cuando un usuario se conecta se le envÃ­an los nombres de todos sus amigos
+	 * que estÃ¡n conectados*/
 	void crearListaAmigos(Cliente* cliente);
 
 	/*se crea una estructura nombreCambio y se la acola a la cola de cambios, donde espera a ser procesada*/
@@ -111,9 +106,9 @@ public:
 	 * los clientes*/
 	void procesarCambio(Cambio* cambio, const std::string& nombre);
 
-	/*Se lee un cambio de la cola, si el cambio tiene el mismo número de version que el documento
+	/*Se lee un cambio de la cola, si el cambio tiene el mismo nÃºmero de version que el documento
 	 * actual, se lo procesa; si no se le avisa al cliente que su cambio ha sido rechazado
-	 * (por lo que ddeberá modificar su vista). se hace delete del cambio creado en parser.toCambio()
+	 * (por lo que ddeberÃ¡ modificar su vista). se hace delete del cambio creado en parser.toCambio()
 	 * */
 	void leerCambios();
 

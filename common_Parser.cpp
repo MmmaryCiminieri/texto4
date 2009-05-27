@@ -179,7 +179,7 @@ bool Parser::procesar(const char* buffer, int* tamaniio) {
 
 		if (this->longitud != 0) {
 
-			/*termine de leer la longitud  y ahora leeré*/
+			/*termine de leer la longitud  y ahora leerÃ©*/
 			char* ctexto = new char[tamanioBuffer];
 			bzero(ctexto, tamanioBuffer);
 			int j = 0;
@@ -269,12 +269,11 @@ std::string Parser::toString(const Cambio& cambio){
 
 }
 
-
-
 Cambio* Parser::toCambio() {
 	Cambio*  cambio = new Cambio(tipo, version, alcance, posicion, texto);
 	return cambio;
 }
+
 int Parser::getVersion() {
 	return this->version;
 }
