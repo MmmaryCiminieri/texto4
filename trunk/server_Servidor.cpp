@@ -114,6 +114,7 @@ void Servidor::leerCambios() {
 		}
 
 	}
+	std::cout << "Voy a borrar el cambio " << cambio->getStdCambio()<< std::endl;
 	delete cambio;
 }
 
@@ -132,7 +133,6 @@ void Servidor::desconectarCliente(const std::string& nombre) {
 			delete clienteAux;
 			return;
 		}
-
 	}
 }
 
@@ -213,7 +213,9 @@ void Servidor::cerrarServidor() {
 		this->desconectarCliente(clienteAux->getNombre());
 
 	}
+	std::cout << "Por borrar la cola de cambios"<< std::endl;
 	while (!colaDeCambios.empty()) {
+std::cout << "un cambio a borrar"<< std::endl;
 		NombreCambio nc = this->colaDeCambios.front();
 		this->colaDeCambios.pop();
 		delete nc.cambio;
