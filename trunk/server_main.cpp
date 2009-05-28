@@ -31,5 +31,10 @@ return 0;
 	std::cout<< "en el main "<<std::endl;
 
 	servidor.cerrarServidor();
+
+	//MSocket socket= servidorExecutable.getSocket();
+	//socket.close();
+	//servidorExecutable.join();
+
     return 0;
 }
