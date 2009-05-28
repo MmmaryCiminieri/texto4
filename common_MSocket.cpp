@@ -55,7 +55,7 @@ int MSocket::connect(const char* ip, const char* port) {
 				destino.sin_family = AF_INET;
 				destino.sin_port = htons(atoi(port));
 
-				if (h= gethostbyname(ip)) {
+				if ((h= gethostbyname(ip))) {
 
 					destino.sin_addr.s_addr = ((struct in_addr*) (h->h_addr))->s_addr;
 
@@ -106,6 +106,7 @@ int MSocket::send(const std::string& stream) {
 void MSocket::close() {
 if(fd != -1){
 	::close(this->fd);
+	fd = -1;
 }
 }
 int MSocket::recieve(char* buffer, unsigned int size) {
@@ -127,13 +128,12 @@ MSocket* MSocket::accept() {
 		return NULL;
 	}
 	return new MSocket(new_fd);
-
 }
+
 bool MSocket::isValid() {
 	return this->valid;
 }
 
 MSocket::~MSocket() {
-
-	::close(this->fd);
+	close();
 }
