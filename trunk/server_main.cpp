@@ -32,9 +32,5 @@ return 0;
 
 	servidor.cerrarServidor();
 	servidorExecutable.dejarDeEscuchar();
-	//MSocket socket= servidorExecutable.getSocket();
-	//socket.close();
-	//servidorExecutable.join();
-
     return 0;
 }

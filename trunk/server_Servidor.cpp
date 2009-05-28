@@ -186,10 +186,6 @@ void Servidor::procesarCambio(Cambio* cambio, const std::string& nombre) {
 	}
 }
 
-MSocket* Servidor::getSocket() {
-	return this->socket;
-}
-
 bool Servidor::getEstado() {
 	return escucho;
 }
@@ -349,8 +345,5 @@ void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) 
 }
 
 Servidor::~Servidor() {
-	this->socket->close();
-	delete this->socket;
-	this->socket = NULL;
 	std::cout << "////destructor server///" << std::endl;
 }
