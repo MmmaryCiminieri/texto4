@@ -53,39 +53,22 @@ MSocket::MSocket(int puerto, int cantClientes) {
 int MSocket::connect(const char* ip, const char* port) {
 
 	if (this->valid) {
-		struct sockaddr_in destino;
-		memset(&destino, 0, sizeof(destino));
-		//unsigned long direccion = inet_addr(host);
-		//hostent* h = gethostbyname(host);
-		//direccion = *((unsigned long*)h->h_addr);
 
+				hostent* h;
+				struct sockaddr_in destino;
+				destino.sin_family = AF_INET;
+				destino.sin_port = htons(atoi(port));
 
+				if (h= gethostbyname(ip)) {
 
+					destino.sin_addr.s_addr
+					= ((struct in_addr*) (h->h_addr))->s_addr;
 
-		//this->dest_addr.sin_addr.s_addr = *((struct in_addr *)he->h_addr);//htonl(INADDR_ANY);
+					return ::connect(fd, (struct sockaddr *) &destino, sizeof(destino));
+				}
+			}
+			return -1;
 
-
-		destino.sin_family = AF_INET;
-		destino.sin_port = htons(atoi(port));
-		destino.sin_addr.s_addr = inet_addr(ip);
-		int cont = 0;
-		int retorno = -1;
-
-		while ((retorno != 0) && (cont < 15)) {
-			retorno = ::connect(this->fd, (struct sockaddr *) &destino,
-					sizeof(struct sockaddr));
-			cont++;
-
-		}
-		//TODO borrar
-		std::cout << "el retorno de connect es (0 es ok) " << retorno << std::endl;
-		std::cout << "el error del socket " << strerror(errno) << retorno
-				<< std::endl;
-
-		return retorno;
-	}
-
-	return -1;
 }
 int MSocket::listen(unsigned int port, unsigned int cantClientes) {
 

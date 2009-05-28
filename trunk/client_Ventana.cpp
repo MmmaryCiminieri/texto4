@@ -52,12 +52,14 @@ void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 
 	data->cliente->setNombre(gtk_entry_get_text(GTK_ENTRY(data->entradaNombre)));
 //TODO DESCOMENTAR, SACAR DEFAULT
-	//const char* ip = gtk_entry_get_text(GTK_ENTRY(data->entradaIP));
+const char* ip = gtk_entry_get_text(GTK_ENTRY(data->entradaIP));
+
 	   //const char* port =  gtk_entry_get_text(GTK_ENTRY(data->entradaPort));
-const char* ip = "127.0.0.1";
+//const char* ip = "127.0.0.1";
 const char* port = "8080";
 data->cliente->inicializar(ip, port, widget);
 std::cout << "SALI DEL CLICK" << std::endl;
+
 
 }
 
