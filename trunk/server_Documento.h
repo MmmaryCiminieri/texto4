@@ -40,7 +40,7 @@ public:
 
 
 
-	virtual ~Documento();
+	virtual ~Documento(){}
 };
 
 #endif /* DOCUMENTO_H_ */

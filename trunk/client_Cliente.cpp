@@ -83,8 +83,6 @@ void Cliente::conectarSocket(const char* IP, const char* puerto) {
 void Cliente::enviarDatosInicio() {
 
 	Cambio cambio("N", this->nombre);
-	int cant = 0;
-	int retorno = -1;
 	Parser parser;
 	std::string str = parser.toString(cambio);
 	this->enviarCambio(cambio);
@@ -280,6 +278,5 @@ Cliente::~Cliente() {
 	delete this->documentoConc;
 	delete this->socket;
 	std::cout << "////BORRO CLIENTE/////" << std::endl;
-	// TODO Auto-generated destructor stub
-	//se llama a destr de socket
+
 }

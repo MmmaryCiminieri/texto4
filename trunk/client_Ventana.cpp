@@ -148,12 +148,6 @@ void VentanaIngreso::crearVentana() {
 
 	gtk_window_set_title (GTK_WINDOW (ventana), "Editor de Texto Concurrente");
 
-	//TODO ?/
-	/* conecto la seÃ±al "delete_event" de la ventana a la callback
-	 * on_delete_event() */
-	//g_signal_connect(G_OBJECT(this->ventana), "delete_event", G_CALLBACK(
-		//	on_delete_event), NULL);
-
 	/* conecto la seÃ±al "destroy" de la ventana a la callback destruir()
 	 * esta seÃ±al se emite cuando se llama a gtk_widget_destroy() */
 	g_signal_connect(G_OBJECT(this->ventana), "destroy", G_CALLBACK(destruir), NULL);
@@ -408,9 +402,3 @@ this->desloguearCliente();
 	}	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
 }
 
-
-
-//TODO BORRARLO!!!
-VentanaIngreso::VentanaIngreso(const VentanaIngreso& ventanaIngreso){
-	std::cout << "////CONST COPIA VentanaIngreso/////" << std::endl;
-}

@@ -288,21 +288,21 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 	std::string tipo;
 	if (encontrado) {
 		tipo = "R";
+		Cambio cambio(tipo, cliente->getNombre());
+			this->enviarCambio(cambio, cliente->getNombre(), 1);
+
 		/*ya existe el cliente con ese nombre*/
-		//TODO borrarlo a este
+		//TODO borrarlo a este cliente
 	} else {
 		tipo = "L";
+		Cambio cambio(tipo, cliente->getNombre());
+			this->enviarCambio(cambio, cliente->getNombre(), 1);
 
 		this->notificarAmigoConectado(cliente->getNombre());
 		this->getListaClientes()->push_back(cliente);
 		this->crearListaAmigos(cliente);
 		std::cout << "Despues de insertar al nuevo, la lista tiene (" << listaDeClientes.size() << ")" << std::endl;
-	}
 
-	Cambio cambio(tipo, cliente->getNombre());
-	this->enviarCambio(cambio, cliente->getNombre(), 1);
-
-	if (tipo == "L") {
 		/*le envio el documento*/
 		std::string contenido = this->documentoConc.getDocumento()->getContenido();
 		Cambio documento("D", this->getDocumentoConc()->getVersion(), contenido);
