@@ -31,7 +31,7 @@ class Cliente: public MThread {
 private:
 	std::string nombre;
 	MSocket* socket;
-	DocumentoConcurrente* documentoConc;
+	DocumentoConcurrente documentoConc;
 	bool conectado;
 	bool aceptado;
 	std::list<std::string> listaDeAmigos;
@@ -80,8 +80,8 @@ public:
 	void desloguearse();
 
 	/*según el tipo de cambio recibido desde el servidor,  se ejecutarán diferentes acciones sobre este Cliente,
-	 * sus amigos y su documento */
-	void ejecutarAccion(Parser parser);
+	 * sus amigos y su documento.retorna el tipo de mensaje */
+	char ejecutarAccion(Parser parser);
 
 	/*Mientras este conectado el cliente: escucha y procesa cambios*/
 	void* run();
