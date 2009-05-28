@@ -107,10 +107,6 @@ bool Parser::procesar(const char* buffer, int* tamaniio) {
 		return false;
 	}
 
-	//TODO o agrego aca tmb N, L, R o saco a E
-//	if (this->tipo == "E") {
-	//	return true;
-//	}
 	if ((this->tipo == "A") || (this->tipo == "B") || (this->tipo == "D")) {
 		/* debo analizar el numero de version*/
 		if (this->version == 0) {
@@ -201,7 +197,7 @@ bool Parser::procesar(const char* buffer, int* tamaniio) {
 			actual++;
 			delete[] ctexto;
 			if (this->longitud > (tamanioBuffer - cantidadLeida)) {
-				/*no lei todo, falta informacion*/
+				/*no se leyo completo, falta informacion*/
 				*tamaniio = actual;
 				return false;
 

@@ -84,7 +84,6 @@ int MSocket::connect(const char* ip, const char* port) {
 
 		return retorno;
 	}
-	//TODO Y SI ES INAVLIDO??
 	return -1;
 }
 int MSocket::listen(unsigned int port, unsigned int cantClientes) {
@@ -126,7 +125,10 @@ int MSocket::send(const std::string& stream) {
 }
 
 void MSocket::close() {
+
+	if(fd != -1){
 	::close(this->fd);
+	}
 }
 
 int MSocket::recieve(char* buffer, unsigned int size) {

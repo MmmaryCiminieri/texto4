@@ -42,8 +42,6 @@ private:
 	int longitud;
 	std::string texto;
 
-
-
 public:
 	static int INVALIDO;
 /* diferentes constructores, dentro se crea el stdCambio*/

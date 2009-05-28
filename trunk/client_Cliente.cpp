@@ -4,8 +4,6 @@
  *  Created on: May 3, 2009
  *      Author: mmmary
  */
-//#include <glib.h>
-//#include <glib/gprintf.h>
 
 #include <gtk/gtk.h>
 #include "client_Cliente.h"
@@ -20,8 +18,9 @@
 #define MAXCANTUS 27
 
 Cliente::Cliente() {
-	std::cout << "////CREO CLIENTE/////" << std::endl;
+	std::cout << "CREO CLIENTE/////" << std::endl;
 	this->setConectado(false);
+	setAceptado(false);
 	this->documentoConc = new DocumentoConcurrente();
 }
 
@@ -32,6 +31,7 @@ void Cliente::setNombre(const std::string& nombre) {
 std::string Cliente::getNombre() {
 	return this->nombre;
 }
+
 void Cliente::inicializar(const char* ip, const char* port, GtkWidget* boton) {
 
 	this->conectarSocket(ip, port);
@@ -39,15 +39,14 @@ void Cliente::inicializar(const char* ip, const char* port, GtkWidget* boton) {
 	if (!this->getConectado()) {
 		this->vista->ErrorConectar();
 		gtk_widget_set_sensitive(boton, true);
-
 	} else {
 		/*valido existencia*/
 		this->enviarDatosInicio();
 		/*escucho cambios del servidor*/
 		this->execute();
-
 	}
 }
+
 MSocket* Cliente::getSocket() {
 	return this->socket;
 }
@@ -55,6 +54,7 @@ MSocket* Cliente::getSocket() {
 void Cliente::setVista(Vista* vista) {
 	this->vista = vista;
 }
+
 void Cliente::conectarSocket(const char* IP, const char* puerto) {
 
 	this->socket = new MSocket();
@@ -64,15 +64,11 @@ void Cliente::conectarSocket(const char* IP, const char* puerto) {
 		std::cout << "me pude conectar " << std::endl;
 		this->puerto = puerto;
 		this->setConectado(true);
-
 	}
 }
 
 void Cliente::enviarDatosInicio() {
-
 	Cambio cambio("N", this->nombre);
-	int cant = 0;
-	int retorno = -1;
 	Parser parser;
 	std::string str = parser.toString(cambio);
 	this->enviarCambio(cambio);
@@ -83,9 +79,19 @@ bool Cliente::getConectado() {
 	return conectado;
 }
 
-void Cliente::setConectado(bool newStatus) {
+void Cliente::setConectado(bool status) {
 	Lock lock(this->mutex);
-	conectado = newStatus;
+	conectado = status;
+}
+
+bool Cliente::isAceptado(){
+	Lock lock(this->mutex);
+	return aceptado;
+}
+
+void Cliente::setAceptado(bool status){
+	Lock lock(mutex);
+	aceptado = status;
 }
 
 void Cliente::desloguearse() {
@@ -117,6 +123,7 @@ void Cliente::ejecutarAccion(Parser parser) {
 		this->vista->cargarDocumento(parser.getTexto());
 		break;
 	}
+
 	case 'R': {
 		/*lanzo ventana de error, pues  el nombre de usuario esta ya ocupado*/
 		GtkWidget * ventanaerror =
@@ -126,10 +133,9 @@ void Cliente::ejecutarAccion(Parser parser) {
 											gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
-		//g_signal_connect_swapped (ventanaerror, "response",
-		  //    	G_CALLBACK(on_boton_clicked_logout), this->vista->getVentana());
 
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(), true);
+		//setConectado(false);
 	}
 
 	case 'A': {
@@ -167,6 +173,10 @@ void Cliente::ejecutarAccion(Parser parser) {
 		this->quitarAmigo(parser.getTexto());
 		break;
 	}
+	case 'L': {
+		/* Fui aceptado */
+		setAceptado(true);
+	}
 	}
 
 }
@@ -191,7 +201,7 @@ void* Cliente::run() {
 			std::cout << "cantidad es "<<cantidad<<"por lo q cierro este cliente" << std::endl;
 
 			this->setConectado(false);
-			//?break;
+
 		}
 
 		if (this->getConectado()) {
@@ -263,6 +273,5 @@ Cliente::~Cliente() {
 	delete this->documentoConc;
 	delete this->socket;
 	std::cout << "////BORRO CLIENTE/////" << std::endl;
-	// TODO Auto-generated destructor stub
-	//se llama a destr de socket
+
 }

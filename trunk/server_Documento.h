@@ -38,9 +38,6 @@ public:
 	/*se borra texto en la posición posicion del contenido del documento*/
 	void borrarTexto(const std::string& texto, int posicion);
 
-
-
-	virtual ~Documento();
 };
 
 #endif /* DOCUMENTO_H_ */

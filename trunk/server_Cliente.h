@@ -36,7 +36,7 @@ public:
 	void setNombre(const std::string& nombre);
 	MSocket* getSocket();
 	bool getConectado();
-	void setConectado(bool newStatus);
+	void setConectado(bool status);
 
 	/*Mientras este conectado el cliente: escucha y procesa cambios*/
 	void* run();
@@ -44,7 +44,6 @@ public:
 	/*según el tipo de cambio recibido desde el cliente remoto,  se ejecutarán diferentes acciones sobre este Cliente,
 	 * el servidor y el documento */
 	void ejecutarAccion(Cambio* cambio);
-
 	void desloguearCliente();
 	virtual ~Cliente();
 };

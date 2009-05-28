@@ -6,7 +6,6 @@
  */
 
 #include "common_Cambio.h"
-//borrar
 #include "common_Parser.h"
 #include <cstdlib>
 
