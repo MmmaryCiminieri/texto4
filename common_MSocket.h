@@ -23,7 +23,7 @@ private:
 	bool valid;
 	MSocket(int fd);
 	MSocket(const MSocket& socket);
-	bool operator==(const MSocket& otro)const;
+	bool operator=(const MSocket& otro)const;
 
 
 public:

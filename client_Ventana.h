@@ -99,6 +99,7 @@ public:
 	void setCliente(Cliente* cliente);
 	Vista* getVista();
 	bool hayClienteConectado();
+	void bloquearBotonDeslog();
 
 
 	/*el cliente envia un msj de que se va, lo vuelve a recibir para debloquear el recv
@@ -107,7 +108,6 @@ public:
 		void desloguearCliente();
 
 
-		void bloquearBotonDeslog();
 
 	/*Cuando uno presina el boton de conectarse, se crea un cliente y  se llama al inicializar del mismo*/
 	static void on_boton_clicked(GtkWidget *widget, VentanaIngreso* data);

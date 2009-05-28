@@ -197,7 +197,7 @@ bool Parser::procesar(const char* buffer, int* tamaniio) {
 			actual++;
 			delete[] ctexto;
 			if (this->longitud > (tamanioBuffer - cantidadLeida)) {
-				/*no se leyo completo, falta informacion*/
+				/*no he leido por completo, falta informacion*/
 				*tamaniio = actual;
 				return false;
 

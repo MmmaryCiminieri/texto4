@@ -12,6 +12,8 @@
 #include <string>
 #include <iostream>
 
+
+
 gulong VentanaIngreso::getinsertSignal() {
 	return this->insertSignal;
 }
@@ -45,6 +47,7 @@ void VentanaIngreso::on_boton_clicked(GtkWidget *widget, VentanaIngreso* data) {
 
 	/*habilito el boton de desloguearse*/
 	gtk_widget_set_sensitive(data->botonDeslog, true);
+
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(data->view), true);
 
 	data->cliente->setNombre(gtk_entry_get_text(GTK_ENTRY(data->entradaNombre)));
@@ -55,6 +58,7 @@ const char* ip = "127.0.0.1";
 const char* port = "8080";
 data->cliente->inicializar(ip, port, widget);
 std::cout << "SALI DEL CLICK" << std::endl;
+
 }
 
 void VentanaIngreso::on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* data){
@@ -95,14 +99,7 @@ bool VentanaIngreso::hayClienteConectado(){
 	return cliente != NULL;
 }
 
-/* Funcion 'callback' para atender la senial del evento "delete_event" */
-static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event, VentanaIngreso* data) {
-	std::cout << "[recibido el evento delete_event]" << std::endl;
-	if (data->hayClienteConectado()){
-		data->desloguearCliente();
-	}
-	return false;
-}
+
 
 GtkWidget* VentanaIngreso::getVentana() {
 	return ventana;
@@ -111,6 +108,7 @@ GtkWidget* VentanaIngreso::getVentana() {
 /* Funcion 'callback' para atender la senial "destroy" de la ventana. */
 static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 	std::cout << "[recibido el evento destroy]" << std::endl;
+
 	/* finaliza el loop de gtk_main() y libera memoria */
 	gtk_main_quit();
 }
@@ -150,6 +148,11 @@ void VentanaIngreso::crearVentana() {
 
 	gtk_window_set_title (GTK_WINDOW (ventana), "Editor de Texto Concurrente");
 
+	//TODO ?/
+	/* conecto la seÃ±al "delete_event" de la ventana a la callback
+	 * on_delete_event() */
+	//g_signal_connect(G_OBJECT(this->ventana), "delete_event", G_CALLBACK(
+		//	on_delete_event), NULL);
 
 	/* conecto la seÃ±al "destroy" de la ventana a la callback destruir()
 	 * esta seÃ±al se emite cuando se llama a gtk_widget_destroy() */
@@ -334,6 +337,8 @@ void VentanaIngreso::crearTexto() {
 
 	this->swindow = gtk_scrolled_window_new(NULL, NULL);
 
+	//gtk_widget_set_usize(swindow,40, 10);
+
 	gtk_widget_set_size_request(view, 125, 300);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(this->swindow),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -404,3 +409,8 @@ this->desloguearCliente();
 }
 
 
+
+//TODO BORRARLO!!!
+VentanaIngreso::VentanaIngreso(const VentanaIngreso& ventanaIngreso){
+	std::cout << "////CONST COPIA VentanaIngreso/////" << std::endl;
+}

@@ -5,11 +5,13 @@
  *      Author: mmmary
  */
 
+
 #include "common_Lock.h"
 #include  "common_Cambio.h"
 #include  "server_Cliente.h"
 #include "server_Servidor.h"
 #include <iostream>
+
 
 #define MAXCANTUS 27
 
@@ -17,6 +19,7 @@ Servidor::Servidor(unsigned short puerto, int cantClientes) {
 	this->escucho = true;
 	this->puerto = puerto;
 	this->cantClientes = cantClientes;
+	//this->listaDeClientes = new ListaClientes();
 
 	execute();
 }
@@ -31,34 +34,36 @@ std::queue<NombreCambio> Servidor::getColaDeCambios() {
 	return this->colaDeCambios;
 }
 
-void Servidor::removerCliente(const std::string& nombre) {
-	std::list<Cliente*>::iterator it;
-	Cliente* clienteAux;
-	for (it = getListaClientes()->begin(); it != getListaClientes()->end(); ++it) {
-		clienteAux = *it;
-		if (clienteAux->getNombre() == nombre) {
-			getListaClientes()->remove(clienteAux);
-			return;
-		}
-	}
+void Servidor::removerCliente(const std::string& nombre){
+	 std::list<Cliente*>::iterator it;
+Cliente* clienteAux;
+	 for( it = getListaClientes()->begin(); it != getListaClientes()->end(); ++it ) {
+	       clienteAux = *it;
+	       if(clienteAux->getNombre() == nombre){
+				   getListaClientes()->remove(clienteAux);
+	       			return;
+	       		}
+	     }
 }
 
 int Servidor::getVersion() {
 	return this->documentoConc.getVersion();
 }
-
 void* Servidor::run() {
 	/*mientras extoy conectado, veo si hay cambios y los proceso*/
 	std::cout << "ESTOY EN EL RUN" << std::endl;
 
 	while (escucho) {
 		usleep(500);
+
 		if (!colaDeCambios.empty()) {
 			std::cout << "ACABO DE LEER UN CAMBIO" << std::endl;
 			this->leerCambios();
 		}
+
 	}
 	std::cout << "deje de estar conectado" << std::endl;
+
 	return NULL;
 }
 
@@ -117,12 +122,13 @@ void Servidor::leerCambios() {
 	delete cambio;
 }
 
+
+
 void Servidor::desconectarCliente(const std::string& nombre) {
-	std::list<Cliente*>::iterator it;
+	 std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
-	for (it = this->getListaClientes()->begin(); it
-			!= this->getListaClientes()->end(); ++it) {
-		clienteAux = *it;
+		 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
+		       clienteAux = *it;
 
 		if (nombre == clienteAux->getNombre()) {
 
@@ -199,40 +205,37 @@ void Servidor::setEstado(bool estado) {
 
 void Servidor::cerrarServidor() {
 
+	//ver q ingrese usuario
+	std::cout << "escriba c para cerrar la aplicacion " << std::endl;
 	char ingreso;
-	do {
-		std::cout << "escriba c para cerrar la aplicacion " << std::endl;
+	std::cin >> ingreso;
+	if (ingreso == 'c') {
+		std::cout << "la aplicacion se esta cerrando..." << std::endl;
 
-		std::cin >> ingreso;
-	} while (ingreso != 'c');
-	std::cout << "la aplicacion se esta cerrando..." << std::endl;
+		//this->socket->close();
+		this->setEstado(false);
 
-	/*borro a todos los clientes*/
+		/*borro a todos los clientes*/
 
-	std::list<Cliente*>::iterator it;
-	Cliente* clienteAux;
-	for (it = this->getListaClientes()->begin(); it
-			!= this->getListaClientes()->end(); ++it) {
-		clienteAux = *it;
-		this->desconectarCliente(clienteAux->getNombre());
+		 std::list<Cliente*>::iterator it;
+		Cliente* clienteAux;
+			 for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
+			       clienteAux = *it;
+
+			clienteAux->join();
+
+			std::cout << "join de un cliente... " << std::endl;
+
+		}
+		std::cout << "antes del join del server..." << std::endl;
+		this->join();
+		std::cout << "luego del join del server... " << std::endl;
 
 	}
-	while (!colaDeCambios.empty()) {
-		NombreCambio nc = this->colaDeCambios.front();
-		this->colaDeCambios.pop();
-		delete nc.cambio;
-	}
-	this->socket->close();
-
-	this->setEstado(false);
-
-	this->join();
-
-
 }
 
 std::list<Cliente*>* Servidor::getListaClientes() {
-return &listaDeClientes;
+	return &listaDeClientes;
 }
 
 DocumentoConcurrente* Servidor::getDocumentoConc() {
@@ -241,32 +244,26 @@ DocumentoConcurrente* Servidor::getDocumentoConc() {
 
 void Servidor::notificarAmigoConectado(const std::string& nombre) {
 	/*a todos les aviso que su amigo se conecto*/
-	std::cout << "Servidor::notificarAmigoConectado(" << nombre << ")"
-			<< std::endl;
+	std::cout << "Servidor::notificarAmigoConectado(" << nombre << ")" << std::endl;
 	//Lock lock(this->mutex);
 	Cambio cambio("F", nombre);
 	//std::list<Cliente*>::iterator it;
 	//Cliente* clienteAux;
-	//	for(it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
-	//		clienteAux = *it;
-	this->enviarCambio(cambio, nombre, 0);
+//	for(it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
+//		clienteAux = *it;
+		this->enviarCambio(cambio, nombre, 0);
 	//}
 }
 
 void Servidor::crearListaAmigos(Cliente* cliente) {
 	/*al nuevo cliente le mando una lista de todos sus amigos conectados*/
-	std::cout << "Servidor::CrearListaDeAmigos(para " << cliente->getNombre()
-			<< ")" << std::endl;
+	std::cout << "Servidor::CrearListaDeAmigos(para " << cliente->getNombre() << ")" << std::endl;
 	Lock lock(this->mutex);
 	std::list<Cliente*>::iterator it;
 	Cliente* clienteAux;
-	for (it = this->getListaClientes()->begin(); it
-			!= this->getListaClientes()->end(); ++it) {
+	for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 		clienteAux = *it;
-		std::cout
-				<< "Este es el amigo que voy a agregar a la lista para mandar a "
-				<< cliente->getNombre() << ": " << clienteAux->getNombre()
-				<< std::endl;
+		std::cout << "Este es el amigo que voy a agregar a la lista para mandar a " << cliente->getNombre() << ": " << clienteAux->getNombre() << std::endl;
 		Cambio cambio("F", clienteAux->getNombre());
 		this->enviarCambio(cambio, cliente->getNombre(), 1);
 	}
@@ -279,8 +276,7 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 		Lock lock(this->mutex);
 		std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-		for (it = this->getListaClientes()->begin(); ((it
-				!= this->getListaClientes()->end()) && (!encontrado)); ++it) {
+		for( it = this->getListaClientes()->begin(); ((it != this->getListaClientes()->end()) && (!encontrado)); ++it ) {
 			clienteAux = *it;
 			if (clienteAux->getNombre() == cliente->getNombre()) {
 				encontrado = true;
@@ -293,28 +289,23 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 	if (encontrado) {
 		tipo = "R";
 		/*ya existe el cliente con ese nombre*/
-		//TODO borrarlo a este cliente
-		Cambio cambio(tipo, cliente->getNombre());
-		this->enviarCambio(cambio, cliente->getNombre(), 1);
-		cliente->desloguearCliente();
+		//TODO borrarlo a este
 	} else {
 		tipo = "L";
 
 		this->notificarAmigoConectado(cliente->getNombre());
 		this->getListaClientes()->push_back(cliente);
 		this->crearListaAmigos(cliente);
-		std::cout << "Despues de insertar al nuevo, la lista tiene ("
-				<< listaDeClientes.size() << ")" << std::endl;
+		std::cout << "Despues de insertar al nuevo, la lista tiene (" << listaDeClientes.size() << ")" << std::endl;
+	}
 
-		Cambio cambio(tipo, cliente->getNombre());
-		this->enviarCambio(cambio, cliente->getNombre(), 1);
+	Cambio cambio(tipo, cliente->getNombre());
+	this->enviarCambio(cambio, cliente->getNombre(), 1);
 
+	if (tipo == "L") {
 		/*le envio el documento*/
-		std::string contenido =
-				this->documentoConc.getDocumento()->getContenido();
-		Cambio
-				documento("D", this->getDocumentoConc()->getVersion(),
-						contenido);
+		std::string contenido = this->documentoConc.getDocumento()->getContenido();
+		Cambio documento("D", this->getDocumentoConc()->getVersion(), contenido);
 		this->enviarCambio(documento, cliente->getNombre(), 1);
 	}
 
@@ -322,42 +313,41 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 void Servidor::enviarCambio(Cambio cambio, const std::string& nombre, int flag) {
 	if (flag == 0) {
 		/*le mando a todos el cambio creado*/
-		std::list<Cliente*>::reverse_iterator it;
+		 std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-		for (it = this->getListaClientes()->rbegin(); it
-				!= this->getListaClientes()->rend(); ++it) {
+		for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 			clienteAux = *it;
 			if (nombre != clienteAux->getNombre()) {
-				std::cout << "Envio: " << cambio.getStdCambio()
-						<< "(a todos menos a: " << nombre << ")" << std::endl;
+				std::cout << "Envio: " << cambio.getStdCambio() << "(a todos menos a: " << nombre << ")" << std::endl;
 				clienteAux->getSocket()->send(cambio.getStdCambio());
 			} else {
-				if (cambio.getTipo() != "O") {
-					/*le envio al cliente el cambio pero con un alcance = 1*/
-					Cambio cambio2(cambio.getTipo(), cambio.getVersion(), 1,
-							cambio.getPosicion(), cambio.getTexto());
-					std::cout << "Envio: " << cambio2.getStdCambio()
-							<< std::endl;
-					clienteAux->getSocket()->send(cambio2.getStdCambio());
+				if(cambio.getTipo() != "O"){
+				/*le envio al cliente el cambio pero con un alcance = 1*/
+				Cambio cambio2(cambio.getTipo(), cambio.getVersion(), 1, cambio.getPosicion(), cambio.getTexto());
+				std::cout << "Envio: " << cambio2.getStdCambio() << std::endl;
+				clienteAux->getSocket()->send(cambio2.getStdCambio());
 				}
 			}
 		}
 	} else {
 		/*solo se lo envio al que creo el mensaje*/
-		std::list<Cliente*>::reverse_iterator it;
+		std::list<Cliente*>::iterator it;
 		Cliente* clienteAux;
-		for (it = this->getListaClientes()->rbegin(); it
-				!= this->getListaClientes()->rend(); ++it) {
+		for( it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
 			clienteAux = *it;
 			if (nombre == clienteAux->getNombre()) {
 				clienteAux->getSocket()->send(cambio.getStdCambio());
-				std::cout << "Envio: " << cambio.getStdCambio()
-						<< "(Solo al cliente " << nombre << ")" << std::endl;
+				std::cout << "Envio: " << cambio.getStdCambio()	<< "(Solo al cliente " << nombre << ")" << std::endl;
 			}
 		}
 	}
 }
 
 Servidor::~Servidor() {
-	delete this->socket;
+	std::cout << "destructor del server " << std::endl;
+	while(!colaDeCambios.empty()){
+		NombreCambio nc = this->colaDeCambios.front();
+		this->colaDeCambios.pop();
+		delete nc.cambio;
+	}
 }

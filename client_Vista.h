@@ -29,7 +29,7 @@ public:
 	void quitarAmigo(const char* nombre);
 
 	/*cargo el contenido a la ventana de texto a editar*/
-	void cargarDocumento(std::string contenido);
+	void cargarDocumento(const std::string& contenido);
 
 	/*muetro la ventana*/
 	void mostrar();
@@ -38,7 +38,7 @@ public:
 	void refrescarLista();
 
 	/*si no se puede conectar el socket al server, muestro una ventana de error */
-	void ErrorConectar();
+	void errorConectar();
 
 	/*borro texto en la posicion posicion de la ventana donde se encuentra el documento a editar*/
 	void borrar(const char* str, int posicion);
@@ -46,7 +46,7 @@ public:
 	/*agrego texto en la posicion posicion de la ventana donde se encuentra el documento a editar*/
 	void agregar(const char* str, int posicion);
 
-	void Actualizar();
+	//void Actualizar();
 	virtual ~Vista();
 };
 

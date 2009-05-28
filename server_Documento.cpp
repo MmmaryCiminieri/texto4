@@ -68,3 +68,6 @@ std::string Documento::getContenido(){
 		return this->contenido;
 	}
 
+Documento::~Documento() {
+	// TODO Auto-generated destructor stub
+}
