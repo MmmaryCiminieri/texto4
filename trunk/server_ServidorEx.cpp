@@ -20,10 +20,6 @@ ServidorEx::ServidorEx(Servidor* servidor) {
 	}
 }
 
-MSocket* ServidorEx::getSocket(){
-	return socket;
-}
-
 bool ServidorEx::getIsValido(){
 	return isValido;
 }

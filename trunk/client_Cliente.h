@@ -39,6 +39,9 @@ private:
 	const char* puerto;
 	Vista* vista;
 
+	/*Envío a través de mi socket, al servidor, mi nombre*/
+		void enviarDatosInicio();
+
 public:
 	/*constructor de la clase*/
 	Cliente();
@@ -67,15 +70,11 @@ public:
 	 * */
 	void inicializar(const char* ip, const char* port, GtkWidget* boton);
 
-	/*Envío a través de mi socket, al servidor, mi nombre*/
-	void enviarDatosInicio();
-
 	/*Envio un cambio a través del socket, al servidor*/
 	void enviarCambio(const Cambio& cambio);
 
 	/*remuevo un amigo de mi lista y de la vista*/
 	void quitarAmigo(const std::string& nombre);
-
 
 	/*se crea un socket que se conecta con mi cliente y le envia un mensaje de deslogueo*/
 	void desloguearse();

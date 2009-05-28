@@ -15,7 +15,7 @@ Vista::Vista() {
 	return;
 }
 
-void Vista::ErrorConectar() {
+void Vista::errorConectar() {
 	//TODO BORRAR AL CLIENTE POR Q ES COMO Q YA ESTA INGRESADO.... NO?
 	GtkWidget* ventanaerror = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
 			GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
@@ -51,7 +51,7 @@ void Vista::refrescarLista() {
 	}
 }
 
-void Vista::cargarDocumento(std::string contenido) {
+void Vista::cargarDocumento(const std::string& contenido) {
 	g_signal_handler_block(this->ventana.getTexto(), this->ventana.getinsertSignal());
 	gtk_text_buffer_set_text(this->ventana.getTexto(), contenido.c_str(), -1);
 	g_signal_handler_unblock(this->ventana.getTexto(), this->ventana.getinsertSignal());

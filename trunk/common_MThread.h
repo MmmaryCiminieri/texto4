@@ -17,7 +17,7 @@ class MThread {
 private:
 	pthread_t thread;
 	static void* startRoutine(void* arg);
-	bool operator==(const MThread& otro)const;
+	bool operator=(const MThread& otro)const;
 
 
 public:
