@@ -281,9 +281,11 @@ void Servidor::verificacionCliente(Cliente* cliente) {
 	if (encontrado) {
 		tipo = "R";
 		/*ya existe el cliente con ese nombre*/
-		//TODO borrarlo a este cliente
+		//TODO borrar al cliente server
 		Cambio cambio(tipo, cliente->getNombre());
-		this->enviarCambio(cambio, cliente->getNombre(), 1);
+			Parser parser;
+			std::string str = parser.toString(cambio);
+		cliente->getSocket()->send(str);
 		cliente->desloguearCliente();
 	} else {
 		tipo = "L";

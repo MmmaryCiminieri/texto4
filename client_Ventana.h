@@ -100,7 +100,8 @@ public:
 	Vista* getVista();
 	bool hayClienteConectado();
 	void bloquearBotonDeslog();
-
+	GtkWidget* getBoton();
+	void refrescar();
 
 	/*el cliente envia un msj de que se va, lo vuelve a recibir para debloquear el recv
 		 * se cierra el socket y se hace join. Se usa cuando el cliente se desloguea o se cierra la
