@@ -19,7 +19,7 @@
 Cliente::Cliente() {
 	std::cout << "////CREO CLIENTE/////" << std::endl;
 	this->setConectado(false);
-	this->documentoConc = new DocumentoConcurrente();
+	//this->documentoConc = new DocumentoConcurrente();
 }
 
 void Cliente::setNombre(const std::string& nombre) {
@@ -99,31 +99,33 @@ void Cliente::setConectado(bool newStatus) {
 
 void Cliente::desloguearse() {
 	/*el cliente se deloguea*/
-	std::cout << nombre << " Se intenta desloguear" << std::endl;
+	std::cout << "Cliente::desloguearse(" << nombre <<")" << std::endl;
 	/*debo desbloquear el recv, para q se pueda hacer el join*/
 	Cambio cambio("E", nombre);
 	/*se lo envio al servidor*/
 	this->enviarCambio(cambio);
 }
 
-void Cliente::ejecutarAccion(Parser parser) {
+char Cliente::ejecutarAccion(Parser parser) {
 	std::cout << "Empiezo a ejecutar una accion " << std::endl;
-	switch (parser.getTipo()[0]) {
+	char tipoAProcesar = parser.getTipo()[0];
+	switch (tipoAProcesar) {
 
 	case 'E': {
-		std::cout << "recibi la E" << std::endl;
-		this->socket->close();
+		std::cout << "Cliente::ejecutarAccion(E) - begin" << std::endl;
+		this->socket->shutdown();
 		this->setConectado(false);
+		std::cout << "Cliente::ejecutarAccion(E) - end" << std::endl;
 		break;
 	}
 	case 'D': {
 		/*se setea el documento*/
-		this->documentoConc->setDocumento(parser.getTexto());
+		this->documentoConc.setDocumento(parser.getTexto());
 		std::cout << "el documento luego"
-				<< this->documentoConc->getDocumento()->getContenido()
+				<< this->documentoConc.getDocumento()->getContenido()
 				<< std::endl;
 		/*se setea la version */
-		this->documentoConc->setVersion(parser.getVersion());
+		this->documentoConc.setVersion(parser.getVersion());
 		/*se modifica la vista*/
 		this->vista->cargarDocumento(parser.getTexto());
 		break;
@@ -162,10 +164,10 @@ break;
 	case 'A': {
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
 			/* el documento  se modifica*/
-			this->documentoConc->agregarTexto(parser.getTexto(),
+			this->documentoConc.agregarTexto(parser.getTexto(),
 					parser.getPosicion());
 			std::cout << "El documento es: "
-					<< documentoConc->getDocumento()->getContenido()
+					<< documentoConc.getDocumento()->getContenido()
 					<< std::endl;
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
@@ -178,7 +180,7 @@ break;
 	case 'B': {
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
 			/* el documento  se modifica*/
-			this->documentoConc->borrarTexto(parser.getTexto(),
+			this->documentoConc.borrarTexto(parser.getTexto(),
 					parser.getPosicion());
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
@@ -199,41 +201,13 @@ break;
 		break;
 	}
 	}
+	return tipoAProcesar;
 
 }
 
 void* Cliente::run() {
-	//TODO BORRAR Comentarios
-//	std::cout << "Cliente::run()" << std::endl;
-//	std::string mensaje;
-//
-//	while (this->getConectado()) {
-//		char buffer[TAMANIIO];
-//		bzero(buffer, TAMANIIO);
-//		int cantidadLeida = socket->recieve(buffer, TAMANIIO - 1);
-//		if (cantidadLeida > 0) {
-//			buffer[cantidadLeida] = '\0';
-//			mensaje += buffer;
-//			cantidadLeida = mensaje.size();
-//			Parser parser;
-//			int cantidadProcesada;
-//			while (((cantidadProcesada = parser.parsear(mensaje))
-//					< cantidadLeida) && (cantidadProcesada > -1)) {
-//				/*si no termino de leer un msj devuelve -1*/
-//				mensaje.erase(0, cantidadProcesada);
-//				cantidadLeida = mensaje.size();
-//				ejecutarAccion(parser);
-//				parser.reset();
-//			}
-//		} else {
-//			setConectado(false);
-//		}
-//
-//	}
-//	return NULL;
-//}
-
 	std::string str;
+	char tipo = 'E';
 	while (getConectado()) {
 		std::cout << "ESTOY CONECTADO " << std::endl;
 
@@ -273,19 +247,18 @@ void* Cliente::run() {
 
 			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
-			this->ejecutarAccion(parser);
-			std::cout << "luego de accion " << std::endl;
+			tipo =this->ejecutarAccion(parser);
+			std::cout << "luego de ejecutar accion " << std::endl;
 
 			parser.reset();
-			std::cout << "luego de accion 2" << std::endl;
+			std::cout << "luego de resetear parser" << std::endl;
 
 		}
 		if (this->getConectado()) {
 			str.erase(0, cantidad);
 			cantidad = str.size();
 			std::cout << "lluego de accion 3 " << std::endl;
-
-		}else{
+		} else if (tipo != 'E') {
 			this->vista->getVentana()->refrescar();
 		}
 		std::cout << "lluego de accion 4 " << std::endl;
@@ -321,10 +294,10 @@ void Cliente::agregarAmigo(const std::string& nombre) {
 }
 
 DocumentoConcurrente* Cliente::getDocumentoConc() {
-	return this->documentoConc;
+	return &documentoConc;
 }
 Cliente::~Cliente() {
-	delete this->documentoConc;
+	//delete this->documentoConc;
 	delete this->socket;
 	std::cout << "////BORRO CLIENTE/////" << std::endl;
 

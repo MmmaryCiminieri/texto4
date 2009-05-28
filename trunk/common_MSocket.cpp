@@ -10,7 +10,6 @@
 #include <errno.h>
 #include <netdb.h>
 #include <cstring>
-#include <iostream>
 #include <stdlib.h>
 
 MSocket::MSocket(int fd) {
@@ -109,26 +108,18 @@ int MSocket::send(const std::string& stream) {
 }
 
 void MSocket::close() {
-	std::cout << "MSocket::close() para " << fd << std::endl;
-if(fd != -1){
-	::close(fd);
+	if(fd != -1){
+		::close(fd);
 	fd = -1;
-}
-}
-int MSocket::recieve(char* buffer, unsigned int size) {
-
-	int retorno = ::recv(this->fd, buffer, size, 0);
-
-	//TODO borrar esto
-	if (retorno < 0) {
-		std::cout << "el recv no anda " << std::endl;
 	}
+}
 
+int MSocket::recieve(char* buffer, unsigned int size) {
+	int retorno = ::recv(this->fd, buffer, size, 0);
 	return retorno;
 }
 
 MSocket* MSocket::accept() {
-
 	int new_fd = ::accept(this->fd, NULL, NULL);
 	if (new_fd == -1) {
 		return NULL;

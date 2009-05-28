@@ -110,11 +110,12 @@ GtkWidget* VentanaIngreso::getBoton(){
 	return boton;
 }
 void VentanaIngreso::desloguearCliente(){
+	std::cout << "VentanaIngreso::desloguearCliente() - begin" << std::endl;
 	this->cliente->desloguearse();
 	this->cliente->join();
 	delete this->cliente;
 	this->cliente = NULL;
-	std::cout << "CLIENTE CERRADO" << std::endl;
+	std::cout << "VentanaIngreso::desloguearCliente() - end (CLIENTE CERRADO)" << std::endl;
 }
 
 bool VentanaIngreso::hayClienteConectado(){
@@ -128,10 +129,12 @@ GtkWidget* VentanaIngreso::getVentana() {
 }
 
 /* Funcion 'callback' para atender la senial "destroy" de la ventana. */
+
 static void destruir(GtkWidget *widget,VentanaIngreso* data) {
 	std::cout << "[recibido el evento destroy]" << std::endl;
 
 	/* finaliza el loop de gtk_main() y libera memoria */
+
 	gtk_main_quit();
 }
 
@@ -416,8 +419,8 @@ void VentanaIngreso::mostrar() {
 
 VentanaIngreso::~VentanaIngreso() {
 	if(this->hayClienteConectado()){
-this->desloguearCliente();
-
-	}	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
+		this->desloguearCliente();
+	}
+	std::cout << "////Destructor VentanaIngreso/////" << std::endl;
 }
 
