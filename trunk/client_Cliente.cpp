@@ -30,15 +30,14 @@ std::string Cliente::getNombre() {
 	return this->nombre;
 }
 
-
-bool Cliente::isAceptado(){
-        Lock lock(this->mutex);
-        return aceptado;
+bool Cliente::isAceptado() {
+	Lock lock(this->mutex);
+	return aceptado;
 }
 
-void Cliente::setAceptado(bool status){
-        Lock lock(mutex);
-        aceptado = status;
+void Cliente::setAceptado(bool status) {
+	Lock lock(mutex);
+	aceptado = status;
 
 }
 void Cliente::inicializar(const char* ip, const char* port, GtkWidget* boton) {
@@ -117,7 +116,9 @@ void Cliente::ejecutarAccion(Parser parser) {
 	case 'D': {
 		/*se setea el documento*/
 		this->documentoConc->setDocumento(parser.getTexto());
-		std::cout << "el documento luego" << this->documentoConc->getDocumento()->getContenido() << std::endl;
+		std::cout << "el documento luego"
+				<< this->documentoConc->getDocumento()->getContenido()
+				<< std::endl;
 		/*se setea la version */
 		this->documentoConc->setVersion(parser.getVersion());
 		/*se modifica la vista*/
@@ -126,39 +127,44 @@ void Cliente::ejecutarAccion(Parser parser) {
 	}
 	case 'R': {
 		/*lanzo ventana de error, pues  el nombre de usuario esta ya ocupado*/
-		GtkWidget * ventanaerror =
-					gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
-											GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
-											"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
-											gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
+		GtkWidget
+				* ventanaerror =
+						gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+								GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
+								"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
+		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
 
-		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(), true);
+		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
+				true);
 	}
-	case 'L':{
-		 /* Fui aceptado */
-		                setAceptado(true);
-
+	case 'L': {
+		/* Fui aceptado */
+		setAceptado(true);
 
 	}
 	case 'A': {
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
 			/* el documento  se modifica*/
-			this->documentoConc->agregarTexto(parser.getTexto(), parser.getPosicion());
-			std::cout << "El documento es: " << documentoConc->getDocumento()->getContenido()
+			this->documentoConc->agregarTexto(parser.getTexto(),
+					parser.getPosicion());
+			std::cout << "El documento es: "
+					<< documentoConc->getDocumento()->getContenido()
 					<< std::endl;
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
 			/*la vista se modifica*/
-			this->vista->agregar(parser.getTexto().c_str(), parser.getPosicion());
+			this->vista->agregar(parser.getTexto().c_str(),
+					parser.getPosicion());
 		}
 		break;
 	}
 	case 'B': {
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 1)) {
 			/* el documento  se modifica*/
-			this->documentoConc->borrarTexto(parser.getTexto(), parser.getPosicion());
+			this->documentoConc->borrarTexto(parser.getTexto(),
+					parser.getPosicion());
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
 			/*la vista se modifica*/
@@ -182,15 +188,42 @@ void Cliente::ejecutarAccion(Parser parser) {
 }
 
 void* Cliente::run() {
-//TODO BORRAR Comentarios
-	std::cout << "Cliente::run()" << std::endl;
+	//TODO BORRAR Comentarios
+//	std::cout << "Cliente::run()" << std::endl;
+//	std::string mensaje;
+//
+//	while (this->getConectado()) {
+//		char buffer[TAMANIIO];
+//		bzero(buffer, TAMANIIO);
+//		int cantidadLeida = socket->recieve(buffer, TAMANIIO - 1);
+//		if (cantidadLeida > 0) {
+//			buffer[cantidadLeida] = '\0';
+//			mensaje += buffer;
+//			cantidadLeida = mensaje.size();
+//			Parser parser;
+//			int cantidadProcesada;
+//			while (((cantidadProcesada = parser.parsear(mensaje))
+//					< cantidadLeida) && (cantidadProcesada > -1)) {
+//				/*si no termino de leer un msj devuelve -1*/
+//				mensaje.erase(0, cantidadProcesada);
+//				cantidadLeida = mensaje.size();
+//				ejecutarAccion(parser);
+//				parser.reset();
+//			}
+//		} else {
+//			setConectado(false);
+//		}
+//
+//	}
+//	return NULL;
+//}
 
-	char buff1[TAMANIIO];
-	bzero(buff1, TAMANIIO);
 	std::string str;
 	while (getConectado()) {
 		std::cout << "ESTOY CONECTADO " << std::endl;
 
+		char buff1[TAMANIIO];
+		bzero(buff1, TAMANIIO);
 		int cantidad = 0;
 		Parser parser;
 

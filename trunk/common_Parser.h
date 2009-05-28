@@ -50,6 +50,9 @@ public:
 	 * de buffer procesados.*/
 	bool procesar(const char* buff, int* tamanioBuffer);
 
+
+	int parsear(const std::string& mensaje);
+
 	/*Se resetean (en cero) los campos del parser para utilizarlo para leer otro cambio.*/
 	void reset();
 
