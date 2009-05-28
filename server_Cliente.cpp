@@ -16,7 +16,7 @@
 Cliente::Cliente(MSocket * socket, Servidor* servidor) {
 	this->socket = socket;
 	this->servidor = servidor;
-	// TODO: Pasar a false?
+	/*es true por que el socket ya se conecto*/
 	this->conectado = true;
 }
 
@@ -37,43 +37,29 @@ bool  Cliente::getConectado() {
 	return conectado;
 }
 
-	void  Cliente::setConectado(bool newStatus){
-		Lock lock(mutex);
-		this->conectado = newStatus;
-	}
-
-	void Cliente::desloguearCliente(){
-
-	this->socket->close();
-		this->setConectado(false);
-
-
-
+void  Cliente::setConectado(bool status){
+	Lock lock(mutex);
+	this->conectado = status;
 }
+
+void Cliente::desloguearCliente(){
+	this->socket->close();
+	this->setConectado(false);
+}
+
 void Cliente::ejecutarAccion(Cambio* cambio) {
-
-
 	switch (cambio->getTipo()[0]) {
 
 	case 'N': {
-		/*el cliente envÃ­a sus datos para ingresar al sistema*/
+		/*el cliente envia sus datos para ingresar al sistema*/
 		this->setNombre(cambio->getTexto());
 		this->servidor->verificacionCliente(this);
 		break;
 	}
-	case 'A':
-		;
-	case 'B':
-		;
-
-	case 'O':
-		;
-	case 'E': {
-
+	case 'A':; case 'B':; case 'O':; case 'E': {
 		/*recibo un cambio que afectarÃ¡ al documeto o a los usuarios conectados */
 		/*estos cambios de acolan, esperando a ser procesados*/
 		this->servidor->agregarCambio(cambio, nombre);
-
 		break;
 	}
 
@@ -81,9 +67,7 @@ void Cliente::ejecutarAccion(Cambio* cambio) {
 }
 
 void* Cliente::run() {
-
 	std::cout << "dentro del run " << std::endl;
-
 	char buff1[TAMANIIO];
 	bzero(buff1, TAMANIIO);
 	std::string str;

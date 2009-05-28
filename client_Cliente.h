@@ -33,6 +33,7 @@ private:
 	MSocket* socket;
 	DocumentoConcurrente* documentoConc;
 	bool conectado;
+	bool aceptado;
 	std::list<std::string> listaDeAmigos;
 	MMutex mutex;
 	const char* puerto;
@@ -48,8 +49,11 @@ public:
 	MSocket* getSocket();
 	std::list<std::string> getAmigos();
 	void setVista(Vista* vista);
-	void setConectado(bool newStatus);
+	void setConectado(bool status);
 	bool getConectado();
+	bool isAceptado();
+	void setAceptado(bool status);
+
 
 	/*Agrego un amigo a mi lista de amigos */
 	void agregarAmigo(const std::string& nombre);
@@ -72,7 +76,7 @@ public:
 	/*remuevo un amigo de mi lista y de la vista*/
 	void quitarAmigo(const std::string& nombre);
 
-	//TODO ver q andeee
+
 	/*se crea un socket que se conecta con mi cliente y le envia un mensaje de deslogueo*/
 	void desloguearse();
 
