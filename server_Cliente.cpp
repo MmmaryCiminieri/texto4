@@ -116,7 +116,7 @@ void* Cliente::run() {
 
 			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
-			//delete
+			/*libero al leer el cambio en el server*/
 			Cambio* cambio = new Cambio;
 			cambio = parser.toCambio();
 			this->ejecutarAccion(cambio);

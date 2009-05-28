@@ -44,7 +44,7 @@ MSocket::MSocket(int puerto, int cantClientes) {
 	}
 		this->dest_addr.sin_family = AF_INET;
 	this->dest_addr.sin_port = htons(puerto);
-	this->dest_addr.sin_addr.s_addr = INADDR_ANY;//htonl(INADDR_ANY);
+	this->dest_addr.sin_addr.s_addr = INADDR_ANY;
 	memset(this->dest_addr.sin_zero, '\0', sizeof(this->dest_addr.sin_zero));
 	this->valid = true;
 

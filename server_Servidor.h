@@ -69,9 +69,6 @@ public:
 	DocumentoConcurrente* getDocumentoConc();
 	MSocket* getSocket();
 
-	/*se setea por consola el puerto donde se oirÃ¡n a los clientes*/
-	//unsigned short setPuerto();
-
 	/*el servidor cambia su estado a no escuchando y hace join de todos
 	 * sus clientes*/
 	void cerrarServidor();

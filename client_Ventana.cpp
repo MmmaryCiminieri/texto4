@@ -332,9 +332,6 @@ void VentanaIngreso::crearTexto() {
 	gtk_text_view_set_right_margin(GTK_TEXT_VIEW(this->view), 5);
 
 	this->swindow = gtk_scrolled_window_new(NULL, NULL);
-
-	//gtk_widget_set_usize(swindow,40, 10);
-
 	gtk_widget_set_size_request(view, 125, 300);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(this->swindow),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);

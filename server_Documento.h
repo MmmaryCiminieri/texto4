@@ -26,7 +26,6 @@ public:
 	Documento(const std::string& documento);
 
 	int getVersion();
-		//bool hayCambios();
 		void setVersion(int nro);
 		void setContenido(const std::string& contenido);
 		void aumentarVersion();
