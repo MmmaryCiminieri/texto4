@@ -86,13 +86,13 @@ void Parser::reset() {
 	this->texto.erase(0, texto.size());
 }
 
-bool Parser::procesar(const char* buffer, int* posicionFinal) {
+bool Parser::procesar(const char* buffer, int* tamaniio) {
 
-	if (*posicionFinal == 0) {
+	if (*tamaniio == 0) {
 		return false;
 	}
 	int actual = 0;
-	int tamanioBuffer = *posicionFinal;
+	int tamanioBuffer = *tamaniio;
 	if (!this->tipoLeido) {
 
 
@@ -104,9 +104,11 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 		this->tipoLeido = true;
 	}
 	if (actual >= tamanioBuffer) {
-		*posicionFinal = actual;
+		*tamaniio = actual;
 		return false;
 	}
+
+
 
 	if ((this->tipo == "A") || (this->tipo == "B") || (this->tipo == "D")) {
 		/* debo analizar el numero de version*/
@@ -119,7 +121,7 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 
 			if (actual >= tamanioBuffer) {
 				/*he leido pero el buffer es menor*/
-				*posicionFinal = actual;
+				*tamaniio = actual;
 				return false;
 			}
 
@@ -136,7 +138,7 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 
 			if (actual >= tamanioBuffer) {
 				/*he leido pero el buffer es menor*/
-				*posicionFinal = actual;
+				*tamaniio = actual;
 				return false;
 			}
 
@@ -152,7 +154,7 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 
 			if (actual >= tamanioBuffer) {
 				/*he leido pero el buffer es menor*/
-				*posicionFinal = actual;
+				*tamaniio = actual;
 				return false;
 			}
 
@@ -166,7 +168,7 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 
 		if (actual >= tamanioBuffer) {
 			/*he leido pero el buffer es menor*/
-			*posicionFinal = actual;
+			*tamaniio = actual;
 			return false;
 		}
 
@@ -199,13 +201,13 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 			delete[] ctexto;
 			if (this->longitud > (tamanioBuffer - cantidadLeida)) {
 				/*no he leido por completo, falta informacion*/
-				*posicionFinal = actual;
+				*tamaniio = actual;
 				return false;
 
 			} else {
 				this->textoIncompleto = false;
 				std::cout << "el actual es " << actual << std::endl;
-				*posicionFinal = --actual;
+				*tamaniio = --actual;
 				if (actual == 0) {
 					return false;
 				}
@@ -216,7 +218,7 @@ bool Parser::procesar(const char* buffer, int* posicionFinal) {
 		}
 	}
 
-	*posicionFinal = --actual;
+	*tamaniio = --actual;
 	if (actual == 0) {
 		return false;
 	}
