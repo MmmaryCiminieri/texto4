@@ -50,7 +50,7 @@ private:
 	int cantClientes;
 	std::list<Cliente*> listaDeClientes;
 	DocumentoConcurrente documentoConc;
-	MSocket* socket;
+//	MSocket* socket;
 	bool escucho;
 	MMutex mutex;
 
@@ -67,7 +67,6 @@ public:
 	int getVersion();
 	std::queue<NombreCambio> getColaDeCambios();
 	DocumentoConcurrente* getDocumentoConc();
-	MSocket* getSocket();
 
 	/*el servidor cambia su estado a no escuchando y hace join de todos
 	 * sus clientes*/

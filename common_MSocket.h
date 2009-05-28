@@ -52,6 +52,7 @@ public:
 	/*cierra la conexion*/
 	void close();
 
+	int shutdown();
 	bool isValid();
 	virtual ~MSocket();
 };

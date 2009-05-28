@@ -65,6 +65,11 @@ int MSocket::connect(const char* ip, const char* port) {
 			return -1;
 
 }
+
+int MSocket::shutdown(){
+
+	return ::shutdown(fd, SHUT_RDWR);
+}
 int MSocket::listen(unsigned int port, unsigned int cantClientes) {
 
 	if (this->isValid()) {
@@ -104,8 +109,9 @@ int MSocket::send(const std::string& stream) {
 }
 
 void MSocket::close() {
+	std::cout << "MSocket::close() para " << fd << std::endl;
 if(fd != -1){
-	::close(this->fd);
+	::close(fd);
 	fd = -1;
 }
 }
