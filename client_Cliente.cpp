@@ -254,6 +254,9 @@ void* Cliente::run() {
 			std::cout << "luego de resetear parser" << std::endl;
 
 		}
+		std::cout << "el tipo ahora es "<<tipo << std::endl;
+
+
 		if (this->getConectado()) {
 			str.erase(0, cantidad);
 			cantidad = str.size();
