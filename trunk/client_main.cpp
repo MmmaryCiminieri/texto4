@@ -15,5 +15,5 @@ int main(int argc, char* argv[]) {
 
 	/*se muestra la interfaz gráfica desde donde toodo sucede*/
 	vista.mostrar();
-s	return 0;
+	return 0;
 }
