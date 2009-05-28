@@ -50,6 +50,7 @@ bool  Cliente::getConectado() {
 
 
 }
+
 void Cliente::ejecutarAccion(Cambio* cambio) {
 
 
@@ -65,7 +66,6 @@ void Cliente::ejecutarAccion(Cambio* cambio) {
 		;
 	case 'B':
 		;
-
 	case 'O':
 		;
 	case 'E': {
@@ -117,8 +117,7 @@ void* Cliente::run() {
 			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
 			/*libero al leer el cambio en el server*/
-			Cambio* cambio = new Cambio;
-			cambio = parser.toCambio();
+			Cambio* cambio = parser.toCambio();
 			this->ejecutarAccion(cambio);
 			parser.reset();
 
