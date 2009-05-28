@@ -61,7 +61,7 @@ public:
 	int getAlcance() const;
 	int getLongitud() const;
 
-//borrar
+//todo borrar
 	std::string getStdCambio();
 };
 

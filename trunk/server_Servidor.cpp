@@ -225,7 +225,6 @@ void Servidor::cerrarServidor() {
 	//this->socket->close();
 
 	this->setEstado(false);
-
 	this->join();
 
 

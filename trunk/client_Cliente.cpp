@@ -4,9 +4,6 @@
  *  Created on: May 3, 2009
  *      Author: mmmary
  */
-//#include <glib.h>
-//#include <glib/gprintf.h>
-
 #include <gtk/gtk.h>
 #include "client_Cliente.h"
 #include "common_Lock.h"
@@ -136,8 +133,6 @@ void Cliente::ejecutarAccion(Parser parser) {
 											gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
 		gtk_dialog_run( GTK_DIALOG(ventanaerror));
 		gtk_widget_destroy(ventanaerror);
-		//g_signal_connect_swapped (ventanaerror, "response",
-		  //    	G_CALLBACK(on_boton_clicked_logout), this->vista->getVentana());
 
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(), true);
 	}
@@ -206,7 +201,7 @@ void* Cliente::run() {
 			std::cout << "cantidad es "<<cantidad<<"por lo q cierro este cliente" << std::endl;
 
 			this->setConectado(false);
-			//?break;
+
 		}
 
 		if (this->getConectado()) {
