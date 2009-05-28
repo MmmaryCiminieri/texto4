@@ -32,8 +32,6 @@ else{
 	this->contenido = this->contenido.append(str);
 
 }
-std::cout << "el doc: "<<contenido << std::endl;
-
 }
 
 void Documento::aumentarVersion(){
@@ -44,8 +42,6 @@ void Documento::borrarTexto(const std::string& texto, int posicion){
 
 int sizeToRemove = texto.size();
 this->contenido = this->contenido.erase(posicion, sizeToRemove);
-std::cout << "el doc: "<<contenido << std::endl;
-
 }
 
 

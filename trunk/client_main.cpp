@@ -15,9 +15,5 @@ int main(int argc, char* argv[]) {
 
 	/*se muestra la interfaz gráfica desde donde toodo sucede*/
 	vista.mostrar();
-
-
-	std::cout << "---------------MAIN-----------------" << std::endl;
-
-	return 0;
+s	return 0;
 }

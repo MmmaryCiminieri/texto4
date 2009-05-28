@@ -28,8 +28,6 @@ return 0;
 	}else{
 		std::cout<<"Hubo un error en la conexion. Vuelva a intentarlo en otro momento."<<std::endl;
 	}
-	std::cout<< "en el main "<<std::endl;
-
 	servidor.cerrarServidor();
 	servidorExecutable.dejarDeEscuchar();
     return 0;

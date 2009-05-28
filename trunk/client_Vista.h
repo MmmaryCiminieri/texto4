@@ -46,7 +46,6 @@ public:
 	/*agrego texto en la posicion posicion de la ventana donde se encuentra el documento a editar*/
 	void agregar(const char* str, int posicion);
 
-	//void Actualizar();
 	virtual ~Vista();
 };
 
