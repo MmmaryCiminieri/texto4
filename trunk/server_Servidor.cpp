@@ -222,12 +222,9 @@ void Servidor::cerrarServidor() {
 		this->colaDeCambios.pop();
 		delete nc.cambio;
 	}
-	//this->socket->close();
 
 	this->setEstado(false);
 	this->join();
-
-
 }
 
 std::list<Cliente*>* Servidor::getListaClientes() {
@@ -240,16 +237,10 @@ DocumentoConcurrente* Servidor::getDocumentoConc() {
 
 void Servidor::notificarAmigoConectado(const std::string& nombre) {
 	/*a todos les aviso que su amigo se conecto*/
-	std::cout << "Servidor::notificarAmigoConectado(" << nombre << ")"
-			<< std::endl;
+	std::cout << "Servidor::notificarAmigoConectado(" << nombre << ")" << std::endl;
 	//Lock lock(this->mutex);
 	Cambio cambio("F", nombre);
-	//std::list<Cliente*>::iterator it;
-	//Cliente* clienteAux;
-	//	for(it = this->getListaClientes()->begin(); it != this->getListaClientes()->end(); ++it ) {
-	//		clienteAux = *it;
 	this->enviarCambio(cambio, nombre, 0);
-	//}
 }
 
 void Servidor::crearListaAmigos(Cliente* cliente) {

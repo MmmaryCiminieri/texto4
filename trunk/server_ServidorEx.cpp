@@ -19,11 +19,7 @@ cantidadIntentos++;
 		}
 
 	int retorno = this->socket->listen(servidor->getPuerto(), servidor->getCantClientes());
-	if (retorno != 0) {
-		isValido = false;
-	} else {
-		isValido = true;
-	}
+	isValido = (retorno == 0);
 }
 
 bool ServidorEx::getIsValido(){
@@ -48,6 +44,13 @@ void* ServidorEx::run(){
 		return NULL;
 }
 
+void ServidorEx::dejarDeEscuchar(){
+	socket->close();
+	std::cout << "ServidorEx::dejarDeEscuchar() - socket cerrado" << std::endl;
+	//join(); TODO: No se que pasa :( de este join no vuelve nunca, porque el accept del socket esta bloqueado por mas que lo cierre
+}
+
 ServidorEx::~ServidorEx() {
+	std::cout << "ServidorEx::~ServidorEx()" << std::endl;
 	delete this->socket;
 }

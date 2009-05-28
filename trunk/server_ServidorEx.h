@@ -27,7 +27,7 @@ public:
 	ServidorEx(Servidor* servidor);
 
 	bool getIsValido();
-
+	void dejarDeEscuchar();
 	/*se escucha, si un cliente se desea conectar lo creo en el heap y se lo envio al servidor*/
 	void* run();
 
