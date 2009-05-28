@@ -7,10 +7,16 @@
 #include <iostream>
 #include "server_ServidorEx.h"
 #include "server_Cliente.h"
+#define MAXCANTINTENTOS 20
 
 ServidorEx::ServidorEx(Servidor* servidor) {
 	this->servidor = servidor;
-	this->socket = new MSocket(servidor->getPuerto(), servidor->getCantClientes());
+	socket = NULL;
+	int cantidadIntentos = 0;
+	while ((socket==NULL) && cantidadIntentos < MAXCANTINTENTOS) {
+		this->socket = new MSocket(servidor->getPuerto(), servidor->getCantClientes());
+cantidadIntentos++;
+		}
 
 	int retorno = this->socket->listen(servidor->getPuerto(), servidor->getCantClientes());
 	if (retorno != 0) {

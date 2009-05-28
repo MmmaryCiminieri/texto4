@@ -36,12 +36,8 @@ MSocket::MSocket() {
 }
 
 MSocket::MSocket(int puerto, int cantClientes) {
-	int cantidadIntentos = 0;
-	this->fd = -1;
-	while ((fd == -1) && cantidadIntentos < 20) {
-		this->fd = socket(PF_INET, SOCK_STREAM, 0);
-		cantidadIntentos++;
-	}
+this->fd = socket(PF_INET, SOCK_STREAM, 0);
+
 		this->dest_addr.sin_family = AF_INET;
 	this->dest_addr.sin_port = htons(puerto);
 	this->dest_addr.sin_addr.s_addr = INADDR_ANY;
@@ -61,8 +57,7 @@ int MSocket::connect(const char* ip, const char* port) {
 
 				if (h= gethostbyname(ip)) {
 
-					destino.sin_addr.s_addr
-					= ((struct in_addr*) (h->h_addr))->s_addr;
+					destino.sin_addr.s_addr = ((struct in_addr*) (h->h_addr))->s_addr;
 
 					return ::connect(fd, (struct sockaddr *) &destino, sizeof(destino));
 				}
