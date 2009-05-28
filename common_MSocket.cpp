@@ -109,10 +109,10 @@ int MSocket::send(const std::string& stream) {
 }
 
 void MSocket::close() {
-//	if(fd!= -1){
+if(fd != -1){
 	::close(this->fd);
 }
-
+}
 int MSocket::recieve(char* buffer, unsigned int size) {
 
 	int retorno = ::recv(this->fd, buffer, size, 0);
