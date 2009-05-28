@@ -15,10 +15,7 @@ void* MThread::startRoutine(void* arg) {
 }
 
 int MThread::execute() {
-	 std::cout<<"EXECUTE"<<std::endl;
-
 	return pthread_create(&thread, NULL, startRoutine, (void*) this);
-
 }
 
 void* MThread::join() {

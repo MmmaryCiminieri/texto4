@@ -50,7 +50,6 @@ private:
 	int cantClientes;
 	std::list<Cliente*> listaDeClientes;
 	DocumentoConcurrente documentoConc;
-//	MSocket* socket;
 	bool escucho;
 	MMutex mutex;
 

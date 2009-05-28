@@ -81,9 +81,6 @@ void Cliente::ejecutarAccion(Cambio* cambio) {
 }
 
 void* Cliente::run() {
-
-	std::cout << "dentro del run " << std::endl;
-
 	char buff1[TAMANIIO];
 	bzero(buff1, TAMANIIO);
 	std::string str;
@@ -95,7 +92,6 @@ void* Cliente::run() {
 
 		cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
 
-		std::cout << "en el reun del cliente me llega: " << buff1 << std::endl;
 		if (cantidad <= 0) {
 			this->conectado = false;
 		} else {
@@ -104,17 +100,11 @@ void* Cliente::run() {
 		}
 
 		while ((conectado) && (parser.procesar(str.c_str(), &cantidad))) {
-
-			std::cout << "termino de procesar " << cantidad
-					<< "bytes sdel buffer" << std::endl;
-
 			if (cantidad > 0) {
 				/*borro lo q ya lei del buffer*/
 				str.erase(0, cantidad);
 				cantidad = str.size();
 			}
-
-			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
 			/*libero al leer el cambio en el server*/
 			Cambio* cambio = parser.toCambio();
@@ -130,12 +120,10 @@ void* Cliente::run() {
 
 	}
 
-	std::cout << " salgo del run del cliente(server)" << std::endl;
 	return NULL;
 }
 
 Cliente::~Cliente() {
-	/* borra su socket */
-	std::cout << "destructor del cliente " << std::endl;
 	delete this->socket;
 }
+

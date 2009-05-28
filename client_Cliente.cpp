@@ -17,9 +17,7 @@
 #define MAXCANTUS 27
 
 Cliente::Cliente() {
-	std::cout << "////CREO CLIENTE/////" << std::endl;
 	this->setConectado(false);
-	//this->documentoConc = new DocumentoConcurrente();
 }
 
 void Cliente::setNombre(const std::string& nombre) {
@@ -66,13 +64,13 @@ MSocket* Cliente::getSocket() {
 void Cliente::setVista(Vista* vista) {
 	this->vista = vista;
 }
+
 void Cliente::conectarSocket(const char* IP, const char* puerto) {
 
 	this->socket = new MSocket();
 
 	int retorno = this->socket->connect(IP, puerto);
 	if (retorno == 0) {
-		std::cout << "me pude conectar " << std::endl;
 		this->puerto = puerto;
 		this->setConectado(true);
 
@@ -99,7 +97,6 @@ void Cliente::setConectado(bool newStatus) {
 
 void Cliente::desloguearse() {
 	/*el cliente se deloguea*/
-	std::cout << "Cliente::desloguearse(" << nombre <<")" << std::endl;
 	/*debo desbloquear el recv, para q se pueda hacer el join*/
 	Cambio cambio("E", nombre);
 	/*se lo envio al servidor*/
@@ -107,23 +104,17 @@ void Cliente::desloguearse() {
 }
 
 char Cliente::ejecutarAccion(Parser parser) {
-	std::cout << "Empiezo a ejecutar una accion " << std::endl;
 	char tipoAProcesar = parser.getTipo()[0];
 	switch (tipoAProcesar) {
 
 	case 'E': {
-		std::cout << "Cliente::ejecutarAccion(E) - begin" << std::endl;
 		this->socket->shutdown();
 		this->setConectado(false);
-		std::cout << "Cliente::ejecutarAccion(E) - end" << std::endl;
 		break;
 	}
 	case 'D': {
 		/*se setea el documento*/
 		this->documentoConc.setDocumento(parser.getTexto());
-		std::cout << "el documento luego"
-				<< this->documentoConc.getDocumento()->getContenido()
-				<< std::endl;
 		/*se setea la version */
 		this->documentoConc.setVersion(parser.getVersion());
 		/*se modifica la vista*/
@@ -131,24 +122,12 @@ char Cliente::ejecutarAccion(Parser parser) {
 		break;
 	}
 	case 'R': {
-		std::cout << "aalllllllllll"<< std::endl;
-
-		/*lanzo ventana de error, pues  el nombre de usuario esta ya ocupado*/
-//		GtkWidget
-//				* ventanaerror =
-//						gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
-//								GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
-//								"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
-//		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
-//		gtk_dialog_run( GTK_DIALOG(ventanaerror));
-//		gtk_widget_destroy(ventanaerror);
 
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
 				false);
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBoton(),
 						true);
 		gtk_text_view_set_editable(GTK_TEXT_VIEW(this->vista->getVentana()->getView()), false);
-		std::cout << "aalllllllllll"<< std::endl;
 
 		this->vista->getVentana()->desloguearCliente();
 		//this->vista->errorConectar();
@@ -166,9 +145,6 @@ break;
 			/* el documento  se modifica*/
 			this->documentoConc.agregarTexto(parser.getTexto(),
 					parser.getPosicion());
-			std::cout << "El documento es: "
-					<< documentoConc.getDocumento()->getContenido()
-					<< std::endl;
 		}
 		if ((parser.getAlcance() == 0) || (parser.getAlcance() == 2)) {
 			/*la vista se modifica*/
@@ -209,7 +185,6 @@ void* Cliente::run() {
 	std::string str;
 	char tipo = 'E';
 	while (getConectado()) {
-		std::cout << "ESTOY CONECTADO " << std::endl;
 
 		char buff1[TAMANIIO];
 		bzero(buff1, TAMANIIO);
@@ -217,27 +192,19 @@ void* Cliente::run() {
 		Parser parser;
 
 		cantidad = this->socket->recieve(buff1, TAMANIIO - 1);
-		std::cout << "recibi! "<<buff1 << std::endl;
 
 		if (cantidad <= 0) {
-			std::cout << "cantidad es "<<cantidad<<"por lo q cierro este cliente" << std::endl;
-
 			this->setConectado(false);
-
 		}
 
-		std::cout << "estto conectado?? "<<buff1 << std::endl;
 
 		if (this->getConectado()) {
 			buff1[cantidad] = '\0';
 			str += buff1;
 		}
-		std::cout << "estto conectado?? "<<buff1 << std::endl;
 
 		while ((this->getConectado()) && (parser.procesar(str.c_str(),
 				&cantidad))) {
-			std::cout << "termino de procesar " << cantidad
-					<< " bytes del buffer" << std::endl;
 
 			if (cantidad > 0) {
 				/*borro lo q ya lei del buffer*/
@@ -245,30 +212,20 @@ void* Cliente::run() {
 				cantidad = str.size();
 			}
 
-			std::cout << "quedan en el buffer: " << cantidad << std::endl;
-
 			tipo =this->ejecutarAccion(parser);
-			std::cout << "luego de ejecutar accion " << std::endl;
-
 			parser.reset();
-			std::cout << "luego de resetear parser" << std::endl;
-
 		}
-		std::cout << "el tipo ahora es "<<tipo << std::endl;
 
 
 		if (this->getConectado()) {
 			str.erase(0, cantidad);
 			cantidad = str.size();
-			std::cout << "lluego de accion 3 " << std::endl;
 		} else if (tipo != 'E') {
 			this->vista->getVentana()->refrescar();
 		}
-		std::cout << "lluego de accion 4 " << std::endl;
 
 		/*saco ese mensaje del buffer*/
 	}
-	std::cout << "sali del run de cliente!!!!!!!" << std::endl;
 	return NULL;
 }
 
@@ -299,9 +256,7 @@ void Cliente::agregarAmigo(const std::string& nombre) {
 DocumentoConcurrente* Cliente::getDocumentoConc() {
 	return &documentoConc;
 }
-Cliente::~Cliente() {
-	//delete this->documentoConc;
-	delete this->socket;
-	std::cout << "////BORRO CLIENTE/////" << std::endl;
 
+Cliente::~Cliente() {
+	delete this->socket;
 }

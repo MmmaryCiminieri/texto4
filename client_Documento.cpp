@@ -54,15 +54,12 @@ void Documento::agregarTexto(const std::string& texto,unsigned int posicion) {
 		}
 		this->contenido = this->contenido.append( texto);
 	}
-	std::cout << "el doc: "<<contenido << std::endl;
 
 }
 void Documento::borrarTexto(const std::string& texto, int posicion) {
 
 	int sizeToRemove = texto.size();
 	this->contenido = this->contenido.erase(posicion, sizeToRemove);
-	std::cout << "el doc: "<<contenido << std::endl;
-
 }
 
 Documento::~Documento(){}

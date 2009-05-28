@@ -11,12 +11,10 @@
 
 Vista::Vista() {
 	this->ventana.setVista(this);
-	std::cout << "////CREO VISTA/////" << std::endl;
 	return;
 }
 
 void Vista::errorConectar() {
-	//TODO BORRAR AL CLIENTE POR Q ES COMO Q YA ESTA INGRESADO.... NO?
 	GtkWidget* ventanaerror = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
 			GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
 			"No se ha podido realizar la conexión con el servidor. \n Espere un momento y vuélvalo a intentar.");
@@ -110,5 +108,4 @@ void Vista::borrar(const char* str, int posicion) {
 }
 
 Vista::~Vista() {
-	std::cout << "////BORRO VISTA/////" << std::endl;
 }
