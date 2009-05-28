@@ -112,7 +112,8 @@ public:
 	/*Cuando uno presina el boton de conectarse, se crea un cliente y  se llama al inicializar del mismo*/
 	static void on_boton_clicked(GtkWidget *widget, VentanaIngreso* data);
 
-	/*Cuando uno presina el boton de desloguearse, ...TODO */
+	/*Cuando uno presina el boton de desloguearse,el cliente le avisa
+	 * al servidor que se ha desloguaeado, su estado pasa a ser desconectado y se hace el join del mismo */
 		static void	on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* data);
 
 		/*se crea la scrolled window en  donde se editará en texto y se conectan las señales de agregado y borrado por teclado*/

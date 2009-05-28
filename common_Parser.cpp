@@ -95,6 +95,7 @@ bool Parser::procesar(const char* buffer, int* tamaniio) {
 	int tamanioBuffer = *tamaniio;
 	if (!this->tipoLeido) {
 
+
 		/*aun no lei el tipo*/
 		this->tipo = buffer[actual];
 		actual++;

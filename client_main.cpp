@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 
 	Vista vista;
 
-	/*se muestra la interfaz gráfica desde donde todo sucede*/
+	/*se muestra la interfaz gráfica desde donde toodo sucede*/
 	vista.mostrar();
 
 

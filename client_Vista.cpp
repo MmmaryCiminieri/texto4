@@ -53,7 +53,11 @@ void Vista::refrescarLista() {
 
 void Vista::cargarDocumento(const std::string& contenido) {
 	g_signal_handler_block(this->ventana.getTexto(), this->ventana.getinsertSignal());
+	g_signal_handler_block(this->ventana.getTexto(), this->ventana.getdeleteSignal());
+
 	gtk_text_buffer_set_text(this->ventana.getTexto(), contenido.c_str(), -1);
+	g_signal_handler_unblock(this->ventana.getTexto(), this->ventana.getdeleteSignal());
+
 	g_signal_handler_unblock(this->ventana.getTexto(), this->ventana.getinsertSignal());
 }
 

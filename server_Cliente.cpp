@@ -16,7 +16,7 @@
 Cliente::Cliente(MSocket * socket, Servidor* servidor) {
 	this->socket = socket;
 	this->servidor = servidor;
-	// TODO: Pasar a false?
+	/*es verdadero por q el socket ya se conecto*/
 	this->conectado = true;
 }
 
