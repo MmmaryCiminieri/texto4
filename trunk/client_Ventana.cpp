@@ -62,6 +62,22 @@ std::cout << "SALI DEL CLICK" << std::endl;
 
 
 }
+void VentanaIngreso::refrescar(){
+	gtk_widget_set_sensitive(boton,true);
+		this->bloquearBotonDeslog();
+
+		g_signal_handler_block(texto, insertSignal);
+		g_signal_handler_block(texto, deleteSignal);
+
+		gtk_text_buffer_set_text( texto,"",-1);
+		gtk_text_buffer_set_text( lista,"",-1);
+		gtk_text_view_set_editable(GTK_TEXT_VIEW(view), false);
+
+		g_signal_handler_unblock(texto, insertSignal);
+		g_signal_handler_unblock(texto,deleteSignal);
+
+
+}
 
 void VentanaIngreso::on_boton_clicked_logout(GtkWidget *widget, VentanaIngreso* data){
 	/*el cliente ha decido desloguarse*/
@@ -89,6 +105,10 @@ GtkWidget* VentanaIngreso::getBotonDeslog(){
 	return botonDeslog;
 }
 
+
+GtkWidget* VentanaIngreso::getBoton(){
+	return boton;
+}
 void VentanaIngreso::desloguearCliente(){
 	this->cliente->desloguearse();
 	this->cliente->join();

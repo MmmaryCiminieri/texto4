@@ -47,12 +47,15 @@ void Cliente::inicializar(const char* ip, const char* port, GtkWidget* boton) {
 	if (!this->getConectado()) {
 		this->vista->errorConectar();
 		gtk_widget_set_sensitive(boton, true);
+		gtk_text_view_set_editable(GTK_TEXT_VIEW(this->vista->getVentana()->getView()), false);
+this->vista->getVentana()->desloguearCliente();
 
 	} else {
 		/*valido existencia*/
 		this->enviarDatosInicio();
 		/*escucho cambios del servidor*/
 		this->execute();
+
 
 	}
 }
@@ -126,22 +129,34 @@ void Cliente::ejecutarAccion(Parser parser) {
 		break;
 	}
 	case 'R': {
+		std::cout << "aalllllllllll"<< std::endl;
+
 		/*lanzo ventana de error, pues  el nombre de usuario esta ya ocupado*/
-		GtkWidget
-				* ventanaerror =
-						gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
-								GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
-								"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
-		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
-		gtk_dialog_run( GTK_DIALOG(ventanaerror));
-		gtk_widget_destroy(ventanaerror);
+//		GtkWidget
+//				* ventanaerror =
+//						gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+//								GTK_MESSAGE_WARNING, GTK_BUTTONS_OK,
+//								"El nombre de Usuario ya ha sido elegido.\n Ingrese otro diferente");
+//		gtk_window_set_title(GTK_WINDOW(ventanaerror), "Error");
+//		gtk_dialog_run( GTK_DIALOG(ventanaerror));
+//		gtk_widget_destroy(ventanaerror);
 
 		gtk_widget_set_sensitive(this->vista->getVentana()->getBotonDeslog(),
-				true);
+				false);
+		gtk_widget_set_sensitive(this->vista->getVentana()->getBoton(),
+						true);
+		gtk_text_view_set_editable(GTK_TEXT_VIEW(this->vista->getVentana()->getView()), false);
+		std::cout << "aalllllllllll"<< std::endl;
+
+		this->vista->getVentana()->desloguearCliente();
+		//this->vista->errorConectar();
+
+break;
 	}
 	case 'L': {
 		/* Fui aceptado */
 		setAceptado(true);
+		break;
 
 	}
 	case 'A': {
@@ -237,10 +252,13 @@ void* Cliente::run() {
 
 		}
 
+		std::cout << "estto conectado?? "<<buff1 << std::endl;
+
 		if (this->getConectado()) {
 			buff1[cantidad] = '\0';
 			str += buff1;
 		}
+		std::cout << "estto conectado?? "<<buff1 << std::endl;
 
 		while ((this->getConectado()) && (parser.procesar(str.c_str(),
 				&cantidad))) {
@@ -252,6 +270,7 @@ void* Cliente::run() {
 				str.erase(0, cantidad);
 				cantidad = str.size();
 			}
+
 			std::cout << "quedan en el buffer: " << cantidad << std::endl;
 
 			this->ejecutarAccion(parser);
@@ -266,6 +285,8 @@ void* Cliente::run() {
 			cantidad = str.size();
 			std::cout << "lluego de accion 3 " << std::endl;
 
+		}else{
+			this->vista->getVentana()->refrescar();
 		}
 		std::cout << "lluego de accion 4 " << std::endl;
 
